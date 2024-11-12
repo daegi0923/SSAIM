@@ -23,6 +23,7 @@ import com.e203.project.dto.jiraapi.Sprint;
 import com.e203.project.dto.jiraapi.SprintResponse;
 import com.e203.project.dto.request.JiraIssueRequestDto;
 import com.e203.project.dto.request.JiraSprintCreateRequestDto;
+import com.e203.project.dto.request.JiraSprintIssuesRequestDto;
 import com.e203.project.dto.response.JiraInfo;
 import com.e203.project.dto.response.JiraIssueResponseDto;
 import com.e203.project.dto.request.ProjectJiraConnectDto;
@@ -287,23 +288,48 @@ public class JiraService {
 		}
 		String jiraUri = JIRA_URL + "/agile/1.0/sprint/" + sprintId;
 
-		try{
+		try {
 			ResponseEntity<SprintResponseDto> result = restClient.get()
 				.uri(jiraUri)
 				.header("Authorization", "Basic " + info.getEncodedCredentials())
 				.retrieve()
 				.toEntity(SprintResponseDto.class);
 
-			if(result.getStatusCode().is2xxSuccessful()) {
+			if (result.getStatusCode().is2xxSuccessful()) {
 				return result.getBody();
 			}
-		}catch (HttpClientErrorException e) {
+		} catch (HttpClientErrorException e) {
 			log.error(e.getResponseBodyAsString());
-		}catch (Exception e) {
+		} catch (Exception e) {
 			log.error(e.getMessage());
 		}
 
 		return null;
+	}
+
+	public boolean uploadIssuesOnSprint(int projectId, int sprintId, JiraSprintIssuesRequestDto dto) {
+		JiraInfo info = getInfo(projectId);
+		if (info == null) {
+			return false;
+		}
+		String jiraUri = JIRA_URL + "/agile/1.0/sprint/" + sprintId + "/issue";
+		try {
+			ResponseEntity<Map> result = restClient.post()
+				.uri(jiraUri)
+				.contentType(MediaType.APPLICATION_JSON)
+				.header("Authorization", "Basic " + info.getEncodedCredentials())
+				.body(dto)
+				.retrieve()
+				.toEntity(Map.class);
+
+			return result.getStatusCode().is2xxSuccessful();
+
+		} catch (HttpClientErrorException e) {
+			log.error(e.getResponseBodyAsString());
+		} catch (Exception e) {
+			log.error(e.getMessage());
+		}
+		return false;
 	}
 
 }
