@@ -27,8 +27,8 @@ public class MeetingController {
 
         List<MeetingResponseDto> result = meetingService.getMeetings(projectId);
 
-        if (result == null) {
-            return ResponseEntity.status(OK).body(null);
+        if (result.isEmpty()) {
+            return ResponseEntity.status(BAD_REQUEST).body(null);
         }
 
         return ResponseEntity.status(OK).body(result);
@@ -38,8 +38,11 @@ public class MeetingController {
     public ResponseEntity<OneMeetingResponseDto> getMeeting(@PathVariable("meetingId") int meetingId) throws Exception {
 
         OneMeetingResponseDto result = meetingService.getMeeting(meetingId);
-        if (result == null) {
-            return ResponseEntity.status(NOT_FOUND).body(null);
+        if (result.getMeetingTitle().equals("회의 정보를 찾을 수 없습니다.")) {
+            return ResponseEntity.status(NOT_FOUND).body(result);
+        }
+        else if(result.getMeetingTitle().equals("오류가 발생하여 회의 정보를 불러올 수 없습니다.")) {
+            return ResponseEntity.status(BAD_REQUEST).body(result);
         }
 
         return ResponseEntity.status(OK).body(result);
