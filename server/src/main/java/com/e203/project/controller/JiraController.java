@@ -86,7 +86,7 @@ public class JiraController {
 		return ResponseEntity.status(NOT_FOUND).body("이슈 수정에 실패했습니다.");
 	}
 
-	@GetMapping("/api/v1/project/{projectId}/sprint")
+	@GetMapping("/api/v1/projects/{projectId}/sprint")
 	public ResponseEntity<List<SprintResponseDto>> findAllSprints(@PathVariable("projectId") int projectId) {
 		List<SprintResponseDto> sprints = jiraService.findAllSprints(projectId);
 		if(sprints==null){
@@ -95,7 +95,7 @@ public class JiraController {
 		return ResponseEntity.status(OK).body(sprints);
 	}
 
-	@PostMapping("/api/v1/project/{projectId}/sprint")
+	@PostMapping("/api/v1/projects/{projectId}/sprint")
 	public ResponseEntity<String> createSprint(@PathVariable("projectId") int projectId, @RequestBody JiraSprintCreateRequestDto dto){
 		String sprint = jiraService.createSprint(dto, projectId);
 
