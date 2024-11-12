@@ -18,8 +18,8 @@ public class ApiDocsResponseDto {
 	private List<String> functionName;
 	private List<String> frontOwner;
 	private List<String> backOwner;
-	private List<String> frontState;
-	private List<String> backState;
+	private List<Integer> frontState;
+	private List<Integer> backState;
 	private List<String> priority;
 	private List<String> requestHeader;
 	private List<String> responseHeader;
