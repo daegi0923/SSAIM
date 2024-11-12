@@ -75,6 +75,19 @@ public class JiraController {
 		return ResponseEntity.status(NOT_FOUND).body("이슈 생성에 실패했습니다.");
 	}
 
+	@PutMapping("/api/v1/projects/{projectId}/epics")
+	public ResponseEntity<String> modifyEpic(@PathVariable("projectId") int projectId, @RequestBody
+	JiraIssueRequestDto epicUpdateRequestDto){
+
+		ResponseEntity<Map> mapResponseEntity = jiraService.modifyEpic(projectId, epicUpdateRequestDto);
+
+		if(mapResponseEntity.getStatusCode() == NO_CONTENT){
+			return ResponseEntity.status(OK).body("에픽 수정 성공했습니다.");
+		}
+		return ResponseEntity.status(NOT_FOUND).body("에픽 수정 실패했습니다.");
+	}
+
+
 	@PutMapping("/api/v1/projects/{projectId}/issue")
 	public ResponseEntity<String> modifyIssue(@PathVariable("projectId") int projectId,
 		@RequestBody JiraIssueRequestDto dto){
@@ -104,4 +117,6 @@ public class JiraController {
 		}
 		return ResponseEntity.status(OK).body(sprint);
 	}
+
+
 }
