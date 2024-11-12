@@ -1,10 +1,11 @@
 package com.e203.project.service;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-
+import com.e203.config.JasyptConfig;
+import com.e203.project.dto.request.ProjectCreateRequestDto;
+import com.e203.project.dto.request.ProjectMemberCreateRequestDto;
+import com.e203.project.entity.Project;
+import com.e203.user.entity.User;
+import com.e203.user.repository.UserRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -14,12 +15,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.e203.config.JasyptConfig;
-import com.e203.project.dto.request.ProjectCreateRequestDto;
-import com.e203.project.dto.request.ProjectMemberCreateRequestDto;
-import com.e203.project.entity.Project;
-import com.e203.user.entity.User;
-import com.e203.user.repository.UserRepository;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @SpringBootTest
 @TestPropertySource(properties = "jasypt.encryptor.password=wonderwise123")
@@ -45,7 +44,7 @@ public class ProjectServiceTest {
 	public void projectCreateTest(){
 
 		ProjectCreateRequestDto dto = createProjectDto();
-		boolean project = projectService.createProject(dto);
+		boolean project = projectService.createProject(null, dto);
 
 		Assertions.assertTrue(project);
 	}
@@ -65,7 +64,6 @@ public class ProjectServiceTest {
 		return ProjectCreateRequestDto.builder()
 			.title("프로젝트 제목 예시")
 			.name("프로젝트 관리자 이름")
-			.profileImage("https://example.com/image.jpg")
 			.startDate(LocalDateTime.parse("2023-11-01T00:00:00"))
 			.endDate(LocalDateTime.parse("2023-12-01T00:00:00"))
 			.teamMembers(members)

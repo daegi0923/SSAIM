@@ -3,6 +3,7 @@ package com.e203.project.service;
 import com.e203.document.service.ApiDocsService;
 import com.e203.document.service.FunctionDescriptionService;
 import com.e203.document.service.ProposalService;
+import com.e203.global.utils.FileUploader;
 import com.e203.project.dto.request.ProjectCreateRequestDto;
 import com.e203.project.dto.request.ProjectMemberCreateRequestDto;
 import com.e203.project.dto.response.ProjectFindResponseDto;
@@ -16,6 +17,7 @@ import com.e203.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,11 +33,18 @@ public class ProjectService {
     private final ProposalService proposalService;
     private final UserRepository userRepository;
     private final ProjectMemberRepository projectMemberRepository;
+    private final FileUploader fileUploader;
 
     @Transactional
-    public boolean createProject(ProjectCreateRequestDto projectCreateRequestDto) {
+    public boolean createProject(MultipartFile image, ProjectCreateRequestDto projectCreateRequestDto) {
 
         Project entity = projectCreateRequestDto.toEntity();
+
+        if (image != null) {
+            String imageUrl = fileUploader.upload(image);
+            entity.setProfileImage(imageUrl);
+        }
+
         Project project = projectRepository.save(entity);
 
         projectCreateRequestDto.getTeamMembers().stream()
