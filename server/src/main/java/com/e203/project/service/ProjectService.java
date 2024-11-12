@@ -58,9 +58,9 @@ public class ProjectService {
                 .map(member -> createProjectMember(project, member))
                 .forEach(projectMemberService::save);
 
-        apiDocsService.saveApiDocs(String.valueOf(project.getId()));
-        functionDescriptionService.saveFuncDesc(String.valueOf(project.getId()));
-        proposalService.saveProposal(String.valueOf(project.getId()));
+        apiDocsService.saveApiDocs(project.getId());
+        functionDescriptionService.saveFuncDesc(project.getId());
+        proposalService.saveProposal(project.getId());
 
         //if project, projectMember가 잘 저장되었다면
         return true;
