@@ -1,5 +1,6 @@
 package com.e203.project.service;
 
+import com.e203.document.dto.response.ApiDocsResponseDto;
 import com.e203.document.service.ApiDocsService;
 import com.e203.document.service.FunctionDescriptionService;
 import com.e203.document.service.ProposalService;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -89,7 +91,8 @@ public class ProjectService {
     }
 
     private ProjectFindResponseDto getProjectFindResponseDto(Project project) {
-        return ProjectFindResponseDto.fromEntity(project, 0.0, 0.0, createProjectMemberFindResponseDtos(project));
+        ApiDocsResponseDto dto = apiDocsService.parseStringToObject(project.getId());
+        return ProjectFindResponseDto.fromEntity(project, getProgress(dto.getFrontState()), getProgress(dto.getBackState()), createProjectMemberFindResponseDtos(project));
     }
 
     private List<ProjectMemberFindResponseDto> createProjectMemberFindResponseDtos(Project project) {
@@ -105,6 +108,11 @@ public class ProjectService {
                 .project(project)
                 .role(member.getRole())
                 .build();
+    }
+
+
+    public int getProgress(List<Integer> states) {
+        return states.isEmpty() ? 0 : 100 * Collections.frequency(states, 2) / states.size();
     }
 
 }

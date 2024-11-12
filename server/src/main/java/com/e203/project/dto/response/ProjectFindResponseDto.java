@@ -18,14 +18,14 @@ public class ProjectFindResponseDto {
     private LocalDateTime endDate;
     private String jiraApi;
     private String gitlabApi;
-    private Double progressFront;
-    private Double progressBack;
+    private Integer progressFront;
+    private Integer progressBack;
     private List<ProjectMemberFindResponseDto> projectMemberFindResponseDtoList;
 
     @Builder
     private ProjectFindResponseDto(int id, String name, String title, LocalDateTime startDate, LocalDateTime endDate,
                                    String jiraApi, String gitlabApi, List<ProjectMemberFindResponseDto> projectMembers,
-                                   Double progressFront, Double progressBack) {
+                                   Integer progressFront, Integer progressBack) {
         this.id = id;
         this.name = name;
         this.title = title;
@@ -38,7 +38,7 @@ public class ProjectFindResponseDto {
         this.projectMemberFindResponseDtoList = projectMembers;
     }
 
-    public static ProjectFindResponseDto fromEntity(Project project, Double progressFront, Double progressBack, List<ProjectMemberFindResponseDto> members) {
+    public static ProjectFindResponseDto fromEntity(Project project, Integer progressFront, Integer progressBack, List<ProjectMemberFindResponseDto> members) {
         return ProjectFindResponseDto.builder()
                 .id(project.getId())
                 .name(project.getName())
