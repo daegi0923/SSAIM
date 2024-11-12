@@ -20,7 +20,7 @@ public class FunctionDescriptionController {
     private final JWTUtil jwtUtil;
 
     @PostMapping("/api/v1/projects/{projectId}/function-description")
-    public ResponseEntity<String> createFuncDesc(@PathVariable String projectId) {
+    public ResponseEntity<String> createFuncDesc(@PathVariable int projectId) {
         FunctionDescription funcDesc = functionDescriptionService.saveFuncDesc(projectId);
         if (funcDesc == null) {
             return ResponseEntity.status(NOT_FOUND).body("기능명세서 생성 실패");
@@ -29,7 +29,7 @@ public class FunctionDescriptionController {
     }
 
     @GetMapping("/api/v1/projects/{projectId}/function-description")
-    public ResponseEntity<String> findFuncDescContent(@PathVariable String projectId) {
+    public ResponseEntity<String> findFuncDescContent(@PathVariable int projectId) {
         String funcDescContent = functionDescriptionService.getFuncDescContent(projectId);
         if (funcDescContent == null) {
             return ResponseEntity.status(NOT_FOUND).body("기능명세서 조회 실패");

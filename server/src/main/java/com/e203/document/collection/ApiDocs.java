@@ -11,13 +11,13 @@ import lombok.Setter;
 @Getter
 @Document(collection = "ApiDocs")
 public class ApiDocs {
-	private String projectId;
+	private int projectId;
 	@Setter
 	private String content;
 	private LocalDateTime createdAt; // 생성 시간 필드 추가
 
 	@Builder
-	private ApiDocs(String projectId, String content, LocalDateTime createdAt)
+	private ApiDocs(int projectId, String content, LocalDateTime createdAt)
 	{
 		this.projectId = projectId;
 		this.content = content;

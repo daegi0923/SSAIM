@@ -10,7 +10,7 @@ import com.e203.document.collection.ApiDocs;
 
 public interface ApiDocsRepository extends MongoRepository<ApiDocs, String> {
 	@Query("{ 'projectId': ?0 }")
-	List<ApiDocs> findTopByProjectIdOrderByCreatedAtDesc(String projectId, Sort sort);
+	List<ApiDocs> findTopByProjectIdOrderByCreatedAtDesc(int projectId, Sort sort);
 
-	List<ApiDocs> findByProjectId(String projectId);
+	List<ApiDocs> findByProjectId(int projectId);
 }

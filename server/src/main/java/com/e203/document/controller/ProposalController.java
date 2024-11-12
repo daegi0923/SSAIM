@@ -20,7 +20,7 @@ public class ProposalController {
     private final JWTUtil jwtUtil;
 
     @PostMapping("/api/v1/projects/{projectId}/proposal")
-    public ResponseEntity<String> createProposal(@PathVariable String projectId) {
+    public ResponseEntity<String> createProposal(@PathVariable int projectId) {
         Proposal result = proposalService.saveProposal(projectId);
         if (result == null) {
             return ResponseEntity.status(NOT_FOUND).body("기획서 생성 실패");
@@ -29,7 +29,7 @@ public class ProposalController {
     }
 
     @GetMapping("/api/v1/projects/{projectId}/proposal")
-    public ResponseEntity<String> findProposalContent(@PathVariable String projectId) {
+    public ResponseEntity<String> findProposalContent(@PathVariable int projectId) {
         String proposalContent = proposalService.getProposalContent(projectId);
 
         if (proposalContent == null) {

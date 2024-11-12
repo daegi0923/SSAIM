@@ -10,5 +10,5 @@ import com.e203.document.collection.FunctionDescription;
 
 public interface FunctionDescriptionRepository extends MongoRepository<FunctionDescription, String> {
 	@Query("{ 'projectId': ?0 }")
-	List<FunctionDescription> findTopByProjectIdOrderByCreatedAtDesc(String projectId, Sort sort);
+	List<FunctionDescription> findTopByProjectIdOrderByCreatedAtDesc(int projectId, Sort sort);
 }

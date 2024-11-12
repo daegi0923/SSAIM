@@ -7,11 +7,11 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class ApiDocsRequestDto {
-	private String projectId;
+	private int projectId;
 	private String content;
 
 	@Builder
-	private ApiDocsRequestDto(String projectId, String content) {
+	private ApiDocsRequestDto(int projectId, String content) {
 		this.projectId = projectId;
 		this.content = content;
 	}

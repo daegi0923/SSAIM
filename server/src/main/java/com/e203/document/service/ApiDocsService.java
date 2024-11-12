@@ -2,24 +2,27 @@ package com.e203.document.service;
 
 import com.e203.document.collection.ApiDocs;
 import com.e203.document.repository.ApiDocsRepository;
+import com.e203.document.service.FunctionDescriptionService;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+
+import com.e203.document.dto.response.ApiDocsResponseDto;
 import com.e203.global.utils.ChatAiService;
 import com.e203.project.entity.Project;
 import com.e203.project.repository.ProjectRepository;
 import com.mongodb.client.result.UpdateResult;
+
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Sort;
+
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.index.Index;
-import org.springframework.data.mongodb.core.index.IndexDefinition;
-import org.springframework.data.mongodb.core.index.IndexOperations;
-import org.springframework.data.mongodb.core.query.Collation;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
 @RequiredArgsConstructor
@@ -35,46 +38,38 @@ public class ApiDocsService {
 
 	private final FunctionDescriptionService functionDescriptionService;
 
-	public void createIndex() {
-		// Collation 설정
-		Collation collation = Collation.of("ko");
-
-		// 인덱스 정의
-		IndexDefinition indexDefinition = new Index()
-			.on("createdAt", Sort.Direction.DESC)
-			.collation(collation);
-
-		// 인덱스 추가
-		IndexOperations indexOps = mongoTemplate.indexOps(ApiDocs.class);
-		indexOps.ensureIndex(indexDefinition);
-	}
-
-	public ApiDocs getApiDocs(String projectId) {
+	public ApiDocs getApiDocs(int projectId) {
 		List<ApiDocs> results = apiDocsRepository.findByProjectId(projectId);
 		return results.isEmpty() ? null : results.get(0); // 결과가 없으면 null 반환
 	}
 
-	public String getApiDocsContent(String projectId){
+	public String getApiDocsContent(int projectId) {
 		ApiDocs apiDocs = getApiDocs(projectId);
 		return apiDocs.getContent();
 	}
 
-	public ApiDocs updateApiDocsContent(String projectId, String content) {
+	public ApiDocs updateApiDocsContent(int projectId, String content) {
 
 		Query query = new Query(Criteria.where("projectId").is(projectId));
-		Update update = new Update().set("content", content);
+		Update update = new Update().set("content", content)
+			.set("createdAt", LocalDateTime.now());
+
 		UpdateResult documents = mongoTemplate.updateFirst(query, update, "ApiDocs");
 
 		return getApiDocs(projectId);
 	}
 
-	public ApiDocs saveApiDocs(String projectId) {
+	public ApiDocs saveApiDocs(int projectId) {
 		String defaultForm = "{\"category\": [],\"description\": [],\"url\": [],\"method\": [],\"functionName\": [],\"frontOwner\": [],\"backOwner\": [],\"frontState\": [],\"backState\": [],\"priority\": [],\"requestHeader\": [],\"responseHeader\": [],\"requestBody\": [],\"responseBody\": [] } ";
 		ApiDocs apiDocs = ApiDocs.builder()
 			.projectId(projectId)
 			.content(defaultForm)
 			.build();
-		return apiDocsRepository.save(apiDocs);
+		ApiDocs docs = getApiDocs(projectId);
+		if (docs == null) {
+			return apiDocsRepository.save(apiDocs);
+		}
+		return null;
 	}
 
 	public String generateApiDocs(int projectId, int userId, String message) {
@@ -82,10 +77,22 @@ public class ApiDocsService {
 		if (project.isEmpty()) {
 			return "Not found";
 		} else if (project.get().getProjectMembers().stream()
-				.noneMatch(member -> member.getUser().getUserId() == userId)) {
+			.noneMatch(member -> member.getUser().getUserId() == userId)) {
 			return "Not authorized";
 		}
-		return chatAiService.generateApiDocs(message, functionDescriptionService.getFuncDescContent(String.valueOf(projectId)));
+		return chatAiService.generateApiDocs(message, functionDescriptionService.getFuncDescContent(projectId));
+	}
+
+	public ApiDocsResponseDto parseStringToObject(int projectId) {
+		ApiDocs apiDocs = getApiDocs(projectId);
+		ObjectMapper objectMapper = new ObjectMapper();
+		ApiDocsResponseDto apiDocsResponseDto = null;
+		try {
+			apiDocsResponseDto = objectMapper.readValue(apiDocs.getContent(), ApiDocsResponseDto.class);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return apiDocsResponseDto;
 	}
 
 }

@@ -1,5 +1,8 @@
 package com.e203.document.service;
 
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 import com.e203.document.collection.FunctionDescription;
 import com.e203.document.repository.FunctionDescriptionRepository;
 import com.e203.global.utils.ChatAiService;
@@ -9,15 +12,17 @@ import com.mongodb.client.result.UpdateResult;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.index.Index;
-import org.springframework.data.mongodb.core.index.IndexDefinition;
-import org.springframework.data.mongodb.core.index.IndexOperations;
-import org.springframework.data.mongodb.core.query.Collation;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
+import com.e203.document.collection.FunctionDescription;
+import com.e203.document.repository.FunctionDescriptionRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mongodb.client.result.UpdateResult;
+
+import lombok.RequiredArgsConstructor;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,35 +40,22 @@ public class FunctionDescriptionService {
 
     private final ProposalService proposalService;
 
-    public void createIndex() {
-        // Collation 설정
-        Collation collation = Collation.of("ko");
-
-        // 인덱스 정의
-        IndexDefinition indexDefinition = new Index()
-                .on("createdAt", Sort.Direction.DESC)
-                .collation(collation);
-
-        // 인덱스 추가
-        IndexOperations indexOps = mongoTemplate.indexOps(FunctionDescription.class);
-        indexOps.ensureIndex(indexDefinition);
-    }
-
-    public FunctionDescription getFuncDesc(String projectId) {
+    public FunctionDescription getFuncDesc(int projectId) {
         List<FunctionDescription> results = functionDescriptionRepository.findTopByProjectIdOrderByCreatedAtDesc(
                 projectId, Sort.by(Sort.Direction.DESC, "createdAt"));
         return results.isEmpty() ? null : results.get(0); // 결과가 없으면 null 반환
     }
 
-    public String getFuncDescContent(String projectId) {
+    public String getFuncDescContent(int projectId) {
         FunctionDescription funcDesc = getFuncDesc(projectId);
         return funcDesc == null ? "" : funcDesc.getContent();
     }
 
-    public FunctionDescription updateFuncDescContent(String projectId, String content) {
+    public FunctionDescription updateFuncDescContent(int projectId, String content) {
         Query query = new Query(Criteria.where("projectId").is(projectId));
 
-        Update update = new Update().set("content", content);
+        Update update = new Update().set("content", content)
+            .set("createdAt", LocalDateTime.now());
 
         UpdateResult documents = mongoTemplate.updateFirst(query, update, "FunctionDescription");
 
@@ -72,11 +64,16 @@ public class FunctionDescriptionService {
 
     public FunctionDescription saveFuncDesc(String projectId) {
         String defaultForm = "{\"category\": [],\"functionName\": [],\"description\": [],\"owner\": [],\"priority\": []}";
+    public FunctionDescription saveFuncDesc(int projectId) {
+        String defaultForm = "{\"domain\": [],\"featureName\": [],\"description\": [],\"owner\": [],\"priority\": []}";
         FunctionDescription functionDescription = FunctionDescription.builder()
                 .projectId(projectId)
                 .content(defaultForm)
                 .build();
-        return functionDescriptionRepository.save(functionDescription);
+        if(getFuncDesc(projectId) == null) {
+            return functionDescriptionRepository.save(functionDescription);
+        }
+        return null;
     }
 
     public String generateFunctionDescription(int projectId, int userId, String message) {
@@ -87,6 +84,19 @@ public class FunctionDescriptionService {
                 .noneMatch(member -> member.getUser().getUserId() == userId)) {
             return "Not authorized";
         }
-        return chatAiService.generateFunctionDescription(message, proposalService.getProposalContent(String.valueOf(projectId)));
+        return chatAiService.generateFunctionDescription(message, proposalService.getProposalContent(projectId));
     }
+
+    public FunctionDescriptionResponseDto parseStringToObject(int projectId){
+        FunctionDescription functionDescription = getFuncDesc(projectId);
+        ObjectMapper objectMapper = new ObjectMapper();
+        FunctionDescriptionResponseDto functionDescriptionResponseDto = null;
+        try {
+            functionDescriptionResponseDto = objectMapper.readValue(functionDescription.getContent(), FunctionDescriptionResponseDto.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return functionDescriptionResponseDto;
+    }
+
 }

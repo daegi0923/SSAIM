@@ -19,7 +19,7 @@ public class ApiDocsWebSocketController {
 	// WebSocket 메시지 처리
 	@MessageMapping("/edit/api/v1/projects/{projectId}/api-docs") // WebSocket 메시지 매핑
 	@SendTo("/topic/api/v1/projects/{projectId}/api-docs") // 구독자에게 보낼 경로
-	public String editApiDocs(@DestinationVariable String projectId
+	public String editApiDocs(@DestinationVariable int projectId
 		, @Payload String newContent) {
 		return apiDocsService.updateApiDocsContent(projectId, newContent).getContent();
 	}
