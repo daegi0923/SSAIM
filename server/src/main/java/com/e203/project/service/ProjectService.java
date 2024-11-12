@@ -1,5 +1,8 @@
 package com.e203.project.service;
 
+import com.e203.document.service.ApiDocsService;
+import com.e203.document.service.FunctionDescriptionService;
+import com.e203.document.service.ProposalService;
 import com.e203.project.dto.request.ProjectCreateRequestDto;
 import com.e203.project.dto.request.ProjectMemberCreateRequestDto;
 import com.e203.project.dto.response.ProjectFindResponseDto;
@@ -23,6 +26,9 @@ import java.util.Optional;
 public class ProjectService {
     private final ProjectRepository projectRepository;
     private final ProjectMemberService projectMemberService;
+    private final ApiDocsService apiDocsService;
+    private final FunctionDescriptionService functionDescriptionService;
+    private final ProposalService proposalService;
     private final UserRepository userRepository;
     private final ProjectMemberRepository projectMemberRepository;
 
@@ -35,6 +41,10 @@ public class ProjectService {
         projectCreateRequestDto.getTeamMembers().stream()
                 .map(member -> createProjectMember(project, member))
                 .forEach(projectMemberService::save);
+
+        apiDocsService.saveApiDocs(String.valueOf(project.getId()));
+        functionDescriptionService.saveFuncDesc(String.valueOf(project.getId()));
+        proposalService.saveProposal(String.valueOf(project.getId()));
 
         //if project, projectMember가 잘 저장되었다면
         return true;
