@@ -8,7 +8,7 @@ import org.springframework.data.mongodb.repository.Query;
 
 import com.e203.document.collection.Proposal;
 
-public interface ProposalRepository  extends MongoRepository<Proposal, String> {
+public interface ProposalRepository  extends MongoRepository<Proposal, Integer> {
 	@Query("{ 'projectId': ?0 }")
 	List<Proposal> findTopByProjectIdOrderByCreatedAtDesc(int projectId, Sort sort);
 }

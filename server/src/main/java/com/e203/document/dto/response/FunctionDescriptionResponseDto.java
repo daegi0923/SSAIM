@@ -13,16 +13,16 @@ import lombok.Setter;
 public class FunctionDescriptionResponseDto {
 
 	private List<String> domain;
-	private List<String> featureName;
+	private List<String> functionName;
 	private List<String> description;
 	private List<String> owner;
 	private List<String> priority;
 
 
 	@Builder
-	private FunctionDescriptionResponseDto(List<String> domain, List<String> featureName, List<String> description, List<String> owner, List<String> priority) {
+	private FunctionDescriptionResponseDto(List<String> domain, List<String> functionName, List<String> description, List<String> owner, List<String> priority) {
 		this.domain = domain;
-		this.featureName = featureName;
+		this.functionName = functionName;
 		this.description = description;
 		this.owner = owner;
 		this.priority = priority;
