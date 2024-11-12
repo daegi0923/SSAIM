@@ -1,23 +1,11 @@
 package com.e203.project.entity;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-
 import com.e203.global.entity.BaseEntity;
+import jakarta.persistence.*;
+import lombok.*;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -35,6 +23,7 @@ public class Project extends BaseEntity {
 	@Column(name = "project_name")
 	private String name;
 
+	@Setter
 	@Column(name = "project_profile_image")
 	private String profileImage;
 
@@ -64,16 +53,8 @@ public class Project extends BaseEntity {
 	@Setter
 	private String jiraBoardId;
 
-	@Column(name = "project_progress_front")
-	@Setter
-	private Double progressFront =0.0; //이거 왜 안 먹히지 ?
-
-	@Column(name = "project_progress_back")
-	@Setter
-	private Double progressBack = 0.0;
-
-	@OneToMany(mappedBy = "project")
-	private List<ProjectMember> projectMemberList = new ArrayList<>();
+	@OneToMany(mappedBy = "project", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private List<ProjectMember> projectMembers;
 
 	@Builder
 	private Project(String title, String name, String profileImage, LocalDateTime startDate, LocalDateTime endDate, String gitlabApi, String jiraApi,
@@ -85,7 +66,5 @@ public class Project extends BaseEntity {
 		this.endDate = endDate;
 		this.gitlabApi = gitlabApi;
 		this.jiraApi = jiraApi;
-		this.progressFront = progressFront;
-		this.progressBack = progressBack;
 	}
 }
