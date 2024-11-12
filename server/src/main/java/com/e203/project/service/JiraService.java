@@ -90,6 +90,18 @@ public class JiraService {
 		return epics.stream().map(ProjectJiraEpicResponseDto::transferDto).collect(Collectors.toList());
 	}
 
+
+	public String findJiraAccountId(String userEmail, String jiraApi){
+		String encodedCredentials = Base64.getEncoder().encodeToString((userEmail + ":" + jiraApi).getBytes());
+		String jiraUri = JIRA_URL  + "/api/3/myself";
+		ResponseEntity<Map> authorization = restClient.get()
+			.uri(jiraUri)
+			.header("Authorization", "Basic " + encodedCredentials)
+			.retrieve()
+			.toEntity(Map.class);
+		return authorization.getBody().get("accountId").toString();
+	}
+
 	public ResponseEntity<Map> createIssue(int projectId, JiraIssueRequestDto dto) {
 		ProjectMember leader = getProjectLeader(projectId);
 		if (leader == null) {
@@ -100,8 +112,8 @@ public class JiraService {
 		String jiraProjectId = leader.getProject().getJiraProjectId();
 		String userEmail = leader.getUser().getUserEmail();
 		String encodedCredentials = Base64.getEncoder().encodeToString((userEmail + ":" + jiraApi).getBytes());
-
-		JiraIssueFields jiraIssueFields = JiraIssueFields.transferJsonObject(dto, jiraProjectId);
+		String jiraAccountId = findJiraAccountId(userEmail, jiraApi);
+		JiraIssueFields jiraIssueFields = JiraIssueFields.transferJsonObject(dto, jiraProjectId, jiraAccountId);
 
 		ResponseEntity<Map> response = restClient.post()
 			.uri(jiraUri)
@@ -124,8 +136,13 @@ public class JiraService {
 		String jiraProjectId = leader.getProject().getJiraProjectId();
 		String userEmail = leader.getUser().getUserEmail();
 		String encodedCredentials = Base64.getEncoder().encodeToString((userEmail + ":" + jiraApi).getBytes());
+		String jiraAccountId= "";
 
-		JiraIssueFields jiraIssueFields = JiraIssueFields.transferJsonObject(dto, jiraProjectId);
+		if(dto.getAssignee().equals("myself")){
+				jiraAccountId = findJiraAccountId(userEmail, jiraApi);
+		}
+
+		JiraIssueFields jiraIssueFields = JiraIssueFields.transferJsonObject(dto, jiraProjectId, jiraAccountId);
 
 		ResponseEntity<Map> response = restClient.put()
 			.uri(jiraUri)
