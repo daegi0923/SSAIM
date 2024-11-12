@@ -21,8 +21,11 @@ import org.springframework.web.client.RestClient;
 import com.e203.project.dto.jiraapi.JiraContent;
 import com.e203.project.dto.jiraapi.JiraEpicFields;
 import com.e203.project.dto.jiraapi.JiraIssueFields;
+import com.e203.project.dto.jiraapi.JiraTransitionsResponse;
 import com.e203.project.dto.jiraapi.Sprint;
 import com.e203.project.dto.jiraapi.SprintResponse;
+import com.e203.project.dto.jiraapi.Transition;
+import com.e203.project.dto.jiraapi.TransitionRequest;
 import com.e203.project.dto.request.JiraIssueRequestDto;
 import com.e203.project.dto.request.JiraSprintCreateRequestDto;
 import com.e203.project.dto.request.JiraSprintIssuesRequestDto;
@@ -336,4 +339,66 @@ public class JiraService {
 		return false;
 	}
 
+	public boolean transitionIssue(int projectId, String issueKey, String status) {
+		JiraInfo info = getInfo(projectId);
+		if (info == null) {
+			return false;
+		}
+		String transitionId = getTransitionId(info.getEncodedCredentials(), issueKey, status);
+		String jiraUri = JIRA_URL + "/api/3/issue/" + issueKey + "/transitions";
+		TransitionRequest transitionRequest = new TransitionRequest(transitionId);
+
+		try {
+			ResponseEntity<Map> result = restClient.post()
+				.uri(jiraUri)
+				.contentType(MediaType.APPLICATION_JSON)
+				.header("Authorization", "Basic " + info.getEncodedCredentials())
+				.body(transitionRequest)
+				.retrieve()
+				.toEntity(Map.class);
+
+			return true;
+		} catch (HttpClientErrorException e) {
+			log.error(e.getResponseBodyAsString());
+		}catch(Exception e){
+			log.error(e.getMessage());
+		}
+		return false;
+	}
+
+	public String getTransitionId(String credential, String issueKey, String status) {
+		String jiraUri = JIRA_URL + "/api/3/issue/" + issueKey + "/transitions";
+		try {
+			ResponseEntity<JiraTransitionsResponse> result = restClient.get()
+				.uri(jiraUri)
+				.header("Authorization", "Basic " + credential)
+				.retrieve()
+				.toEntity(JiraTransitionsResponse.class);
+
+			return result.getBody().getTransitions().stream()
+				.filter(transition -> transition.getName().equals(parseTransitionName(status)))
+				.map(Transition::getId)
+				.findFirst()
+				.orElse(null);
+		} catch (HttpClientErrorException e) {
+			log.error(e.getResponseBodyAsString());
+		} catch (Exception e) {
+			log.error(e.getMessage());
+		}
+
+		return null;
+	}
+
+	public String parseTransitionName(String origin) {
+		if(origin.equals("todo")){
+			return "해야 할 일";
+		}
+		if(origin.equals("inProgress")){
+			return "진행 중";
+		}
+		if(origin.equals("done")){
+			return "완료";
+		}
+		return "fail";
+	}
 }
