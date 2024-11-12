@@ -81,7 +81,7 @@ public class JiraServiceTest {
 			.issueType("Story")
 			.summary("api test")
 			.description("description test")
-			.epicType("S11P31E203-310")
+			.epicKey("S11P31E203-310")
 			.storyPoint(3)
 			.assignee("김재경")
 			.build();
@@ -116,5 +116,17 @@ public class JiraServiceTest {
 			.build();
 		String sprint = jiraService.createSprint(createRequestDto, 1);
 		System.out.println(sprint);
+	}
+
+	@Test
+	@DisplayName("epic 생성")
+	public void createEpic(){
+		JiraIssueRequestDto jiraIssueRequestDto = JiraIssueRequestDto.builder()
+			.epicName("epic 생성")
+			.summary("epic 생성한는 test")
+			.description("epic description test")
+			.build();
+		ResponseEntity<Map> epic = jiraService.createEpic(1, jiraIssueRequestDto);
+		System.out.println(epic);
 	}
 }

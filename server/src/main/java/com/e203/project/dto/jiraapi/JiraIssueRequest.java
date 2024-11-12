@@ -22,5 +22,7 @@ public class JiraIssueRequest {
 	private String epicKey; // 에픽
 	@JsonProperty("customfield_10031")
 	private int storyPoint; // 스토리 포인트
+	@JsonProperty("customfield_10011")
+	private String epicName;
 
 }
