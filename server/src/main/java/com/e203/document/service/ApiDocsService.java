@@ -71,7 +71,7 @@ public class ApiDocsService {
 	}
 
 	public ApiDocs saveApiDocs(String projectId) {
-		String defaultForm = "{\"category\": [],\"description\": [],\"url\": [],\"method\": [],\"frontOwner\": [],\"backOwner\": [],\"frontState\": [],\"backState\": [],\"priority\": [],\"requestHeader\": [],\"responseHeader\": [],\"requestBody\": [],\"responseBody\": []}";
+		String defaultForm = "\"{\"category\": [],\"description\": [],\"url\": [],\"method\": [],\"functionName\": [],\"frontOwner\": [],\"backOwner\": [],\"frontState\": [],\"backState\": [],\"priority\": [],\"requestHeader\": [],\"responseHeader\": [],\"requestBody\": [],\"responseBody\": [] } \"";
 		ApiDocs apiDocs = ApiDocs.builder()
 			.projectId(projectId)
 			.content(defaultForm)
