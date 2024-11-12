@@ -92,7 +92,8 @@ public class ProjectService {
 
     private ProjectFindResponseDto getProjectFindResponseDto(Project project) {
         ApiDocsResponseDto dto = apiDocsService.parseStringToObject(project.getId());
-        return ProjectFindResponseDto.fromEntity(project, getProgress(dto.getFrontState()), getProgress(dto.getBackState()), createProjectMemberFindResponseDtos(project));
+        return ProjectFindResponseDto.fromEntity(project, dto == null ? 0 : getProgress(dto.getFrontState()),
+                dto == null ? 0 : getProgress(dto.getBackState()), createProjectMemberFindResponseDtos(project));
     }
 
     private List<ProjectMemberFindResponseDto> createProjectMemberFindResponseDtos(Project project) {
