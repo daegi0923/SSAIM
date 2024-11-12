@@ -55,7 +55,7 @@ public class ProjectServiceTest {
 	public void projectFindAllTest() {
 		List<Project> projects = projectService.findAll(1);
 		for (Project project : projects) {
-			project.getProjectMemberList().stream().forEach(member -> System.out.println(member.getUser().getUserId()));
+			project.getProjectMembers().stream().forEach(member -> System.out.println(member.getUser().getUserId()));
 		}
 	}
 

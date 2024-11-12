@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -54,16 +53,8 @@ public class Project extends BaseEntity {
 	@Setter
 	private String jiraBoardId;
 
-	@Column(name = "project_progress_front")
-	@Setter
-	private Double progressFront =0.0; //이거 왜 안 먹히지 ?
-
-	@Column(name = "project_progress_back")
-	@Setter
-	private Double progressBack = 0.0;
-
-	@OneToMany(mappedBy = "project")
-	private List<ProjectMember> projectMemberList = new ArrayList<>();
+	@OneToMany(mappedBy = "project", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private List<ProjectMember> projectMembers;
 
 	@Builder
 	private Project(String title, String name, String profileImage, LocalDateTime startDate, LocalDateTime endDate, String gitlabApi, String jiraApi,
@@ -75,7 +66,5 @@ public class Project extends BaseEntity {
 		this.endDate = endDate;
 		this.gitlabApi = gitlabApi;
 		this.jiraApi = jiraApi;
-		this.progressFront = progressFront;
-		this.progressBack = progressBack;
 	}
 }

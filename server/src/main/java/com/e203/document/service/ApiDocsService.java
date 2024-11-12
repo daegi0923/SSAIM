@@ -1,11 +1,12 @@
 package com.e203.document.service;
 
-import java.util.List;
-import java.util.Optional;
-
+import com.e203.document.collection.ApiDocs;
+import com.e203.document.repository.ApiDocsRepository;
 import com.e203.global.utils.ChatAiService;
 import com.e203.project.entity.Project;
 import com.e203.project.repository.ProjectRepository;
+import com.mongodb.client.result.UpdateResult;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.index.Index;
@@ -17,11 +18,8 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
-import com.e203.document.collection.ApiDocs;
-import com.e203.document.repository.ApiDocsRepository;
-import com.mongodb.client.result.UpdateResult;
-
-import lombok.RequiredArgsConstructor;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -83,7 +81,7 @@ public class ApiDocsService {
 		Optional<Project> project = projectRepository.findById(projectId);
 		if (project.isEmpty()) {
 			return "Not found";
-		} else if (project.get().getProjectMemberList().stream()
+		} else if (project.get().getProjectMembers().stream()
 				.noneMatch(member -> member.getUser().getUserId() == userId)) {
 			return "Not authorized";
 		}
