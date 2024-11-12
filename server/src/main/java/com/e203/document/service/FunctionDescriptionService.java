@@ -86,14 +86,14 @@ public class FunctionDescriptionService {
 	public FunctionDescriptionResponseDto parseStringToObject(int projectId) {
 		FunctionDescription functionDescription = getFuncDesc(projectId);
 		ObjectMapper objectMapper = new ObjectMapper();
-		FunctionDescriptionResponseDto functionDescriptionResponseDto = null;
+
 		try {
-			functionDescriptionResponseDto = objectMapper.readValue(functionDescription.getContent(),
+			return objectMapper.readValue(functionDescription.getContent(),
 				FunctionDescriptionResponseDto.class);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return functionDescriptionResponseDto;
+
 	}
 
 }

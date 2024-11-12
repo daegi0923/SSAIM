@@ -86,13 +86,12 @@ public class ApiDocsService {
 	public ApiDocsResponseDto parseStringToObject(int projectId) {
 		ApiDocs apiDocs = getApiDocs(projectId);
 		ObjectMapper objectMapper = new ObjectMapper();
-		ApiDocsResponseDto apiDocsResponseDto = null;
+
 		try {
-			apiDocsResponseDto = objectMapper.readValue(apiDocs.getContent(), ApiDocsResponseDto.class);
+			return objectMapper.readValue(apiDocs.getContent(), ApiDocsResponseDto.class);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return apiDocsResponseDto;
 	}
 
 }

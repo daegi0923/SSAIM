@@ -107,12 +107,11 @@ public class ProposalService {
 	public ProposalResponseDto parseStringToObject(int projectId){
 		Proposal proposal = getProposal(projectId);
 		ObjectMapper objectMapper = new ObjectMapper();
-		ProposalResponseDto proposalContentObject = null;
 		try {
-			proposalContentObject = objectMapper.readValue(proposal.getContent(), ProposalResponseDto.class);
+			return objectMapper.readValue(proposal.getContent(), ProposalResponseDto.class);
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return proposalContentObject;
 	}
 }
