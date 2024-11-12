@@ -20,6 +20,14 @@ public class JiraIssueFields {
 		this.fields= fields;
 	}
 
+	public static JiraIssueFields createEpicJsonObject(JiraIssueRequestDto dto, String jiraProjectId){
+		dto.setEpicName(dto.getEpicName());
+		dto.setIssueType("Epic");
+
+		return transferJsonObject(dto, jiraProjectId, "");
+
+	}
+
 	public static JiraIssueFields transferJsonObject(JiraIssueRequestDto dto, String jiraProjectId, String jiraAccountId) {
 		Map<String, String> content = new HashMap<String, String>();
 		content.put("text", dto.getDescription());
@@ -37,9 +45,9 @@ public class JiraIssueFields {
 			put("key", jiraProjectId);
 		}});
 		jiraIssueRequest.setSummary(dto.getSummary());
-		jiraIssueRequest.setEpicKey(dto.getEpicKey());
 		jiraIssueRequest.setStoryPoint(dto.getStoryPoint());
 		jiraIssueRequest.setDescription(issueDescription);
+		jiraIssueRequest.setEpicKey(dto.getEpicKey());
 		jiraIssueRequest.setIssueType(new HashMap<>() {{
 			put("name", dto.getIssueType());
 		}});

@@ -59,7 +59,7 @@ public class JiraService {
 		return true;
 	}
 
-	public JiraInfo getInfo(int projectId){
+	public JiraInfo getInfo(int projectId) {
 		ProjectMember leader = getProjectLeader(projectId);
 		if (leader == null) {
 			return null;
@@ -71,20 +71,22 @@ public class JiraService {
 
 	public List<JiraIssueResponseDto> findAllJiraIssues(String startDate, String endDate, int projectId) {
 		JiraInfo info = getInfo(projectId);
-		if(info==null) {
+		if (info == null) {
 			return null;
 		}
-		String jql = "project=\"" + info.getJiraProjectId() + "\" AND created >= \"" + startDate + "\" AND created <= \"" + endDate + "\"";
+		String jql =
+			"project=\"" + info.getJiraProjectId() + "\" AND created >= \"" + startDate + "\" AND created <= \""
+				+ endDate + "\"";
 		String fields = "summary,status,assignee,customfield_10014,customfield_10031";
 
-		List<JiraContent> issues = retrieve(jql, fields,info.getEncodedCredentials());
+		List<JiraContent> issues = retrieve(jql, fields, info.getEncodedCredentials());
 		return issues.stream().map(JiraIssueResponseDto::transferDto).collect(Collectors.toList());
 	}
 
 	public List<ProjectJiraEpicResponseDto> findAllEpics(int projectId) {
 
 		JiraInfo info = getInfo(projectId);
-		if(info==null) {
+		if (info == null) {
 			return null;
 		}
 
@@ -95,10 +97,9 @@ public class JiraService {
 		return epics.stream().map(ProjectJiraEpicResponseDto::transferDto).collect(Collectors.toList());
 	}
 
-
-	public String findJiraAccountId(String userEmail, String jiraApi){
+	public String findJiraAccountId(String userEmail, String jiraApi) {
 		String encodedCredentials = Base64.getEncoder().encodeToString((userEmail + ":" + jiraApi).getBytes());
-		String jiraUri = JIRA_URL  + "/api/3/myself";
+		String jiraUri = JIRA_URL + "/api/3/myself";
 		ResponseEntity<Map> authorization = restClient.get()
 			.uri(jiraUri)
 			.header("Authorization", "Basic " + encodedCredentials)
@@ -109,11 +110,28 @@ public class JiraService {
 
 	public ResponseEntity<Map> createIssue(int projectId, JiraIssueRequestDto dto) {
 		JiraInfo info = getInfo(projectId);
-		String jiraUri = JIRA_URL+"/api/3/issue";
+		String jiraUri = JIRA_URL + "/api/3/issue";
 
-		String jiraAccountId = findJiraAccountId(info.getUserEmail(),info.getJiraApi());
-		JiraIssueFields jiraIssueFields = JiraIssueFields.transferJsonObject(dto, info.getJiraProjectId(), jiraAccountId);
+		String jiraAccountId = findJiraAccountId(info.getUserEmail(), info.getJiraApi());
+		JiraIssueFields jiraIssueFields = JiraIssueFields.transferJsonObject(dto, info.getJiraProjectId(),
+			jiraAccountId);
 
+		ResponseEntity<Map> response = createIssueAndEpic(jiraUri, info, jiraIssueFields);
+
+		return response;
+	}
+
+	public ResponseEntity<Map> createEpic(int projectId, JiraIssueRequestDto dto) {
+		JiraInfo info = getInfo(projectId);
+		String jiraUri = JIRA_URL + "/api/3/issue";
+
+		JiraIssueFields jiraIssueFields = JiraIssueFields.createEpicJsonObject(dto, info.getJiraProjectId());
+
+		ResponseEntity<Map> response = createIssueAndEpic(jiraUri, info, jiraIssueFields);
+		return response;
+	}
+
+	private ResponseEntity<Map> createIssueAndEpic(String jiraUri, JiraInfo info, JiraIssueFields jiraIssueFields) {
 		ResponseEntity<Map> response = restClient.post()
 			.uri(jiraUri)
 			.contentType(MediaType.APPLICATION_JSON)
@@ -121,24 +139,24 @@ public class JiraService {
 			.body(jiraIssueFields)
 			.retrieve()
 			.toEntity(Map.class);
-
 		return response;
 	}
 
 	public ResponseEntity<Map> modifyIssue(int projectId, JiraIssueRequestDto dto) {
 		JiraInfo info = getInfo(projectId);
-		if(info==null){
+		if (info == null) {
 			return null;
 		}
 
-		String jiraAccountId= "";
+		String jiraAccountId = "";
 
-		if(dto.getAssignee().equals("myself")){
-				jiraAccountId = findJiraAccountId(info.getUserEmail(), info.getJiraApi());
+		if (dto.getAssignee().equals("myself")) {
+			jiraAccountId = findJiraAccountId(info.getUserEmail(), info.getJiraApi());
 		}
 
-		String jiraUri = JIRA_URL+"/api/3/issue/"+dto.getIssueKey();
-		JiraIssueFields jiraIssueFields = JiraIssueFields.transferJsonObject(dto, info.getJiraProjectId(), jiraAccountId);
+		String jiraUri = JIRA_URL + "/api/3/issue/" + dto.getIssueKey();
+		JiraIssueFields jiraIssueFields = JiraIssueFields.transferJsonObject(dto, info.getJiraProjectId(),
+			jiraAccountId);
 
 		ResponseEntity<Map> response = restClient.put()
 			.uri(jiraUri)
@@ -165,7 +183,7 @@ public class JiraService {
 			String uri = jiraUri + "startAt=" + startAt + "&maxResults=" + maxResults;
 			try {
 				System.out.println(startAt);
-				String responseBody = getRequestString(jiraUri,info.getEncodedCredentials());
+				String responseBody = getRequestString(jiraUri, info.getEncodedCredentials());
 				SprintResponse sprintResponse = objectMapper.readValue(responseBody, SprintResponse.class);
 
 				sprints.addAll(sprintResponse.getValues());
@@ -179,7 +197,6 @@ public class JiraService {
 		return sprints.stream().map(SprintResponseDto::transferDto).collect(Collectors.toList());
 	}
 
-
 	private List<JiraContent> retrieve(String jql, String fields, String encodedCredentials) {
 		List<JiraContent> issues = new ArrayList<>();
 		int startAt = 0;
@@ -187,7 +204,9 @@ public class JiraService {
 		boolean hasMore = true;
 
 		while (hasMore) {
-			String jiraUri = JIRA_URL + "/api/3/search?jql=" + jql + "&fields=" + fields + "&startAt=" + startAt + "&maxResults=" + maxResults;
+			String jiraUri =
+				JIRA_URL + "/api/3/search?jql=" + jql + "&fields=" + fields + "&startAt=" + startAt + "&maxResults="
+					+ maxResults;
 			try {
 				String responseBody = getRequestString(jiraUri, encodedCredentials);
 				JiraResponse response = objectMapper.readValue(responseBody, JiraResponse.class);
@@ -225,7 +244,7 @@ public class JiraService {
 
 	public String createSprint(JiraSprintCreateRequestDto dto, int projectId) {
 		JiraInfo info = getInfo(projectId);
-		if(info==null){
+		if (info == null) {
 			return "Not Found";
 		}
 		dto.setBoardId(info.getJiraProjectBoardId());

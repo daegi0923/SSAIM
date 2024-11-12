@@ -16,17 +16,19 @@ public class JiraIssueRequestDto {
 	private String issueType;
 	private String epicKey;
 	private int storyPoint;
+	private String epicName;
 
 	@Builder
 	private JiraIssueRequestDto(String issueKey,String summary, String description, String assignee,
-		String epicType, String issueType, int storyPoint) {
+		String epicKey, String issueType, int storyPoint, String epicName, String epicKEy) {
 		this.issueKey = issueKey;
 		this.summary = summary;
 		this.description = description;
 		this.assignee = assignee;
 		this.issueType = issueType;
 		this.storyPoint = storyPoint;
-		this.epicKey = epicType;
+		this.epicName = epicName;
+		this.epicKey = epicKey;
 	}
 
 }
