@@ -15,14 +15,16 @@ public class WeeklyRemindDto {
     private String content;
     private LocalDate startDate;
     private LocalDate endDate;
+    private String imageUrl;
 
     @Builder
     private WeeklyRemindDto(Integer weeklyRemindId, String content
-            , LocalDate startDate, LocalDate endDate) {
+            , LocalDate startDate, LocalDate endDate, String imageUrl) {
 
         this.weeklyRemindId = weeklyRemindId;
         this.content = content;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.imageUrl = imageUrl;
     }
 }

@@ -2,7 +2,10 @@ package com.e203.weeklyremind.service;
 
 import com.e203.dailyremind.entity.DailyRemind;
 import com.e203.dailyremind.repository.DailyRemindRepository;
+import com.e203.global.utils.ByteArrayMultipartFile;
 import com.e203.global.utils.ChatAiService;
+import com.e203.global.utils.FileUploader;
+import com.e203.global.utils.FileUploaderImpl;
 import com.e203.project.entity.Project;
 import com.e203.project.entity.ProjectMember;
 import com.e203.project.repository.ProjectMemberRepository;
@@ -17,7 +20,12 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -30,6 +38,7 @@ public class WeeklyRemindService {
     private final ChatAiService chatAiService;
     private final ProjectRepository projectRepository;
     private final DailyRemindRepository dailyRemindRepository;
+    private final FileUploader fileUploader;
 
     public boolean saveWeeklyRemind(WeeklyRemindRequestDto message, int projectId) {
 
@@ -52,13 +61,17 @@ public class WeeklyRemindService {
         }
 
         String summary = chatAiService.generateWeeklyRemind(dailyReminds.toString());
+        MultipartFile image1 = downloadImageAsMultipartFile(chatAiService.generateImage(summary), "image1");
+        String imgUrl = fileUploader.upload(image1);
+
 
         WeeklyRemind weeklyRemind = WeeklyRemind.builder()
                 .weeklyRemindContents(summary)
                 .projectId(project)
                 .weeklyRemindAuthor(projectMember)
                 .weeklyRemindStardDate(message.getStartDate())
-                .weeklyRemindEndDate(message.getEndDate()).build();
+                .weeklyRemindEndDate(message.getEndDate())
+                .weeklyRemindImage(imgUrl).build();
 
         weeklyRemindRepository.save(weeklyRemind);
 
@@ -101,7 +114,8 @@ public class WeeklyRemindService {
                     .weeklyRemindId(weeklyRemind.getWeeklyRemindId())
                     .content(weeklyRemind.getWeeklyRemindContents())
                     .startDate(weeklyRemind.getWeeklyRemindStardDate())
-                    .endDate(weeklyRemind.getWeeklyRemindEndDate()).build();
+                    .endDate(weeklyRemind.getWeeklyRemindEndDate())
+                    .imageUrl(weeklyRemind.getWeeklyRemindImage()).build();
 
             if (developmentStoryResponseDtoMap.containsKey(projectId)) {
                 developmentStoryResponseDtoMap.get(projectId).getWeeklyRemind().add(weeklyRemindDto);
@@ -150,5 +164,26 @@ public class WeeklyRemindService {
         weeklyRemind.updateWeeklyRemind(summary);
 
         return true;
+    }
+
+    private MultipartFile downloadImageAsMultipartFile(String imageUrl, String fileName) {
+        try {
+            URL url = new URL(imageUrl);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            connection.connect();
+
+            String contentType = connection.getContentType();
+
+            try (InputStream inputStream = connection.getInputStream()) {
+                byte[] fileBytes = inputStream.readAllBytes();
+                return new ByteArrayMultipartFile(fileBytes, fileName, contentType);
+            }
+        } catch (IOException e) {
+            // 예외 발생 시 로깅
+            System.err.println("Error downloading image from URL: " + e.getMessage());
+            e.printStackTrace();
+            return null; // 예외 처리 후 null 반환
+        }
     }
 }
