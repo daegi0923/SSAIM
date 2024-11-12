@@ -13,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClient;
 
 import com.e203.project.dto.jiraapi.JiraContent;
@@ -177,105 +178,132 @@ public class JiraService {
 		return response;
 	}
 
-private <T> ResponseEntity<Map> putJiraApi(String jiraUri, JiraInfo info, T jiraFields) {
-	ResponseEntity<Map> response = restClient.put()
-		.uri(jiraUri)
-		.contentType(MediaType.APPLICATION_JSON)
-		.header("Authorization", "Basic " + info.getEncodedCredentials())
-		.body(jiraFields)
-		.retrieve()
-		.toEntity(Map.class);
-	return response;
-}
-
-public List<SprintResponseDto> findAllSprints(int projectId) {
-
-	JiraInfo info = getInfo(projectId);
-
-	String jiraUri = JIRA_URL + "/agile/1.0/board/" + info.getJiraProjectBoardId() + "/sprint?jql=";
-
-	int startAt = 0;
-	int maxResults = 100;
-	boolean hasMore = true;
-	List<Sprint> sprints = new ArrayList<>();
-	while (hasMore) {
-		String uri = jiraUri + "startAt=" + startAt + "&maxResults=" + maxResults;
-		try {
-			System.out.println(startAt);
-			String responseBody = getRequestString(jiraUri, info.getEncodedCredentials());
-			SprintResponse sprintResponse = objectMapper.readValue(responseBody, SprintResponse.class);
-
-			sprints.addAll(sprintResponse.getValues());
-			startAt += sprintResponse.getValues().size();
-			hasMore = startAt < sprintResponse.getTotal();
-		} catch (Exception e) {
-			handleException("Error occurred while calling Jira API", e);
-		}
+	private <T> ResponseEntity<Map> putJiraApi(String jiraUri, JiraInfo info, T jiraFields) {
+		ResponseEntity<Map> response = restClient.put()
+			.uri(jiraUri)
+			.contentType(MediaType.APPLICATION_JSON)
+			.header("Authorization", "Basic " + info.getEncodedCredentials())
+			.body(jiraFields)
+			.retrieve()
+			.toEntity(Map.class);
+		return response;
 	}
 
-	return sprints.stream().map(SprintResponseDto::transferDto).collect(Collectors.toList());
-}
+	public List<SprintResponseDto> findAllSprints(int projectId) {
 
-private List<JiraContent> retrieve(String jql, String fields, String encodedCredentials) {
-	List<JiraContent> issues = new ArrayList<>();
-	int startAt = 0;
-	int maxResults = 100;
-	boolean hasMore = true;
+		JiraInfo info = getInfo(projectId);
 
-	while (hasMore) {
-		String jiraUri =
-			JIRA_URL + "/api/3/search?jql=" + jql + "&fields=" + fields + "&startAt=" + startAt + "&maxResults="
-				+ maxResults;
-		try {
-			String responseBody = getRequestString(jiraUri, encodedCredentials);
-			JiraResponse response = objectMapper.readValue(responseBody, JiraResponse.class);
-			issues.addAll(response.getIssues());
-			startAt += response.getIssues().size();
-			hasMore = startAt < response.getTotal();
-		} catch (Exception e) {
-			handleException("Error occurred while calling Jira API", e);
-			break;
+		String jiraUri = JIRA_URL + "/agile/1.0/board/" + info.getJiraProjectBoardId() + "/sprint?jql=";
+
+		int startAt = 0;
+		int maxResults = 100;
+		boolean hasMore = true;
+		List<Sprint> sprints = new ArrayList<>();
+		while (hasMore) {
+			String uri = jiraUri + "startAt=" + startAt + "&maxResults=" + maxResults;
+			try {
+				System.out.println(startAt);
+				String responseBody = getRequestString(jiraUri, info.getEncodedCredentials());
+				SprintResponse sprintResponse = objectMapper.readValue(responseBody, SprintResponse.class);
+
+				sprints.addAll(sprintResponse.getValues());
+				startAt += sprintResponse.getValues().size();
+				hasMore = startAt < sprintResponse.getTotal();
+			} catch (Exception e) {
+				handleException("Error occurred while calling Jira API", e);
+			}
 		}
+
+		return sprints.stream().map(SprintResponseDto::transferDto).collect(Collectors.toList());
 	}
-	return issues;
-}
 
-private String getRequestString(String jiraUri, String encodedCredentials) {
-	return restClient.get()
-		.uri(jiraUri)
-		.header("Authorization", "Basic " + encodedCredentials)
-		.header("Content-Type", "application/json")
-		.retrieve()
-		.body(String.class);
-}
+	private List<JiraContent> retrieve(String jql, String fields, String encodedCredentials) {
+		List<JiraContent> issues = new ArrayList<>();
+		int startAt = 0;
+		int maxResults = 100;
+		boolean hasMore = true;
 
-private ProjectMember getProjectLeader(int projectId) {
-	List<ProjectMember> leader = projectMemberRepository.findByProjectIdAndRole(projectId, 1);
-	if (leader.size() != 1) {
+		while (hasMore) {
+			String jiraUri =
+				JIRA_URL + "/api/3/search?jql=" + jql + "&fields=" + fields + "&startAt=" + startAt + "&maxResults="
+					+ maxResults;
+			try {
+				String responseBody = getRequestString(jiraUri, encodedCredentials);
+				JiraResponse response = objectMapper.readValue(responseBody, JiraResponse.class);
+				issues.addAll(response.getIssues());
+				startAt += response.getIssues().size();
+				hasMore = startAt < response.getTotal();
+			} catch (Exception e) {
+				handleException("Error occurred while calling Jira API", e);
+				break;
+			}
+		}
+		return issues;
+	}
+
+	private String getRequestString(String jiraUri, String encodedCredentials) {
+		return restClient.get()
+			.uri(jiraUri)
+			.header("Authorization", "Basic " + encodedCredentials)
+			.header("Content-Type", "application/json")
+			.retrieve()
+			.body(String.class);
+	}
+
+	private ProjectMember getProjectLeader(int projectId) {
+		List<ProjectMember> leader = projectMemberRepository.findByProjectIdAndRole(projectId, 1);
+		if (leader.size() != 1) {
+			return null;
+		}
+		return leader.get(0);
+	}
+
+	public String createSprint(JiraSprintCreateRequestDto dto, int projectId) {
+		JiraInfo info = getInfo(projectId);
+		if (info == null) {
+			return "Not Found";
+		}
+		dto.setBoardId(info.getJiraProjectBoardId());
+		String jiraUri = JIRA_URL + "/agile/1.0/sprint";
+		ResponseEntity<Map> response = restClient.post()
+			.uri(jiraUri)
+			.contentType(MediaType.APPLICATION_JSON)
+			.header("Authorization", "Basic " + info.getEncodedCredentials())
+			.body(dto)
+			.retrieve()
+			.toEntity(Map.class);
+
+		return response.getBody().get("id").toString();
+	}
+
+	private void handleException(String message, Exception e) {
+		log.error(message, e);
+	}
+
+	public SprintResponseDto findSprint(int projectId, int sprintId) {
+		JiraInfo info = getInfo(projectId);
+		if (info == null) {
+			return null;
+		}
+		String jiraUri = JIRA_URL + "/agile/1.0/sprint/" + sprintId;
+
+		try{
+			ResponseEntity<SprintResponseDto> result = restClient.get()
+				.uri(jiraUri)
+				.header("Authorization", "Basic " + info.getEncodedCredentials())
+				.retrieve()
+				.toEntity(SprintResponseDto.class);
+
+			if(result.getStatusCode().is2xxSuccessful()) {
+				return result.getBody();
+			}
+		}catch (HttpClientErrorException e) {
+			log.error(e.getResponseBodyAsString());
+		}catch (Exception e) {
+			log.error(e.getMessage());
+		}
+
 		return null;
 	}
-	return leader.get(0);
-}
 
-public String createSprint(JiraSprintCreateRequestDto dto, int projectId) {
-	JiraInfo info = getInfo(projectId);
-	if (info == null) {
-		return "Not Found";
-	}
-	dto.setBoardId(info.getJiraProjectBoardId());
-	String jiraUri = JIRA_URL + "/agile/1.0/sprint";
-	ResponseEntity<Map> response = restClient.post()
-		.uri(jiraUri)
-		.contentType(MediaType.APPLICATION_JSON)
-		.header("Authorization", "Basic " + info.getEncodedCredentials())
-		.body(dto)
-		.retrieve()
-		.toEntity(Map.class);
-
-	return response.getBody().get("id").toString();
-}
-
-private void handleException(String message, Exception e) {
-	log.error(message, e);
-}
 }

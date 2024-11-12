@@ -77,23 +77,22 @@ public class JiraController {
 
 	@PutMapping("/api/v1/projects/{projectId}/epics")
 	public ResponseEntity<String> modifyEpic(@PathVariable("projectId") int projectId, @RequestBody
-	JiraIssueRequestDto epicUpdateRequestDto){
+	JiraIssueRequestDto epicUpdateRequestDto) {
 
 		ResponseEntity<Map> mapResponseEntity = jiraService.modifyEpic(projectId, epicUpdateRequestDto);
 
-		if(mapResponseEntity.getStatusCode() == NO_CONTENT){
+		if (mapResponseEntity.getStatusCode() == NO_CONTENT) {
 			return ResponseEntity.status(OK).body("에픽 수정 성공했습니다.");
 		}
 		return ResponseEntity.status(NOT_FOUND).body("에픽 수정 실패했습니다.");
 	}
 
-
 	@PutMapping("/api/v1/projects/{projectId}/issue")
 	public ResponseEntity<String> modifyIssue(@PathVariable("projectId") int projectId,
-		@RequestBody JiraIssueRequestDto dto){
+		@RequestBody JiraIssueRequestDto dto) {
 		ResponseEntity<Map> result = jiraService.modifyIssue(projectId, dto);
 
-		if(result.getStatusCode()==NO_CONTENT){
+		if (result.getStatusCode() == NO_CONTENT) {
 			return ResponseEntity.status(OK).body("이슈 수정에 성공했습니다.");
 		}
 		return ResponseEntity.status(NOT_FOUND).body("이슈 수정에 실패했습니다.");
@@ -102,21 +101,35 @@ public class JiraController {
 	@GetMapping("/api/v1/projects/{projectId}/sprint")
 	public ResponseEntity<List<SprintResponseDto>> findAllSprints(@PathVariable("projectId") int projectId) {
 		List<SprintResponseDto> sprints = jiraService.findAllSprints(projectId);
-		if(sprints==null){
+		if (sprints == null) {
 			ResponseEntity.status(NOT_FOUND).body(null);
 		}
 		return ResponseEntity.status(OK).body(sprints);
 	}
 
 	@PostMapping("/api/v1/projects/{projectId}/sprint")
-	public ResponseEntity<String> createSprint(@PathVariable("projectId") int projectId, @RequestBody JiraSprintCreateRequestDto dto){
+	public ResponseEntity<String> createSprint(@PathVariable("projectId") int projectId,
+		@RequestBody JiraSprintCreateRequestDto dto) {
 		String sprint = jiraService.createSprint(dto, projectId);
 
-		if(sprint.equals("Not Found")){
+		if (sprint.equals("Not Found")) {
 			return ResponseEntity.status(NOT_FOUND).body("스프린트 생성을 실패했습니다.");
 		}
 		return ResponseEntity.status(OK).body(sprint);
 	}
 
+	@GetMapping("/api/v1/projects/{projectId}/sprint/{sprintId}")
+	public ResponseEntity<SprintResponseDto> findSprint(@PathVariable("projectId") Integer projectId,
+		@PathVariable("sprintId") Integer sprintId) {
+		if (projectId == null || sprintId == null) {
+			return ResponseEntity.status(NOT_FOUND).body(null);
+		}
+		SprintResponseDto result = jiraService.findSprint(projectId, sprintId);
+		if (result == null) {
+			return ResponseEntity.status(NOT_FOUND).body(null);
+		}
+		return ResponseEntity.status(OK).body(result);
+
+	}
 
 }
