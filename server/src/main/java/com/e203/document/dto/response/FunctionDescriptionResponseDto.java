@@ -12,7 +12,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class FunctionDescriptionResponseDto {
 
-	private List<String> domain;
+	private List<String> category;
 	private List<String> functionName;
 	private List<String> description;
 	private List<String> owner;
@@ -20,8 +20,8 @@ public class FunctionDescriptionResponseDto {
 
 
 	@Builder
-	private FunctionDescriptionResponseDto(List<String> domain, List<String> functionName, List<String> description, List<String> owner, List<String> priority) {
-		this.domain = domain;
+	private FunctionDescriptionResponseDto(List<String> category, List<String> functionName, List<String> description, List<String> owner, List<String> priority) {
+		this.category = category;
 		this.functionName = functionName;
 		this.description = description;
 		this.owner = owner;
