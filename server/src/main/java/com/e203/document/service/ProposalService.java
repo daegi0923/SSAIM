@@ -58,7 +58,7 @@ public class ProposalService {
         indexOps.ensureIndex(indexDefinition);
     }
 
-    public Proposal getProposal(String projectId) {
+    public Proposal getProposal(int projectId) {
         List<Proposal> results = proposalRepository.findTopByProjectIdOrderByCreatedAtDesc(
                 projectId, Sort.by(Sort.Direction.DESC, "createdAt"));
         return results.isEmpty() ? null : results.get(0); // 결과가 없으면 null 반환
