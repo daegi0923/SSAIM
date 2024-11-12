@@ -69,11 +69,12 @@ public class JiraController {
 	@PostMapping("/api/v1/projects/{projectId}/issue")
 	public ResponseEntity<String> createIssue(@PathVariable("projectId") int projectId,
 		@RequestBody JiraIssueRequestDto dto) {
-		ResponseEntity<Map> result = jiraService.createIssue(projectId, dto);
-		if (result.getStatusCode() == CREATED) {
-			return ResponseEntity.status(OK).body("이슈 생성에 성공했습니다.");
+		String result = jiraService.createIssue(projectId, dto);
+
+		if (result.equals("create fail")) {
+			return ResponseEntity.status(NOT_FOUND).body("이슈 생성에 실패했습니다.");
 		}
-		return ResponseEntity.status(NOT_FOUND).body("이슈 생성에 실패했습니다.");
+		return ResponseEntity.status(OK).body(result);
 	}
 
 	@PutMapping("/api/v1/projects/{projectId}/epics")
@@ -134,18 +135,18 @@ public class JiraController {
 
 	@PutMapping("/api/v1/projects/{projectId}/sprint/{sprintId}")
 	public ResponseEntity<String> uploadIssuesOnSprint(@PathVariable("projectId") Integer projectId,
-		@PathVariable("sprintId") Integer sprintId , @RequestBody
+		@PathVariable("sprintId") Integer sprintId, @RequestBody
 	JiraSprintIssuesRequestDto dto) {
 		if (projectId == null || sprintId == null) {
 			return ResponseEntity.status(NOT_FOUND).body(null);
 		}
 
 		boolean result = jiraService.uploadIssuesOnSprint(projectId, sprintId, dto);
-		
-		if(result){
-			return  ResponseEntity.status(OK).body("스프린트에 이슈 배치를 성공했습니다.");
+
+		if (result) {
+			return ResponseEntity.status(OK).body("스프린트에 이슈 배치를 성공했습니다.");
 		}
-		return  ResponseEntity.status(OK).body("스프린트에 이슈 배치를 실패했습니다.");
+		return ResponseEntity.status(OK).body("스프린트에 이슈 배치를 실패했습니다.");
 	}
 
 }

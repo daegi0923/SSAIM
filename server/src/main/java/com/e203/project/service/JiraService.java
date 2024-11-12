@@ -1,5 +1,7 @@
 package com.e203.project.service;
 
+import static org.springframework.http.HttpStatus.*;
+
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
@@ -110,7 +112,7 @@ public class JiraService {
 		return authorization.getBody().get("accountId").toString();
 	}
 
-	public ResponseEntity<Map> createIssue(int projectId, JiraIssueRequestDto dto) {
+	public String createIssue(int projectId, JiraIssueRequestDto dto) {
 		JiraInfo info = getInfo(projectId);
 		String jiraUri = JIRA_URL + "/api/3/issue";
 
@@ -118,9 +120,11 @@ public class JiraService {
 		JiraIssueFields jiraIssueFields = JiraIssueFields.transferJsonObject(dto, info.getJiraProjectId(),
 			jiraAccountId);
 
-		ResponseEntity<Map> response = createIssueAndEpic(jiraUri, info, jiraIssueFields);
-
-		return response;
+		ResponseEntity<Map> result = createIssueAndEpic(jiraUri, info, jiraIssueFields);
+		if (result.getStatusCode() == CREATED) {
+			return result.getBody().get("key").toString();
+		}
+		return "create fail";
 	}
 
 	public ResponseEntity<Map> createEpic(int projectId, JiraIssueRequestDto dto) {
