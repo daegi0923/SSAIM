@@ -10,6 +10,8 @@ import com.e203.project.entity.Project;
 import com.e203.project.repository.ProjectRepository;
 
 import com.e203.global.utils.ChatAiService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -38,53 +40,79 @@ public class MeetingService {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    public List<MeetingResponseDto> getMeetings(int projectId) throws Exception {
+    public List<MeetingResponseDto> getMeetings(int projectId) {
+        try {
+            Project project = projectRepository.findById(projectId).orElse(null);
 
-        Project project = projectRepository.findById(projectId).orElse(null);
+            if (project == null) {
+                // Project가 없는 경우 빈 리스트 반환
+                return new ArrayList<>();
+            }
 
-        if (project == null) {
-            return null;
+            List<Meeting> meetingList = meetingRepository.findByproject(project);
+            List<MeetingResponseDto> meetingResponseDtoList = new ArrayList<>();
+
+            for (Meeting meeting : meetingList) {
+                try {
+                    // JSON 문자열을 객체로 변환
+                    SttResponseDto sttResponseDto = objectMapper.readValue(meeting.getMeetingVoiceScript(), SttResponseDto.class);
+
+                    // 첫 번째 Segment의 text 값 가져오기
+                    String firstText = sttResponseDto.getSegments().get(0).getText();
+
+                    meetingResponseDtoList.add(MeetingResponseDto.builder()
+                            .meetingId(meeting.getMeetingId())
+                            .meetingTitle(meeting.getMeetingTitle())
+                            .meetingFirstVoiceText(firstText)
+                            .projectId(meeting.getProject().getId())
+                            .meetingCreateTime(meeting.getCreatedAt())
+                            .meetingVoiceTime(meeting.getMeetingVoiceTime())
+                            .build());
+                } catch (Exception e) {
+                    // 특정 Meeting에서 오류가 발생한 경우 기본값으로 추가
+                    meetingResponseDtoList.add(MeetingResponseDto.builder()
+                            .meetingId(meeting.getMeetingId())
+                            .meetingTitle(meeting.getMeetingTitle())
+                            .meetingFirstVoiceText("오류로 인해 음성 텍스트를 불러올 수 없습니다.")
+                            .projectId(meeting.getProject().getId())
+                            .meetingCreateTime(meeting.getCreatedAt())
+                            .meetingVoiceTime(meeting.getMeetingVoiceTime())
+                            .build());
+                }
+            }
+
+            return meetingResponseDtoList;
+        } catch (Exception e) {
+            // 전역 오류가 발생한 경우 빈 리스트 반환
+            return new ArrayList<>();
         }
-
-        List<Meeting> meetingList = meetingRepository.findByproject(project);
-        List<MeetingResponseDto> meetingResponseDtoList = new ArrayList<>();
-
-        for (Meeting meeting : meetingList) {
-            //jsonString을 Json으로 변경
-            SttResponseDto sttResponseDto = objectMapper.readValue(meeting.getMeetingVoiceScript(), SttResponseDto.class);
-
-            // 첫 번째 Segment의 text 값 가져오기
-            String firstText = sttResponseDto.getSegments().get(0).getText();
-
-            meetingResponseDtoList.add(MeetingResponseDto.builder()
-                    .meetingId(meeting.getMeetingId())
-                    .meetingTitle(meeting.getMeetingTitle())
-                    .meetingFirstVoiceText(firstText)
-                    .projectId(meeting.getProject().getId())
-                    .meetingCreateTime(meeting.getCreatedAt())
-                    .meetingVoiceTime(meeting.getMeetingVoiceTime()).build());
-        }
-
-        return meetingResponseDtoList;
     }
 
-    public OneMeetingResponseDto getMeeting(int meetingId) throws Exception{
-        Meeting meeting = meetingRepository.findById(meetingId).orElse(null);
-        if (meeting == null) {
-            return null;
+    public OneMeetingResponseDto getMeeting(int meetingId) {
+        try {
+            Meeting meeting = meetingRepository.findById(meetingId).orElse(null);
+            if (meeting == null) {
+                return OneMeetingResponseDto.builder()
+                        .meetingTitle("회의 정보를 찾을 수 없습니다.")
+                        .build();  // meeting이 없을 경우 기본 메시지 반환
+            }
+
+            SttResponseDto sttResponseDto = objectMapper.readValue(meeting.getMeetingVoiceScript(), SttResponseDto.class);
+
+            return OneMeetingResponseDto.builder()
+                    .meetingCreateTime(meeting.getCreatedAt())
+                    .projectId(meeting.getProject().getId())
+                    .meetingId(meeting.getMeetingId())
+                    .meetingTitle(meeting.getMeetingTitle())
+                    .meetingVoiceUrl(meeting.getMeetingVoiceUrl())
+                    .sttResponseDto(sttResponseDto)
+                    .meetingVoiceTime(meeting.getMeetingVoiceTime()).build();
+        } catch (Exception e) {
+            // 예외가 발생했을 경우 기본값 반환
+            return OneMeetingResponseDto.builder()
+                    .meetingTitle("오류가 발생하여 회의 정보를 불러올 수 없습니다.")
+                    .build();
         }
-
-        //jsonString을 Json으로 변경
-        SttResponseDto sttResponseDto = objectMapper.readValue(meeting.getMeetingVoiceScript(), SttResponseDto.class);
-
-        return OneMeetingResponseDto.builder()
-                .meetingCreateTime(meeting.getCreatedAt())
-                .projectId(meeting.getProject().getId())
-                .meetingId(meeting.getMeetingId())
-                .meetingTitle(meeting.getMeetingTitle())
-                .meetingVoiceUrl(meeting.getMeetingVoiceUrl())
-                .sttResponseDto(sttResponseDto)
-                .meetingVoiceTime(meeting.getMeetingVoiceTime()).build();
     }
     public MeetingIdResponseDto createMeeting(MeetingRequestDto meetingRequestDto, MultipartFile audiofile) throws Exception {
 
