@@ -1,3 +1,7 @@
+ENV TZ=Asia/Seoul
+
+RUN apt-get update && apt-get install -y tzdata
+
 FROM openjdk:17-jdk-slim AS build
 
 WORKDIR /app
