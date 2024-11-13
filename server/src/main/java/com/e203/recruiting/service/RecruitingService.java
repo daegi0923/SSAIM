@@ -305,6 +305,7 @@ public class RecruitingService {
     public List<RecruitingApplyResponseDto> searchApplication(int userId) {
 
         return recruitingMemberRepository.searchMemberByUserId(userId).stream()
+                .filter(member -> member.getBoardRecruiting().getAuthor().getUserId() != member.getUser().getUserId())
                 .map(RecruitingApplyResponseDto::fromEntity)
                 .toList();
     }
