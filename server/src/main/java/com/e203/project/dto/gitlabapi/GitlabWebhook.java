@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 public class GitlabWebhook {
 	@JsonProperty("url")
-	private String url = "https://k11e203.p.ssafy.io/api/v1/notification";
+	private String url = "https://k11e203.p.ssafy.io:/api/v1/notification";
 	@JsonProperty("merge_requests_events")
 	private boolean merge_requests_events =true;
 	@JsonProperty("token")
