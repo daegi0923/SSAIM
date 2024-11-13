@@ -1,6 +1,7 @@
 package com.e203.document.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -57,6 +58,20 @@ public class ErdController {
 			return ResponseEntity.status(NOT_FOUND).body(erd);
 		} else {
 			return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(erd);
+		}
+	}
+
+	@GetMapping("/api/v1/projects/{projectId}/ERD")
+	public ResponseEntity<String> findErd(@PathVariable Integer projectId,
+		@RequestHeader("Authorization") String auth) {
+		int userId = jwtUtil.getUserId(auth.substring(7));
+		String erd = erdService.findErd(projectId, userId);
+		if("Not authorized".equals(erd)) {
+			return ResponseEntity.status(UNAUTHORIZED).body(erd);
+		}else if("Not found".equals(erd)) {
+			return ResponseEntity.status(NOT_FOUND).body(erd);
+		}else{
+			return ResponseEntity.status(OK).body(erd);
 		}
 	}
 }

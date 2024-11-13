@@ -1,5 +1,6 @@
 package com.e203.document.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -61,7 +62,7 @@ public class ErdService {
 
 		if (image != null) {
 			Erd erd = erdRepository.findById(projectId).orElse(null);
-			if(erd==null){
+			if (erd == null) {
 				return "fail";
 			}
 			String imageUrl = fileUploader.upload(image);
@@ -70,5 +71,22 @@ public class ErdService {
 		}
 
 		return "fail";
+	}
+
+	public String findErd(int projectId, int userId) {
+		Optional<Project> project = projectRepository.findById(projectId);
+		if (project.isEmpty()) {
+			return "Not found";
+		} else if (project.get()
+			.getProjectMembers()
+			.stream()
+			.noneMatch(member -> member.getUser().getUserId() == userId)) {
+			return "Not authorized";
+		}
+		List<Erd> erd = erdRepository.findByProjectId(projectId);
+		if (erd.size() == 0) {
+			return "fail";
+		}
+		return erd.get(0).getImageUrl();
 	}
 }
