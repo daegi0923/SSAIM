@@ -87,10 +87,7 @@ public class ProposalService {
                 .content(defaultForm)
                 .build();
 
-        if (getProposal(projectId) == null) {
-            return proposalRepository.save(proposal);
-        }
-        return null;
+        return proposalRepository.save(proposal);
     }
 
     public String generateProposal(int projectId, int userId, String message) {

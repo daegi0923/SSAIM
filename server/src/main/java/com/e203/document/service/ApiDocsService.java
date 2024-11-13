@@ -59,11 +59,7 @@ public class ApiDocsService {
                 .projectId(projectId)
                 .content(defaultForm)
                 .build();
-        ApiDocs docs = getApiDocs(projectId);
-        if (docs == null) {
-            return apiDocsRepository.save(apiDocs);
-        }
-        return null;
+        return apiDocsRepository.save(apiDocs);
     }
 
     public String generateApiDocs(int projectId, int userId, String message) {

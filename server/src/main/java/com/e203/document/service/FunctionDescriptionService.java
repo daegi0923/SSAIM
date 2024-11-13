@@ -65,10 +65,7 @@ public class FunctionDescriptionService {
                 .projectId(projectId)
                 .content(defaultForm)
                 .build();
-        if (getFuncDesc(projectId) == null) {
-            return functionDescriptionRepository.save(functionDescription);
-        }
-        return null;
+        return functionDescriptionRepository.save(functionDescription);
     }
 
     public String generateFunctionDescription(int projectId, int userId, String message) {
