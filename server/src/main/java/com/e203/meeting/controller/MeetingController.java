@@ -28,7 +28,7 @@ public class MeetingController {
         List<MeetingResponseDto> result = meetingService.getMeetings(projectId);
 
         if (result.isEmpty()) {
-            return ResponseEntity.status(BAD_REQUEST).body(null);
+            return ResponseEntity.status(OK).body(null);
         }
 
         return ResponseEntity.status(OK).body(result);
