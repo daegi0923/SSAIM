@@ -18,7 +18,7 @@ public interface WeeklyRemindRepository extends JpaRepository<WeeklyRemind, Inte
     @Query("SELECT w FROM WeeklyRemind w " +
             "WHERE (:projectId IS NULL OR w.projectId.id = :projectId) " +
             "AND (:authorId IS NULL OR w.weeklyRemindAuthor.id = :authorId) " +
-            "AND (:startDate IS NULL OR w.weeklyRemindStardDate <= :checkDate) " +
+            "AND (:startDate IS NULL OR w.weeklyRemindStartDate <= :checkDate) " +
             "AND (:endDate IS NULL OR w.weeklyRemindEndDate >= :checkDate)")
     List<WeeklyRemind> findWeeklyReminds(
             @Param("projectId") Integer projectId,
