@@ -1,10 +1,12 @@
 package com.e203.global.utils;
 
+import lombok.Getter;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
+@Getter
 public class ByteArrayMultipartFile implements MultipartFile {
     private final byte[] fileContent;
     private final String fileName;
