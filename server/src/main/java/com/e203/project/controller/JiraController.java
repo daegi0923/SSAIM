@@ -149,4 +149,17 @@ public class JiraController {
 		return ResponseEntity.status(OK).body("스프린트에 이슈 배치를 실패했습니다.");
 	}
 
+	@PostMapping("/api/v1/projects/{projectId}/issue/{issueKey}")
+	public ResponseEntity<String> transitionIssue(@PathVariable("projectId") Integer projectId,
+		@PathVariable("issueKey") String issueKey, @RequestParam String status) {
+		if (projectId == null || issueKey == null) {
+			return ResponseEntity.status(NOT_FOUND).body(null);
+		}
+		boolean result = jiraService.transitionIssue(projectId, issueKey, status);
+		if (result) {
+			return ResponseEntity.status(OK).body("이슈 상태 전환을 성공했습니다.");
+		}
+		return ResponseEntity.status(NOT_FOUND).body("이슈 상태 전환을 실패했습니다.");
+	}
+
 }
