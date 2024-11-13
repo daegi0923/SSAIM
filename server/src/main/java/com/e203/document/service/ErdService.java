@@ -47,4 +47,28 @@ public class ErdService {
 
 	}
 
+	@Transactional
+	public String updateErd(Integer projectId, int userId, MultipartFile image) {
+		Optional<Project> project = projectRepository.findById(projectId);
+		if (project.isEmpty()) {
+			return "Not found";
+		} else if (project.get()
+			.getProjectMembers()
+			.stream()
+			.noneMatch(member -> member.getUser().getUserId() == userId)) {
+			return "Not authorized";
+		}
+
+		if (image != null) {
+			Erd erd = erdRepository.findById(projectId).orElse(null);
+			if(erd==null){
+				return "fail";
+			}
+			String imageUrl = fileUploader.upload(image);
+			erd.setImageUrl(imageUrl);
+			return "success";
+		}
+
+		return "fail";
+	}
 }

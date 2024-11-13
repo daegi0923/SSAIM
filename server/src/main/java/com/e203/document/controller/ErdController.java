@@ -1,6 +1,7 @@
 package com.e203.document.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -24,7 +25,7 @@ public class ErdController {
 
 	@PostMapping("/api/v1/projects/{projectId}/ERD")
 	public ResponseEntity<String> createErd(@PathVariable Integer projectId,
-		@RequestPart(name = "projectImage", required = false) MultipartFile image,
+		@RequestPart(name = "ErdImage", required = false) MultipartFile image,
 		@RequestHeader("Authorization") String auth) {
 
 		int userId = jwtUtil.getUserId(auth.substring(7));
@@ -32,10 +33,31 @@ public class ErdController {
 
 		if ("success".equals(erd)) {
 			return ResponseEntity.status(OK).body("ERD가 성공적으로 저장되었습니다.");
-		}else if("Not authorized".equals(erd) || "Not found".equals(erd)){
-			return ResponseEntity.status(BAD_REQUEST).body(erd);
-		}else{
+		} else if ("Not authorized".equals(erd)) {
+			return ResponseEntity.status(UNAUTHORIZED).body(erd);
+		} else if ("Not found".equals(erd)) {
+			return ResponseEntity.status(NOT_FOUND).body(erd);
+		} else {
+			return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(erd);
+		}
+	}
+
+	@PatchMapping("/api/v1/projects/{projectId}/ERD")
+	public ResponseEntity<String> updateErd(@PathVariable Integer projectId,
+		@RequestPart(name = "ErdImage", required = false) MultipartFile image,
+		@RequestHeader("Authorization") String auth) {
+		int userId = jwtUtil.getUserId(auth.substring(7));
+		String erd = erdService.updateErd(projectId, userId, image);
+
+		if ("success".equals(erd)) {
+			return ResponseEntity.status(OK).body("ERD가 성공적으로 수정되었습니다.");
+		} else if ("Not authorized".equals(erd)) {
+			return ResponseEntity.status(UNAUTHORIZED).body(erd);
+		} else if ("Not found".equals(erd)) {
+			return ResponseEntity.status(NOT_FOUND).body(erd);
+		} else {
 			return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(erd);
 		}
 	}
 }
+

@@ -18,6 +18,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Getter
@@ -35,6 +36,7 @@ public class Erd extends BaseEntity {
 	private Project project;
 
 	@Column(name = "document_ERD_image_url", length = 1000)
+	@Setter
 	private String imageUrl;
 
 	@Builder
