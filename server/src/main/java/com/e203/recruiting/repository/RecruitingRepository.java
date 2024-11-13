@@ -23,13 +23,15 @@ public interface RecruitingRepository extends JpaRepository<BoardRecruiting, Int
             ") " +
             "AND (:campus IS NULL OR r.campus = :campus) " +
             "AND (:domain IS NULL OR r.firstDomain.projectDomainId = :domain OR r.secondDomain.projectDomainId = :domain) " +
-            "AND (:status IS NULL OR r.status = :status)")
+            "AND (:status IS NULL OR r.status = :status) " +
+            "AND (:author IS NULL OR r.author.userId = :author)")
     Page<BoardRecruiting> searchPosts(
             @Param("title") String title,
             @Param("position") Integer position,
             @Param("campus") Integer campus,
             @Param("domain") Integer domain,
             @Param("status") Integer status,
+            @Param("author") Integer author,
             Pageable pageable);
 
 }

@@ -55,11 +55,12 @@ public class RecruitingController {
             @RequestParam(required = false) Integer campus,
             @RequestParam(required = false) Integer domain,
             @RequestParam(required = false) Integer status,
+            @RequestParam(required = false) Integer author,
             @RequestParam(defaultValue = "5") Integer size,
             @RequestParam(defaultValue = "1") Integer pageNum) {
 
         return ResponseEntity.status(200).body(
-                recruitingService.searchPosts(title, position, campus, domain, status, size, pageNum));
+                recruitingService.searchPosts(title, position, campus, domain, status, author, size, pageNum));
     }
 
     @PatchMapping("/api/v1/recruiting/posts/{postId}")
