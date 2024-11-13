@@ -140,7 +140,7 @@ public class RecruitingService {
                         .map(post -> {
                             RecruitingPostResponseDto dto = RecruitingPostResponseDto.fromEntity(post);
                             long count = post.getRecruitingMembers().stream()
-                                    .filter(member -> member.getDeletedAt() != null && member.getRecruitingMemberStatus() == 1)
+                                    .filter(member -> member.getDeletedAt() == null && member.getRecruitingMemberStatus() == 1)
                                     .count();
                             dto.setRecruitedTotal((int) count);
                             return dto;
