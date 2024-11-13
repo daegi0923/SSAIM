@@ -35,7 +35,7 @@ public class WeeklyRemind extends BaseEntity {
     private ProjectMember weeklyRemindAuthor;
 
     @Column(name = "weekly_remind_start_date")
-    private LocalDate weeklyRemindStardDate;
+    private LocalDate weeklyRemindStartDate;
 
     @Column(name = "weekly_remind_end_date")
     private LocalDate weeklyRemindEndDate;
@@ -45,11 +45,11 @@ public class WeeklyRemind extends BaseEntity {
 
     @Builder
     private WeeklyRemind(String weeklyRemindContents, Project projectId, ProjectMember weeklyRemindAuthor
-    , LocalDate weeklyRemindStardDate, LocalDate weeklyRemindEndDate, String weeklyRemindImage) {
+    , LocalDate weeklyRemindStartDate, LocalDate weeklyRemindEndDate, String weeklyRemindImage) {
         this.weeklyRemindContents = weeklyRemindContents;
         this.projectId = projectId;
         this.weeklyRemindAuthor = weeklyRemindAuthor;
-        this.weeklyRemindStardDate = weeklyRemindStardDate;
+        this.weeklyRemindStartDate = weeklyRemindStartDate;
         this.weeklyRemindEndDate = weeklyRemindEndDate;
         this.weeklyRemindImage = weeklyRemindImage;
     }

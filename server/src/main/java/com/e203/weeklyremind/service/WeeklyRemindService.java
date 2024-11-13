@@ -2,7 +2,6 @@ package com.e203.weeklyremind.service;
 
 import com.e203.dailyremind.entity.DailyRemind;
 import com.e203.dailyremind.repository.DailyRemindRepository;
-import com.e203.global.utils.ByteArrayMultipartFile;
 import com.e203.global.utils.ChatAiService;
 import com.e203.project.entity.Project;
 import com.e203.project.entity.ProjectMember;
@@ -18,12 +17,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -65,7 +59,7 @@ public class WeeklyRemindService {
                 .weeklyRemindContents(summary)
                 .projectId(project)
                 .weeklyRemindAuthor(projectMember)
-                .weeklyRemindStardDate(message.getStartDate())
+                .weeklyRemindStartDate(message.getStartDate())
                 .weeklyRemindEndDate(message.getEndDate())
                 .weeklyRemindImage(null).build();
 
@@ -92,7 +86,7 @@ public class WeeklyRemindService {
                     .userImage(weeklyRemind.getWeeklyRemindAuthor().getUser().getUserProfileImage())
                     .content(weeklyRemind.getWeeklyRemindContents())
                     .weeklyRemindId(weeklyRemind.getWeeklyRemindId())
-                    .startDate(weeklyRemind.getWeeklyRemindStardDate())
+                    .startDate(weeklyRemind.getWeeklyRemindStartDate())
                     .endDate(weeklyRemind.getWeeklyRemindEndDate()).build());
         }
 
@@ -111,7 +105,7 @@ public class WeeklyRemindService {
             WeeklyRemindDto weeklyRemindDto = WeeklyRemindDto.builder()
                     .weeklyRemindId(weeklyRemind.getWeeklyRemindId())
                     .content(weeklyRemind.getWeeklyRemindContents())
-                    .startDate(weeklyRemind.getWeeklyRemindStardDate())
+                    .startDate(weeklyRemind.getWeeklyRemindStartDate())
                     .endDate(weeklyRemind.getWeeklyRemindEndDate())
                     .imageUrl(weeklyRemind.getWeeklyRemindImage()).build();
 
