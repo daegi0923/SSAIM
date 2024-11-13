@@ -81,13 +81,28 @@ public class JiraService {
 		if (info == null) {
 			return null;
 		}
-		String jql =
+		String jql ="/api/3/search?jql=" +
 			"project=\"" + info.getJiraProjectId() + "\" AND created >= \"" + startDate + "\" AND created <= \""
 				+ endDate + "\"";
-		String fields = "summary,status,assignee,customfield_10014,customfield_10031, issuetype, description,";
+		String fields = "&fields= summary,status,assignee,customfield_10014,customfield_10031, issuetype, description,";
 
 		List<JiraContent> issues = retrieve(jql, fields, info.getEncodedCredentials());
 		return issues.stream().map(JiraIssueResponseDto::transferDto).collect(Collectors.toList());
+	}
+
+
+	public List<JiraIssueResponseDto> findSprintIssue(int projectId, int sprintId) {
+		JiraInfo info = getInfo(projectId);
+		if (info == null) {
+			return null;
+		}
+		String jql = "/agile/1.0/sprint/" + sprintId + "/issue";
+		String fields ="?fields=summary,status,assignee,customfield_10014,customfield_10031, issuetype, description,";
+
+
+		List<JiraContent> issues = retrieve(jql, fields, info.getEncodedCredentials());
+
+		return  issues.stream().map(JiraIssueResponseDto::transferDto).collect(Collectors.toList());
 	}
 
 	public List<ProjectJiraEpicResponseDto> findAllEpics(int projectId) {
@@ -97,8 +112,8 @@ public class JiraService {
 			return null;
 		}
 
-		String jql = "project=\"" + info.getJiraProjectId() + "\" AND issuetype=Epic";
-		String fields = "key,summary";
+		String jql = "/api/3/search?jql=" +"project=\"" + info.getJiraProjectId() + "\" AND issuetype=Epic";
+		String fields = "&fields=key,summary";
 
 		List<JiraContent> epics = retrieve(jql, fields, info.getEncodedCredentials());
 		return epics.stream().map(ProjectJiraEpicResponseDto::transferDto).collect(Collectors.toList());
@@ -229,10 +244,9 @@ public class JiraService {
 		int startAt = 0;
 		int maxResults = 100;
 		boolean hasMore = true;
-
 		while (hasMore) {
 			String jiraUri =
-				JIRA_URL + "/api/3/search?jql=" + jql + "&fields=" + fields + "&startAt=" + startAt + "&maxResults="
+				JIRA_URL  + jql + fields + "&startAt=" + startAt + "&maxResults="
 					+ maxResults;
 			try {
 				String responseBody = getRequestString(jiraUri, encodedCredentials);
@@ -400,4 +414,5 @@ public class JiraService {
 		}
 		return "fail";
 	}
+
 }

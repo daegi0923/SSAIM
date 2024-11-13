@@ -57,6 +57,15 @@ public class JiraController {
 		return ResponseEntity.status(OK).body(allJiraIssues);
 	}
 
+	@GetMapping("/api/v1/projects/{projectId}/sprint/{sprintId}/issue")
+	public ResponseEntity<List<JiraIssueResponseDto>> findSprintIssues(@PathVariable Integer projectId, @PathVariable Integer sprintId){
+		List<JiraIssueResponseDto> sprintIssue = jiraService.findSprintIssue(projectId, sprintId);
+		if (sprintIssue == null) {
+			return ResponseEntity.status(NOT_FOUND).body(null);
+		}
+		return ResponseEntity.status(OK).body(sprintIssue);
+	}
+
 	@GetMapping("/api/v1/projects/{projectId}/epics")
 	public ResponseEntity<List<ProjectJiraEpicResponseDto>> findAllEpic(@PathVariable("projectId") int projectId) {
 		List<ProjectJiraEpicResponseDto> epics = jiraService.findAllEpics(projectId);
@@ -161,5 +170,4 @@ public class JiraController {
 		}
 		return ResponseEntity.status(NOT_FOUND).body("이슈 상태 전환을 실패했습니다.");
 	}
-
 }
