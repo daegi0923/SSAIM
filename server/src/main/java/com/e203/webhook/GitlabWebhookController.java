@@ -35,18 +35,9 @@ public class GitlabWebhookController {
 	@PostMapping("api/v1/notification")
 	public ResponseEntity<String> gitlabWebhookNotification(@RequestBody Map<String, Object> payload){
 		Map<String, Object> objectAttributes = (Map<String, Object>) payload.get("object_attributes");
-		String issue = jiraService.createIssue(1, JiraIssueRequestDto.builder()
-			.summary("merge 웹훅 실행")
-			.description("merge 시 웹훅 실행되는거 테스트중").build());
+
 		if (objectAttributes != null && "merged".equals(objectAttributes.get("state"))) {
-			System.out.println("Merge Request was merged: " + payload);
-
-			jiraService.createIssue(1, JiraIssueRequestDto.builder()
-				.summary("mergeed")
-				.description(payload.toString()).build());
-
 			return ResponseEntity.ok("Merge event processed");
-
 		}
 
 		return ResponseEntity.ok("Event ignored");
