@@ -8,6 +8,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.e203.document.service.ApiDocsService;
+import com.e203.global.utils.ChatAiService;
+import com.e203.meeting.request.MeetingRequestDto;
+import com.e203.project.dto.jiraapi.*;
+import com.e203.project.dto.response.*;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,23 +26,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClient;
 
-import com.e203.project.dto.jiraapi.JiraContent;
-import com.e203.project.dto.jiraapi.JiraEpicFields;
-import com.e203.project.dto.jiraapi.JiraIssueFields;
-import com.e203.project.dto.jiraapi.JiraTransitionsResponse;
-import com.e203.project.dto.jiraapi.Sprint;
-import com.e203.project.dto.jiraapi.SprintResponse;
-import com.e203.project.dto.jiraapi.Transition;
-import com.e203.project.dto.jiraapi.TransitionRequest;
 import com.e203.project.dto.request.JiraIssueRequestDto;
 import com.e203.project.dto.request.JiraSprintCreateRequestDto;
 import com.e203.project.dto.request.JiraSprintIssuesRequestDto;
-import com.e203.project.dto.response.JiraInfo;
-import com.e203.project.dto.response.JiraIssueResponseDto;
 import com.e203.project.dto.request.ProjectJiraConnectDto;
-import com.e203.project.dto.jiraapi.JiraResponse;
-import com.e203.project.dto.response.ProjectJiraEpicResponseDto;
-import com.e203.project.dto.response.SprintResponseDto;
 import com.e203.project.entity.Project;
 import com.e203.project.entity.ProjectMember;
 import com.e203.project.repository.ProjectMemberRepository;
@@ -53,6 +48,8 @@ public class JiraService {
 	private final RestClient restClient;
 	private final ObjectMapper objectMapper;
 	private final String JIRA_URL = "https://ssafy.atlassian.net/rest";
+	private final ChatAiService chatAiService;
+	private final ApiDocsService apiDocsService;
 
 	@Transactional
 	public Boolean setJiraApi(ProjectJiraConnectDto jiraConnectDto, int projectId) {
@@ -399,5 +396,59 @@ public class JiraService {
 			return "완료";
 		}
 		return "fail";
+	}
+
+	public GenerateJiraIssueResponse generateIssues(int projectId, GenerateJiraRequest generateJiraRequest) {
+
+		try{
+			Project project = projectRepository.findById(projectId).orElse(null);
+
+			if (project == null) {
+				return null;
+			}
+
+			String issues = chatAiService.generateJira(generateJiraRequest.getMessage(), generateJiraRequest.getApiDocs()
+					, generateJiraRequest.getAssignee(), generateJiraRequest.getStartDate(), generateJiraRequest.getEndDate());
+
+			return objectMapper.readValue(issues, GenerateJiraIssueResponse.class);
+		}
+		catch(Exception e){
+			return null;
+		}
+	}
+
+	private List<JiraIssueResponseDto> jsonToJiraIssueDto(String jsonString) {
+		List<JiraIssueResponseDto> issues = new ArrayList<>();
+		ObjectMapper mapper = new ObjectMapper();
+
+		try {
+			JsonNode root = mapper.readTree(jsonString);
+
+			for (JsonNode dailyTasks : root) {
+				JsonNode tasks = dailyTasks.get("tasks");
+
+				for (JsonNode task : tasks) {
+					String summary = task.has("summary") ? task.get("summary").asText() : null;
+					String description = task.has("description") ? task.get("description").asText() : null;
+					String issueType = task.has("issueType") ? task.get("issueType").asText() : null;
+					double storyPoint = task.has("storyPoint") && !task.get("storyPoint").isNull()
+							? task.get("storyPoint").asDouble()
+							: 0.0;
+
+					JiraIssueResponseDto issueDto = JiraIssueResponseDto.builder()
+							.summary(summary)
+							.description(description)
+							.issueType(issueType)
+							.storyPoint(storyPoint)
+							.build();
+
+					issues.add(issueDto);
+				}
+			}
+		} catch (Exception e) {
+			System.err.println("Error parsing JSON: " + e.getMessage());
+		}
+
+		return issues;
 	}
 }
