@@ -114,4 +114,15 @@ public class MeetingController {
 
         return ResponseEntity.status(OK).body("스크립트 수정이 완료되었습니다.");
     }
+
+    @DeleteMapping("/api/v1/projects/{projectId}/meetings/{meetingId}")
+    public ResponseEntity<String> deleteMeeting(@PathVariable("meetingId") int meetingId) {
+
+        boolean result = meetingService.deleteMeeting(meetingId);
+        if(!result) {
+            return ResponseEntity.status(NOT_FOUND).body("회의 목록을 찾을 수 없습니다.");
+        }
+
+        return ResponseEntity.status(OK).body("삭제 되었습니다.");
+    }
 }
