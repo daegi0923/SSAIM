@@ -12,7 +12,8 @@ public class CorsMvcConfig implements WebMvcConfigurer {
         registry.addMapping("/**")
                 .allowedOrigins("http://localhost:5173",
                         "https://localhost:5173",
-                        "https://k11e203.p.ssafy.io")
+                        "https://k11e203.p.ssafy.io",
+                        "https://lab.ssafy.com")
                 .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS");
     }
 }
