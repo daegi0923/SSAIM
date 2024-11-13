@@ -58,4 +58,6 @@ public class WeeklyRemind extends BaseEntity {
         this.weeklyRemindContents = contents;
     }
 
+    public void updateWeeklyRemindImg(String image) { this.weeklyRemindImage = image; }
+
 }
