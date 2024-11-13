@@ -210,7 +210,6 @@ public class JiraService {
 		while (hasMore) {
 			String uri = jiraUri + "startAt=" + startAt + "&maxResults=" + maxResults;
 			try {
-				System.out.println(startAt);
 				String responseBody = getRequestString(jiraUri, info.getEncodedCredentials());
 				SprintResponse sprintResponse = objectMapper.readValue(responseBody, SprintResponse.class);
 
