@@ -1,6 +1,7 @@
 package com.e203.project.dto.response;
 
 import com.e203.project.dto.jiraapi.Sprint;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -9,6 +10,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class SprintResponseDto {
+	@JsonProperty("id")
 	private int sprintId;
 	private String state;
 	private String name;

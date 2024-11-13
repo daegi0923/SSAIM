@@ -122,7 +122,6 @@ public class JiraServiceTest {
 	@DisplayName("epic 생성")
 	public void createEpic(){
 		JiraIssueRequestDto jiraIssueRequestDto = JiraIssueRequestDto.builder()
-			.epicName("epic 생성")
 			.summary("epic 생성한는 test")
 			.description("epic description test")
 			.build();

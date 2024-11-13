@@ -2,7 +2,6 @@ package com.e203.project.service;
 
 import java.util.ArrayList;
 import java.util.Base64;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -14,9 +13,11 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClient;
 
 import com.e203.project.dto.jiraapi.JiraContent;
+import com.e203.project.dto.jiraapi.JiraEpicFields;
 import com.e203.project.dto.jiraapi.JiraIssueFields;
 import com.e203.project.dto.jiraapi.Sprint;
 import com.e203.project.dto.jiraapi.SprintResponse;
@@ -150,7 +151,7 @@ public class JiraService {
 
 		String jiraAccountId = "";
 
-		if (dto.getAssignee().equals("myself")) {
+		if (dto.getAssignee() != null && dto.getAssignee().equals("myself")) {
 			jiraAccountId = findJiraAccountId(info.getUserEmail(), info.getJiraApi());
 		}
 
@@ -158,14 +159,33 @@ public class JiraService {
 		JiraIssueFields jiraIssueFields = JiraIssueFields.transferJsonObject(dto, info.getJiraProjectId(),
 			jiraAccountId);
 
+		ResponseEntity<Map> response = putJiraApi(jiraUri, info, jiraIssueFields);
+
+		return response;
+	}
+
+	public ResponseEntity<Map> modifyEpic(int projectId, JiraIssueRequestDto dto) {
+		JiraInfo info = getInfo(projectId);
+		if (info == null) {
+			return null;
+		}
+		String jiraUri = JIRA_URL + "/api/3/issue/" + dto.getIssueKey();
+
+		JiraEpicFields epicFields = JiraEpicFields.createJiraEpic(dto);
+
+		ResponseEntity<Map> response = putJiraApi(jiraUri, info, epicFields);
+
+		return response;
+	}
+
+	private <T> ResponseEntity<Map> putJiraApi(String jiraUri, JiraInfo info, T jiraFields) {
 		ResponseEntity<Map> response = restClient.put()
 			.uri(jiraUri)
 			.contentType(MediaType.APPLICATION_JSON)
 			.header("Authorization", "Basic " + info.getEncodedCredentials())
-			.body(jiraIssueFields)
+			.body(jiraFields)
 			.retrieve()
 			.toEntity(Map.class);
-
 		return response;
 	}
 
@@ -238,10 +258,6 @@ public class JiraService {
 		return leader.get(0);
 	}
 
-	private void handleException(String message, Exception e) {
-		log.error(message, e);
-	}
-
 	public String createSprint(JiraSprintCreateRequestDto dto, int projectId) {
 		JiraInfo info = getInfo(projectId);
 		if (info == null) {
@@ -259,4 +275,35 @@ public class JiraService {
 
 		return response.getBody().get("id").toString();
 	}
+
+	private void handleException(String message, Exception e) {
+		log.error(message, e);
+	}
+
+	public SprintResponseDto findSprint(int projectId, int sprintId) {
+		JiraInfo info = getInfo(projectId);
+		if (info == null) {
+			return null;
+		}
+		String jiraUri = JIRA_URL + "/agile/1.0/sprint/" + sprintId;
+
+		try{
+			ResponseEntity<SprintResponseDto> result = restClient.get()
+				.uri(jiraUri)
+				.header("Authorization", "Basic " + info.getEncodedCredentials())
+				.retrieve()
+				.toEntity(SprintResponseDto.class);
+
+			if(result.getStatusCode().is2xxSuccessful()) {
+				return result.getBody();
+			}
+		}catch (HttpClientErrorException e) {
+			log.error(e.getResponseBodyAsString());
+		}catch (Exception e) {
+			log.error(e.getMessage());
+		}
+
+		return null;
+	}
+
 }
