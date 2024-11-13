@@ -1,6 +1,7 @@
 package com.e203.project.controller;
 
 import com.e203.project.dto.request.ProjectCreateRequestDto;
+import com.e203.project.dto.request.ProjectEditRequestDto;
 import com.e203.project.dto.response.ProjectFindResponseDto;
 import com.e203.project.service.ProjectService;
 import lombok.RequiredArgsConstructor;
@@ -41,4 +42,13 @@ public class ProjectController {
         List<ProjectFindResponseDto> projectFindResponseDtos = projectService.findAllProjects(userId);
         return ResponseEntity.status(OK).body(projectFindResponseDtos);
     }
+
+    @PatchMapping("/api/v1/projects/{projectId}")
+    public ResponseEntity<String> editProjectInfo(@PathVariable Integer projectId,
+                                                  @RequestPart(name = "projectInfo", required = false) ProjectEditRequestDto dto,
+                                                  @RequestPart(name = "projectImage", required = false) MultipartFile image) {
+        String result = projectService.editProjectInfo(projectId, dto, image);
+        return null;
+    }
+
 }

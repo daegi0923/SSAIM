@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 @Getter
@@ -15,8 +15,8 @@ public class ProjectFindResponseDto {
     private String name;
     private String title;
     private String projectImage;
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
     private String jiraApi;
     private String jiraId;
     private String jiraBoardId;
@@ -27,8 +27,8 @@ public class ProjectFindResponseDto {
     private List<ProjectMemberFindResponseDto> projectMembers;
 
     @Builder
-    private ProjectFindResponseDto(int id, String name, String title, String projectImage, LocalDateTime startDate,
-                                   LocalDateTime endDate, String jiraApi, String jiraId, String jiraBoardId,
+    private ProjectFindResponseDto(int id, String name, String title, String projectImage, LocalDate startDate,
+                                   LocalDate endDate, String jiraApi, String jiraId, String jiraBoardId,
                                    String gitlabApi, String gitlabId, Integer progressFront, Integer progressBack,
                                    List<ProjectMemberFindResponseDto> projectMembers) {
         this.id = id;

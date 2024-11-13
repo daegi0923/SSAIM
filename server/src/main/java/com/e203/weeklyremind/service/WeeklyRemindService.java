@@ -116,8 +116,8 @@ public class WeeklyRemindService {
                         .username(weeklyRemind.getWeeklyRemindAuthor().getUser().getUserName())
                         .userId(weeklyRemind.getWeeklyRemindAuthor().getUser().getUserId())
                         .projectName(weeklyRemind.getProjectId().getTitle())
-                        .projectStartDate(weeklyRemind.getProjectId().getStartDate().toLocalDate())
-                        .projectEndDate(weeklyRemind.getProjectId().getEndDate().toLocalDate())
+                        .projectStartDate(weeklyRemind.getProjectId().getStartDate())
+                        .projectEndDate(weeklyRemind.getProjectId().getEndDate())
                         .weeklyRemind(weeklyRemindDtos)  // 리스트로 설정
                         .build();
 
