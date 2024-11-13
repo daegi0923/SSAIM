@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 @Getter
@@ -13,12 +13,12 @@ import java.util.ArrayList;
 public class ProjectCreateRequestDto {
 	private String title;
 	private String name;
-	private LocalDateTime startDate;
-	private LocalDateTime endDate;
+	private LocalDate startDate;
+	private LocalDate endDate;
 	private ArrayList<ProjectMemberCreateRequestDto> teamMembers ;
 
 	@Builder
-	private ProjectCreateRequestDto(String title, String name, LocalDateTime startDate, LocalDateTime endDate, ArrayList<ProjectMemberCreateRequestDto> teamMembers) {
+	private ProjectCreateRequestDto(String title, String name, LocalDate startDate, LocalDate endDate, ArrayList<ProjectMemberCreateRequestDto> teamMembers) {
 		this.title = title;
 		this.name = name;
 		this.startDate = startDate;

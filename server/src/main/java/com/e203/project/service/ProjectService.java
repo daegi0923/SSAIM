@@ -6,7 +6,9 @@ import com.e203.document.service.FunctionDescriptionService;
 import com.e203.document.service.ProposalService;
 import com.e203.global.utils.FileUploader;
 import com.e203.project.dto.request.ProjectCreateRequestDto;
+import com.e203.project.dto.request.ProjectEditRequestDto;
 import com.e203.project.dto.request.ProjectMemberCreateRequestDto;
+import com.e203.project.dto.request.ProjectMemberEditRequestDto;
 import com.e203.project.dto.response.ProjectFindResponseDto;
 import com.e203.project.dto.response.ProjectMemberFindResponseDto;
 import com.e203.project.entity.Project;
@@ -23,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 @Service
 @RequiredArgsConstructor
@@ -114,6 +117,58 @@ public class ProjectService {
 
     public int getProgress(List<Integer> states) {
         return states.isEmpty() ? 0 : 100 * Collections.frequency(states, 2) / states.size();
+    }
+
+    @Transactional
+    public String editProjectInfo(Integer projectId, ProjectEditRequestDto dto, MultipartFile image) {
+
+        Project project = findEntity(projectId);
+
+        if (project == null) {
+            return "Not found";
+        }
+
+        if (image != null) {
+            String imageUrl = fileUploader.upload(image);
+            project.setProfileImage(imageUrl);
+        }
+
+        if (dto != null) {
+            updateProjectFields(project, dto);
+            updateProjectMembers(project, dto.getProjectMembers());
+        }
+
+        return "Updated";
+    }
+
+    private void updateProjectMembers(Project project, List<ProjectMemberEditRequestDto> projectMembers) {
+        projectMembers.stream()
+                .filter(ProjectMemberEditRequestDto::isUpdate)
+                .forEach(member -> {
+                    if (member.getUserId() != null) {
+                        project.getProjectMembers().add(
+                                ProjectMemberEditRequestDto.toEntity(project, new User(member.getUserId()), member));
+                    } else {
+                        Optional<ProjectMember> projectMember = projectMemberRepository.findById(member.getProjectMemberId());
+                        if (member.isDelete()) {
+                            projectMember.ifPresent(projectMemberRepository::delete);
+                        } else if (member.getRole() != null) {
+                            projectMember.ifPresent(pm -> pm.setRole(member.getRole()));
+                        }
+                    }
+                });
+    }
+
+    private void updateProjectFields(Project project, ProjectEditRequestDto dto) {
+        updateFieldIfPresent(dto.getTitle(), project::setTitle);
+        updateFieldIfPresent(dto.getName(), project::setName);
+        updateFieldIfPresent(dto.getStartDate(), project::setStartDate);
+        updateFieldIfPresent(dto.getEndDate(), project::setEndDate);
+    }
+
+
+    private <T> void updateFieldIfPresent(T value, Consumer<T> setter) {
+        Optional.ofNullable(value).ifPresent(setter);
     }
 
 }

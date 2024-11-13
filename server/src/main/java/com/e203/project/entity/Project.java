@@ -4,7 +4,7 @@ import com.e203.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -12,26 +12,32 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name="project")
 public class Project extends BaseEntity {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "project_id")
+	@Setter
 	private int id;
 
 	@Column(name = "project_title")
+	@Setter
 	private String title;
 
 	@Column(name = "project_name")
+	@Setter
 	private String name;
 
-	@Setter
 	@Column(name = "project_profile_image")
+	@Setter
 	private String profileImage;
 
 	@Column(name = "project_start_date")
-	private LocalDateTime startDate;
+	@Setter
+	private LocalDate startDate;
 
 	@Column(name = "project_end_date")
-	private LocalDateTime endDate;
+	@Setter
+	private LocalDate endDate;
 
 	@Column(name = "project_gitlab_api")
 	@Setter
@@ -57,7 +63,7 @@ public class Project extends BaseEntity {
 	private List<ProjectMember> projectMembers;
 
 	@Builder
-	private Project(String title, String name, String profileImage, LocalDateTime startDate, LocalDateTime endDate, String gitlabApi, String jiraApi,
+	private Project(String title, String name, String profileImage, LocalDate startDate, LocalDate endDate, String gitlabApi, String jiraApi,
 		Double progressBack, Double progressFront){
 		this.title = title;
 		this.name= name;

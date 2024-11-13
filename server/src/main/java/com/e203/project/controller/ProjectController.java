@@ -1,6 +1,7 @@
 package com.e203.project.controller;
 
 import com.e203.project.dto.request.ProjectCreateRequestDto;
+import com.e203.project.dto.request.ProjectEditRequestDto;
 import com.e203.project.dto.response.ProjectFindResponseDto;
 import com.e203.project.service.ProjectService;
 import lombok.RequiredArgsConstructor;
@@ -10,8 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
-import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.HttpStatus.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -41,4 +41,16 @@ public class ProjectController {
         List<ProjectFindResponseDto> projectFindResponseDtos = projectService.findAllProjects(userId);
         return ResponseEntity.status(OK).body(projectFindResponseDtos);
     }
+
+    @PatchMapping("/api/v1/projects/{projectId}")
+    public ResponseEntity<String> editProjectInfo(@PathVariable Integer projectId,
+                                                  @RequestPart(name = "projectInfo", required = false) ProjectEditRequestDto dto,
+                                                  @RequestPart(name = "projectImage", required = false) MultipartFile image) {
+        String result = projectService.editProjectInfo(projectId, dto, image);
+        if (result.equals("Not found")) {
+            return ResponseEntity.status(NOT_FOUND).body("프로젝트를 찾을 수 없습니다.");
+        }
+        return ResponseEntity.status(OK).body("프로젝트 정보가 성공적으로 변경되었습니다.");
+    }
+
 }
