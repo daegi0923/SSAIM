@@ -62,11 +62,11 @@ public class MeetingController {
         }
     }
 
-    @PutMapping("/api/v1/projects/{projectId}/meetings/{meetingId}")
-    public ResponseEntity<String> putMeeting(@RequestBody List<FixSpeakerNameRequestDto> fixSpeakerNameRequestDtos
+    @PutMapping("/api/v1/projects/{projectId}/meetings/{meetingId}/speaker")
+    public ResponseEntity<String> putMeetingSpeaker(@RequestBody List<FixSpeakerNameRequestDto> fixSpeakerNameRequestDtos
         , @PathVariable("meetingId") int meetingId) throws Exception {
 
-        boolean result = meetingService.editMeeting(fixSpeakerNameRequestDtos, meetingId);
+        boolean result = meetingService.editMeetingSpeaker(fixSpeakerNameRequestDtos, meetingId);
 
         if (!result) {
             return ResponseEntity.status(NOT_FOUND).body("수정에 실패했습니다.");
@@ -87,5 +87,31 @@ public class MeetingController {
         else {
             return ResponseEntity.status(OK).body(meetingSummary);
         }
+    }
+
+    @PutMapping("/api/v1/projects/{projectId}/meetings/{meetingId}")
+    public ResponseEntity<String> putMeetingTitle(@PathVariable("meetingId") int meetingId
+            , @RequestBody MeetingRequestDto meetingRequestDto) {
+
+        boolean result = meetingService.editMeetingTitle(meetingId, meetingRequestDto.getMeetingTitle());
+
+        if(!result) {
+            return ResponseEntity.status(NOT_FOUND).body("회의 목록을 찾을 수 없습니다.");
+        }
+
+        return ResponseEntity.status(OK).body("타이틀 수정이 완료되었습니다.");
+    }
+
+    @PutMapping("/api/v1/projects/{projectId}/meetings/{meetingId}/script")
+    public ResponseEntity<String> putMeetingScript(@PathVariable("meetingId") int meetingId
+            , @RequestBody MeetingRequestDto meetingRequestDto) {
+
+        boolean result = meetingService.editMeetingScript(meetingId, meetingRequestDto);
+
+        if(!result) {
+            return ResponseEntity.status(NOT_FOUND).body("회의 목록을 찾을 수 없습니다.");
+        }
+
+        return ResponseEntity.status(OK).body("스크립트 수정이 완료되었습니다.");
     }
 }

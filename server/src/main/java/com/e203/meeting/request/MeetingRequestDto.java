@@ -12,10 +12,14 @@ public class MeetingRequestDto {
 
     private String meetingTitle;
     private Integer projectId;
+    private String start;
+    private String script;
 
     @Builder
-    private MeetingRequestDto(String meetingTitle, Integer projectId) {
+    private MeetingRequestDto(String meetingTitle, Integer projectId, String start, String script) {
         this.meetingTitle = meetingTitle;
         this.projectId = projectId;
+        this.start = start;
+        this.script = script;
     }
 }

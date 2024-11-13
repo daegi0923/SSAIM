@@ -144,7 +144,7 @@ public class MeetingService {
     }
 
     @Transactional
-    public boolean editMeeting(List<FixSpeakerNameRequestDto> fixSpeakerNameRequestDtos, int meetingId) throws Exception {
+    public boolean editMeetingSpeaker(List<FixSpeakerNameRequestDto> fixSpeakerNameRequestDtos, int meetingId) {
 
         Meeting meeting = meetingRepository.findById(meetingId).orElse(null);
 
@@ -179,6 +179,33 @@ public class MeetingService {
                 .meetingId(meetingId).build();
 
         return meetingSummaryResponseDto;
+    }
+
+    @Transactional
+    public boolean editMeetingTitle(int meetingId, String meetingTitle) {
+        Meeting meeting = meetingRepository.findById(meetingId).orElse(null);
+        if(meeting == null) {
+            return false;
+        }
+
+        meeting.updateMeetingTitle(meetingTitle);
+        return true;
+    }
+
+    @Transactional
+    public boolean editMeetingScript(int meetingId, MeetingRequestDto requestDto) {
+        Meeting meeting = meetingRepository.findById(meetingId).orElse(null);
+
+        if (meeting == null) {
+            return false;
+        }
+
+        String meetingScript = meeting.getMeetingVoiceScript();
+
+        String result = updateScriptInJsonString(meetingScript, requestDto);
+        meeting.updateMeetingVoiceScript(result);
+
+        return true;
     }
 
     // 음성 길이 반환(초 단위)
@@ -224,6 +251,29 @@ public class MeetingService {
                 if (speakerNode.isObject() && speakerNode.path("label").asText().equals(fixSpeakerNameRequestDto.getLabel())) {
                     ((ObjectNode) speakerNode).put("name", fixSpeakerNameRequestDto.getName());
                     ((ObjectNode) speakerNode).put("edited", true);
+                }
+            }
+
+            // 수정된 JsonNode를 다시 JSON 문자열로 변환
+            return objectMapper.writeValueAsString(rootNode);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return jsonString;  // 오류 발생 시 원래 문자열 반환
+        }
+    }
+
+    private String updateScriptInJsonString(String jsonString, MeetingRequestDto requestDto) {
+        try {
+            // JSON 문자열을 JsonNode로 파싱
+            JsonNode rootNode = objectMapper.readTree(jsonString);
+
+            // segments 배열 접근
+            ArrayNode segmentsNode = (ArrayNode) rootNode.path("segments");
+
+            for (JsonNode segmentNode : segmentsNode) {
+                if(segmentNode.path("start").asText().equals(requestDto.getStart())) {
+                    ((ObjectNode) segmentNode).put("text", requestDto.getScript());
                 }
             }
 
