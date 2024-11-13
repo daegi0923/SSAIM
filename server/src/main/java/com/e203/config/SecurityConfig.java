@@ -54,7 +54,9 @@ public class SecurityConfig {
                                 "http://localhost:3000",
                                 "http://localhost:5173",
                                 "https://localhost:5173",
-                                "https://k11e203.p.ssafy.io"));
+                                "https://k11e203.p.ssafy.io",
+                                "https://lab.ssafy.com"
+                                ));
                         config.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
                         config.setAllowCredentials(true);
                         config.setAllowedHeaders(Collections.singletonList("*"));
