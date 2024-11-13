@@ -1,7 +1,6 @@
 package com.e203.recruiting.response;
 
 
-import com.e203.recruiting.entity.BoardRecruiting;
 import com.e203.recruiting.entity.RecruitingMember;
 import lombok.Builder;
 import lombok.Getter;
@@ -27,8 +26,8 @@ public class RecruitingApplyResponseDto {
 
     @Builder
     private RecruitingApplyResponseDto(Integer applicantId, Integer recruitingId, String recruitingTitle,
-                                      Integer firstDomain, Integer secondDomain,
-                                      Integer position, Integer status) {
+                                       Integer firstDomain, Integer secondDomain,
+                                       Integer position, Integer status) {
         this.applicantId = applicantId;
         this.recruitingId = recruitingId;
         this.recruitingTitle = recruitingTitle;
@@ -43,8 +42,10 @@ public class RecruitingApplyResponseDto {
                 .applicantId(member.getId())
                 .recruitingId(member.getBoardRecruiting().getRecruitingId())
                 .recruitingTitle(member.getBoardRecruiting().getTitle())
-                .firstDomain(member.getBoardRecruiting().getFirstDomain().getProjectDomainId())
-                .secondDomain(member.getBoardRecruiting().getSecondDomain().getProjectDomainId())
+                .firstDomain(member.getBoardRecruiting().getFirstDomain() != null ?
+                        member.getBoardRecruiting().getFirstDomain().getProjectDomainId() : null)
+                .secondDomain(member.getBoardRecruiting().getSecondDomain() != null ?
+                        member.getBoardRecruiting().getSecondDomain().getProjectDomainId() : null)
                 .position(member.getRecruitingMemberPosition())
                 .status(member.getRecruitingMemberStatus())
                 .build();
