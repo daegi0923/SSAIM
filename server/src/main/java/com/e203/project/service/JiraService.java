@@ -84,7 +84,7 @@ public class JiraService {
 		String jql =
 			"project=\"" + info.getJiraProjectId() + "\" AND created >= \"" + startDate + "\" AND created <= \""
 				+ endDate + "\"";
-		String fields = "summary,status,assignee,customfield_10014,customfield_10031";
+		String fields = "summary,status,assignee,customfield_10014,customfield_10031, issuetype, description,";
 
 		List<JiraContent> issues = retrieve(jql, fields, info.getEncodedCredentials());
 		return issues.stream().map(JiraIssueResponseDto::transferDto).collect(Collectors.toList());

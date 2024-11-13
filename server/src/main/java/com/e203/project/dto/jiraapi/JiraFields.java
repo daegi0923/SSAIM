@@ -1,5 +1,7 @@
 package com.e203.project.dto.jiraapi;
 
+import java.util.Map;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Getter;
@@ -15,6 +17,8 @@ public class JiraFields {
 	@JsonProperty("customfield_10014")
 	private String epicCode;
 	private JiraStatus status;
+	private Map<String, String> issuetype;
+	private IssueDescription description;
 
 
 }
