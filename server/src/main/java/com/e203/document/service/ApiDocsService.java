@@ -35,12 +35,11 @@ public class ApiDocsService {
 
     public ApiDocs getApiDocs(int projectId) {
         List<ApiDocs> results = apiDocsRepository.findByProjectId(projectId);
-        return results.isEmpty() ? null : results.get(0); // 결과가 없으면 null 반환
+        return results.isEmpty() ? saveApiDocs(projectId) : results.get(0); // 결과가 없으면 null 반환
     }
 
     public String getApiDocsContent(int projectId) {
-        ApiDocs apiDocs = getApiDocs(projectId);
-        return apiDocs.getContent();
+        return getApiDocs(projectId).getContent();
     }
 
     public ApiDocs updateApiDocsContent(int projectId, String content) {
