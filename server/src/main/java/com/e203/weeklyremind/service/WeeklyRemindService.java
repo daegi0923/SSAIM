@@ -2,6 +2,7 @@ package com.e203.weeklyremind.service;
 
 import com.e203.dailyremind.entity.DailyRemind;
 import com.e203.dailyremind.repository.DailyRemindRepository;
+import com.e203.global.utils.ByteArrayMultipartFile;
 import com.e203.global.utils.ChatAiService;
 import com.e203.project.entity.Project;
 import com.e203.project.entity.ProjectMember;
@@ -17,7 +18,12 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -30,6 +36,7 @@ public class WeeklyRemindService {
     private final ChatAiService chatAiService;
     private final ProjectRepository projectRepository;
     private final DailyRemindRepository dailyRemindRepository;
+    private final AsyncGenerateImageClass asyncGenerateImageClass;
 
     public boolean saveWeeklyRemind(WeeklyRemindRequestDto message, int projectId) {
 
@@ -53,14 +60,18 @@ public class WeeklyRemindService {
 
         String summary = chatAiService.generateWeeklyRemind(dailyReminds.toString());
 
+
         WeeklyRemind weeklyRemind = WeeklyRemind.builder()
                 .weeklyRemindContents(summary)
                 .projectId(project)
                 .weeklyRemindAuthor(projectMember)
                 .weeklyRemindStardDate(message.getStartDate())
-                .weeklyRemindEndDate(message.getEndDate()).build();
+                .weeklyRemindEndDate(message.getEndDate())
+                .weeklyRemindImage(null).build();
 
-        weeklyRemindRepository.save(weeklyRemind);
+        WeeklyRemind save = weeklyRemindRepository.save(weeklyRemind);
+
+        asyncGenerateImageClass.generateImage(summary, save.getWeeklyRemindId());
 
         return true;
     }
@@ -101,7 +112,8 @@ public class WeeklyRemindService {
                     .weeklyRemindId(weeklyRemind.getWeeklyRemindId())
                     .content(weeklyRemind.getWeeklyRemindContents())
                     .startDate(weeklyRemind.getWeeklyRemindStardDate())
-                    .endDate(weeklyRemind.getWeeklyRemindEndDate()).build();
+                    .endDate(weeklyRemind.getWeeklyRemindEndDate())
+                    .imageUrl(weeklyRemind.getWeeklyRemindImage()).build();
 
             if (developmentStoryResponseDtoMap.containsKey(projectId)) {
                 developmentStoryResponseDtoMap.get(projectId).getWeeklyRemind().add(weeklyRemindDto);
@@ -148,6 +160,7 @@ public class WeeklyRemindService {
         String summary = chatAiService.generateWeeklyRemind(dailyReminds.toString());
 
         weeklyRemind.updateWeeklyRemind(summary);
+        asyncGenerateImageClass.generateImage(summary, weeklyRemindId);
 
         return true;
     }

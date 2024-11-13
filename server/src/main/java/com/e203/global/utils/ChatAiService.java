@@ -1,15 +1,21 @@
 package com.e203.global.utils;
 
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.image.ImagePrompt;
+import org.springframework.ai.image.ImageResponse;
+import org.springframework.ai.openai.OpenAiImageModel;
+import org.springframework.ai.openai.OpenAiImageOptions;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ChatAiService {
 
     private final ChatClient chatClient;
+    private final OpenAiImageModel openAiImageModel;
 
-    public ChatAiService(ChatClient.Builder chatClientBuilder) {
+    public ChatAiService(ChatClient.Builder chatClientBuilder, OpenAiImageModel openaiImageModel) {
         this.chatClient = chatClientBuilder.build();
+        this.openAiImageModel = openaiImageModel;
     }
 
     public String generateWeeklyRemind(String message) {
@@ -83,5 +89,20 @@ public class ChatAiService {
                 .user(message)
                 .call()
                 .content();
+    }
+
+    public String generateImage(String prompt) {
+
+        prompt += "\n 이 회고을 읽고 회고 내용에 알맞는 대표 이미지를 하나 생성해줘";
+        ImageResponse response = openAiImageModel.call(
+                new ImagePrompt(prompt,
+                        OpenAiImageOptions.builder()
+                                .withQuality("hd")
+                                .withN(1)
+                                .withHeight(1024)
+                                .withWidth(1024)
+                                .build())
+        );
+        return response.getResults().get(0).getOutput().getUrl(); // 생성된 이미지 URL 반환
     }
 }

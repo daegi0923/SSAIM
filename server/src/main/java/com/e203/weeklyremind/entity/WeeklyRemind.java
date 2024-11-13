@@ -34,22 +34,30 @@ public class WeeklyRemind extends BaseEntity {
     @JoinColumn(name = "weekly_remind_author")
     private ProjectMember weeklyRemindAuthor;
 
+    @Column(name = "weekly_remind_start_date")
     private LocalDate weeklyRemindStardDate;
 
+    @Column(name = "weekly_remind_end_date")
     private LocalDate weeklyRemindEndDate;
+
+    @Column(name = "weekly_remind_image")
+    private String weeklyRemindImage;
 
     @Builder
     private WeeklyRemind(String weeklyRemindContents, Project projectId, ProjectMember weeklyRemindAuthor
-    , LocalDate weeklyRemindStardDate, LocalDate weeklyRemindEndDate) {
+    , LocalDate weeklyRemindStardDate, LocalDate weeklyRemindEndDate, String weeklyRemindImage) {
         this.weeklyRemindContents = weeklyRemindContents;
         this.projectId = projectId;
         this.weeklyRemindAuthor = weeklyRemindAuthor;
         this.weeklyRemindStardDate = weeklyRemindStardDate;
         this.weeklyRemindEndDate = weeklyRemindEndDate;
+        this.weeklyRemindImage = weeklyRemindImage;
     }
 
     public void updateWeeklyRemind(String contents) {
         this.weeklyRemindContents = contents;
     }
+
+    public void updateWeeklyRemindImg(String image) { this.weeklyRemindImage = image; }
 
 }
