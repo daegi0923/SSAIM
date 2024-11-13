@@ -268,7 +268,7 @@ public class MeetingService {
             // JSON 문자열을 JsonNode로 파싱
             JsonNode rootNode = objectMapper.readTree(jsonString);
 
-            // speakers 배열 접근
+            // segments 배열 접근
             ArrayNode segmentsNode = (ArrayNode) rootNode.path("segments");
 
             for (JsonNode segmentNode : segmentsNode) {
