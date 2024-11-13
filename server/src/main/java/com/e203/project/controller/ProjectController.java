@@ -11,8 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
-import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.HttpStatus.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -48,7 +47,10 @@ public class ProjectController {
                                                   @RequestPart(name = "projectInfo", required = false) ProjectEditRequestDto dto,
                                                   @RequestPart(name = "projectImage", required = false) MultipartFile image) {
         String result = projectService.editProjectInfo(projectId, dto, image);
-        return null;
+        if (result.equals("Not found")) {
+            return ResponseEntity.status(NOT_FOUND).body("프로젝트를 찾을 수 없습니다.");
+        }
+        return ResponseEntity.status(OK).body("프로젝트 정보가 성공적으로 변경되었습니다.");
     }
 
 }
