@@ -93,8 +93,6 @@ public class MeetingController {
     public ResponseEntity<String> putMeetingTitle(@PathVariable("meetingId") int meetingId
             , @RequestBody MeetingRequestDto meetingRequestDto) {
 
-        System.out.println("제발");
-
         boolean result = meetingService.editMeetingTitle(meetingId, meetingRequestDto.getMeetingTitle());
 
         if(!result) {
