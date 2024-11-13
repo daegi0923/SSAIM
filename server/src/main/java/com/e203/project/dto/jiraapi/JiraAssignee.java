@@ -9,6 +9,7 @@ public class JiraAssignee {
 	private String self;
 	private String accountId;
 	private String displayName;
+	private String emailAddress;
 	private boolean active;
 
 }
