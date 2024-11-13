@@ -144,7 +144,7 @@ public class MeetingService {
     }
 
     @Transactional
-    public boolean editMeetingSpeaker(List<FixSpeakerNameRequestDto> fixSpeakerNameRequestDtos, int meetingId) throws Exception {
+    public boolean editMeetingSpeaker(List<FixSpeakerNameRequestDto> fixSpeakerNameRequestDtos, int meetingId) {
 
         Meeting meeting = meetingRepository.findById(meetingId).orElse(null);
 
