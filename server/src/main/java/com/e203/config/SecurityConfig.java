@@ -65,6 +65,7 @@ public class SecurityConfig {
                     }
                 }))
                 .csrf(AbstractHttpConfigurer::disable)
+                .csrf().ignoringAntMatchers("/api/v1/notification")
                 .formLogin(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
