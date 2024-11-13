@@ -27,7 +27,8 @@ public class AsyncGenerateImageClass {
     @Async
     @Transactional
     public void generateImage(String message, int weeklyRemindId) {
-        MultipartFile image1 = downloadImageAsMultipartFile(chatAiService.generateImage(message), "image1");
+        String fileName = "image_" + weeklyRemindId;
+        MultipartFile image1 = downloadImageAsMultipartFile(chatAiService.generateImage(message), fileName);
         String imgUrl = fileUploader.upload(image1);
 
         WeeklyRemind weeklyRemind = weeklyRemindRepository.findById(weeklyRemindId).orElse(null);
