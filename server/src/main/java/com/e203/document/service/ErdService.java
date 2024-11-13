@@ -29,7 +29,9 @@ public class ErdService {
 		Optional<Project> project = projectRepository.findById(projectId);
 		if (project.isEmpty()) {
 			return "Not found";
-		} else if (project.get().getProjectMembers().stream()
+		} else if (project.get()
+			.getProjectMembers()
+			.stream()
 			.noneMatch(member -> member.getUser().getUserId() == userId)) {
 			return "Not authorized";
 		}

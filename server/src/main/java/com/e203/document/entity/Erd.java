@@ -32,14 +32,14 @@ public class Erd extends BaseEntity {
 
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "project_id")
-	private Project projectId;
+	private Project project;
 
-	@Column(name = "document_ERD_image_url" ,length = 1000)
+	@Column(name = "document_ERD_image_url", length = 1000)
 	private String imageUrl;
 
 	@Builder
 	public Erd(Project project, String imageUrl) {
-		this.projectId = project;
+		this.project = project;
 		this.imageUrl = imageUrl;
 	}
 }
