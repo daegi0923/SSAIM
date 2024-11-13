@@ -208,6 +208,17 @@ public class MeetingService {
         return true;
     }
 
+    public boolean deleteMeeting(int meetingId) {
+        Meeting meeting = meetingRepository.findById(meetingId).orElse(null);
+        if (meeting == null) {
+            return false;
+        }
+
+        meetingRepository.delete(meeting);
+
+        return true;
+    }
+
     // 음성 길이 반환(초 단위)
     private int getLastEndValue(String jsonString) {
         try {
