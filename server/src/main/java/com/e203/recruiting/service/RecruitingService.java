@@ -123,6 +123,7 @@ public class RecruitingService {
     }
 
 
+    @Transactional
     public PaginationResponseDto<RecruitingPostResponseDto> searchPosts(String title, Integer position, Integer campus,
                                                                         Integer domain, Integer status, Integer author,
                                                                         Integer size, Integer pageNum) {
@@ -136,7 +137,14 @@ public class RecruitingService {
                 .pageSize(size)
                 .totalCount(recruiting.getTotalElements())
                 .data(recruiting.stream()
-                        .map(RecruitingPostResponseDto::fromEntity)
+                        .map(post -> {
+                            RecruitingPostResponseDto dto = RecruitingPostResponseDto.fromEntity(post);
+                            long count = post.getRecruitingMembers().stream()
+                                    .filter(member -> member.getDeletedAt() != null && member.getRecruitingMemberStatus() == 1)
+                                    .count();
+                            dto.setRecruitedTotal((int) count);
+                            return dto;
+                        })
                         .collect(Collectors.toList()))
                 .build();
     }
