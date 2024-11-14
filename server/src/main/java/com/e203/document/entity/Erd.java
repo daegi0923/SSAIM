@@ -19,6 +19,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Getter
@@ -33,6 +35,7 @@ public class Erd extends BaseEntity {
 
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "project_id")
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Project project;
 
 	@Column(name = "document_ERD_image_url", length = 1000)
