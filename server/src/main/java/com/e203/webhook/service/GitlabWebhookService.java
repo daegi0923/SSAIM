@@ -32,7 +32,7 @@ public class GitlabWebhookService {
 		String gitlabApi = projectLeader.getProject().getGitlabApi();
 		String gitlabProjectId = projectLeader.getProject().getGitlabProjectId();
 		GitlabWebhook gitlabWebhook = GitlabWebhook.create();
-		System.out.println(gitlabUrl + gitlabProjectId + "/hooks");
+
 		ResponseEntity<Map> result = restClient.post()
 			.uri(gitlabUrl + gitlabProjectId + "/hooks")
 			.header("PRIVATE-TOKEN", gitlabApi)
