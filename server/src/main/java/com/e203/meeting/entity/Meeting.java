@@ -28,7 +28,7 @@ public class Meeting extends BaseEntity {
     private String meetingVoiceUrl;
 
     @Lob
-    @Column(columnDefinition = "TEXT", name = "meeting_voice_script")
+    @Column(columnDefinition = "LONGTEXT", name = "meeting_voice_script")
     private String meetingVoiceScript;
 
     @Column(name = "meeting_voice_time")
