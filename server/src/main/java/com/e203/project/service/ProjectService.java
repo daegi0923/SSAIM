@@ -171,5 +171,22 @@ public class ProjectService {
         Optional.ofNullable(value).ifPresent(setter);
     }
 
+    public String removeProject(int userId, Integer projectId) {
+
+        Project project = projectRepository.findById(projectId).orElse(null);
+
+        if (project == null) {
+            return "Not found";
+        }
+
+        if (project.getProjectMembers().stream().noneMatch(
+                member -> member.getUser().getUserId() == userId && member.getRole() == 1)) {
+            return "Not authorized";
+        }
+
+        projectRepository.delete(project);
+
+        return "Deleted";
+    }
 }
 
