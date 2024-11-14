@@ -13,11 +13,14 @@ import com.e203.global.utils.ChatAiService;
 import com.e203.meeting.request.MeetingRequestDto;
 import com.e203.project.dto.jiraapi.*;
 import com.e203.project.dto.response.*;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import com.fasterxml.jackson.core.type.TypeReference;
+
 
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -425,7 +428,7 @@ public class JiraService {
 		return "fail";
 	}
 
-	public GenerateJiraIssueResponse generateIssues(int projectId, GenerateJiraRequest generateJiraRequest) {
+	public List<GenerateJiraIssueResponse> generateIssues(int projectId, GenerateJiraRequest generateJiraRequest) {
 
 		try{
 			Project project = projectRepository.findById(projectId).orElse(null);
@@ -437,7 +440,7 @@ public class JiraService {
 			String issues = chatAiService.generateJira(generateJiraRequest.getMessage(), apiDocsService.getApiDocsContent(projectId)
 					, generateJiraRequest.getAssignee(), generateJiraRequest.getStartDate(), generateJiraRequest.getEndDate());
 
-			return objectMapper.readValue(issues, GenerateJiraIssueResponse.class);
+			return objectMapper.readValue(issues, new TypeReference<List<GenerateJiraIssueResponse>>() {});
 		}
 		catch(Exception e){
 			return null;

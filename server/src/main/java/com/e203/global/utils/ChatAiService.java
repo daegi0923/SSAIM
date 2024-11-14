@@ -120,7 +120,7 @@ public class ChatAiService {
                         "- assignee는 " + assignee + "로 작성해줘 \n" +
                         "- 하루에 8포인트씩 맞춰서 작성해줘 \n" +
                         "- 코딩 관련 이슈의 issueType Story, 나머지 이슈는 Task로 작성해줘 \n" +
-                        "- json으로 작성해줘 \n" +
+                        "- json으로 작성해줘 근데 너가 응답할 때 ```json ``` 으로 묶는 마크다운은 제거하고 text로만 보내줘 \n" +
                         "- json 형태는 [ { day: \"\", tasks: [ {\"assignee\": \"\",\n" +
                         "        \"summary\": \"\",\n" +
                         "        \"description\": \"\",\n" +

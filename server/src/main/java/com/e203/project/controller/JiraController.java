@@ -174,10 +174,10 @@ public class JiraController {
 	}
 
 	@GetMapping("api/v1/projects/{projectId}/issue/generate")
-	public ResponseEntity<GenerateJiraIssueResponse> generateIssues(@PathVariable("projectId") Integer projectId,
+	public ResponseEntity<List<GenerateJiraIssueResponse>> generateIssues(@PathVariable("projectId") Integer projectId,
 												 @RequestBody GenerateJiraRequest generateJiraRequest) {
 
-		GenerateJiraIssueResponse generateJiraIssueResponse = jiraService.generateIssues(projectId, generateJiraRequest);
+		List<GenerateJiraIssueResponse> generateJiraIssueResponse = jiraService.generateIssues(projectId, generateJiraRequest);
 
 		if (generateJiraIssueResponse == null) {
 			return ResponseEntity.status(NOT_FOUND).body(null);
