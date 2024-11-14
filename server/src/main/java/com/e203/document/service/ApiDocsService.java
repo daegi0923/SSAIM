@@ -35,12 +35,11 @@ public class ApiDocsService {
 
     public ApiDocs getApiDocs(int projectId) {
         List<ApiDocs> results = apiDocsRepository.findByProjectId(projectId);
-        return results.isEmpty() ? null : results.get(0); // 결과가 없으면 null 반환
+        return results.isEmpty() ? saveApiDocs(projectId) : results.get(0); // 결과가 없으면 null 반환
     }
 
     public String getApiDocsContent(int projectId) {
-        ApiDocs apiDocs = getApiDocs(projectId);
-        return apiDocs.getContent();
+        return getApiDocs(projectId).getContent();
     }
 
     public ApiDocs updateApiDocsContent(int projectId, String content) {
@@ -55,16 +54,12 @@ public class ApiDocsService {
     }
 
     public ApiDocs saveApiDocs(int projectId) {
-        String defaultForm = "{\"category\": [],\"description\": [],\"url\": [],\"method\": [],\"functionName\": [],\"frontOwner\": [],\"backOwner\": [],\"frontState\": [],\"backState\": [],\"priority\": [],\"requestHeader\": [],\"responseHeader\": [],\"requestBody\": [],\"responseBody\": [] } ";
+        String defaultForm = "{\"category\": [],\"description\": [],\"uri\": [],\"method\": [],\"functionName\": [],\"frontOwner\": [],\"backOwner\": [],\"frontState\": [],\"backState\": [],\"priority\": [],\"requestHeader\": [],\"responseHeader\": [],\"requestBody\": [],\"responseBody\": [] } ";
         ApiDocs apiDocs = ApiDocs.builder()
                 .projectId(projectId)
                 .content(defaultForm)
                 .build();
-        ApiDocs docs = getApiDocs(projectId);
-        if (docs == null) {
-            return apiDocsRepository.save(apiDocs);
-        }
-        return null;
+        return apiDocsRepository.save(apiDocs);
     }
 
     public String generateApiDocs(int projectId, int userId, String message) {

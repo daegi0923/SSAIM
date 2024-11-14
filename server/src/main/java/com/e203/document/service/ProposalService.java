@@ -29,6 +29,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.client.result.UpdateResult;
 
 import lombok.RequiredArgsConstructor;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -61,7 +62,7 @@ public class ProposalService {
     public Proposal getProposal(int projectId) {
         List<Proposal> results = proposalRepository.findTopByProjectIdOrderByCreatedAtDesc(
                 projectId, Sort.by(Sort.Direction.DESC, "createdAt"));
-        return results.isEmpty() ? null : results.get(0); // 결과가 없으면 null 반환
+        return results.isEmpty() ? saveProposal(projectId) : results.get(0); // 결과가 없으면 null 반환
     }
 
     public String getProposalContent(int projectId) {
@@ -72,25 +73,22 @@ public class ProposalService {
         Query query = new Query(Criteria.where("projectId").is(projectId));
 
         Update update = new Update().set("content", content)
-			.set("createdAt", LocalDateTime.now());
+                .set("createdAt", LocalDateTime.now());
 
         UpdateResult documents = mongoTemplate.updateFirst(query, update, "Proposal");
 
         return getProposal(projectId);
     }
 
-	public Proposal saveProposal(int projectId) {
-		String defaultForm = "{\"title\": \"\",\"description\": \"\",\"background\": \"\",\"feature\":\"\",\"effect\": \"\"}";
-		Proposal proposal = Proposal.builder()
-			.projectId(projectId)
-			.content(defaultForm)
-			.build();
+    public Proposal saveProposal(int projectId) {
+        String defaultForm = "{\"title\": \"\",\"description\": \"\",\"background\": \"\",\"feature\":\"\",\"effect\": \"\"}";
+        Proposal proposal = Proposal.builder()
+                .projectId(projectId)
+                .content(defaultForm)
+                .build();
 
-		if(getProposal(projectId) == null) {
-			return proposalRepository.save(proposal);
-		}
-		return null;
-	}
+        return proposalRepository.save(proposal);
+    }
 
     public String generateProposal(int projectId, int userId, String message) {
         Optional<Project> project = projectRepository.findById(projectId);
@@ -104,15 +102,15 @@ public class ProposalService {
         return chatAiService.generateProposal(message);
     }
 
-	public ProposalResponseDto parseStringToObject(int projectId){
-		Proposal proposal = getProposal(projectId);
-		ObjectMapper objectMapper = new ObjectMapper();
-		try {
-			return objectMapper.readValue(proposal.getContent(), ProposalResponseDto.class);
+    public ProposalResponseDto parseStringToObject(int projectId) {
+        Proposal proposal = getProposal(projectId);
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            return objectMapper.readValue(proposal.getContent(), ProposalResponseDto.class);
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
