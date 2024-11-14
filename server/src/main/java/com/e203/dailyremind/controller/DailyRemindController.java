@@ -64,11 +64,14 @@ public class DailyRemindController {
         return ResponseEntity.status(OK).body(results);
     }
 
-//    @GetMapping("/api/v1/projects/{projectId}/daily-remind")
-//    public ResponseEntity<List<DailyRemindResponseDto>> getTeamDailyRemind(@PathVariable("projectId") int projectId) {
-//
-//        List<DailyRemindResponseDto> results = dailyRemindService.searchTeamDailyRemind(projectId);
-//
-//        return ResponseEntity.status(OK).body(results);
-//    }
+    @DeleteMapping("/api/v1/projects/{projectId}/daily-remind/{dailyRemindId}")
+    public ResponseEntity<String> deleteDailyRemind(@PathVariable("dailyRemindId") int dailyRemindId) {
+        boolean result = dailyRemindService.deleteDailyRemind(dailyRemindId);
+
+        if (result) {
+            return ResponseEntity.status(OK).body("일일회고 삭제에 성공했습니다.");
+        }
+
+        return ResponseEntity.status(NOT_FOUND).body("일일회고를 찾지 못했습니다.");
+    }
 }

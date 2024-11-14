@@ -158,4 +158,16 @@ public class WeeklyRemindService {
 
         return true;
     }
+
+    public boolean deleteWeeklyRemind(int weeklyRemindId) {
+        WeeklyRemind weeklyRemind = weeklyRemindRepository.findById(weeklyRemindId).orElse(null);
+
+        if (weeklyRemind == null) {
+            return false;
+        }
+
+        weeklyRemindRepository.delete(weeklyRemind);
+
+        return true;
+    }
 }
