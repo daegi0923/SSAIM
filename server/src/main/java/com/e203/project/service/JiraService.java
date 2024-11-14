@@ -407,7 +407,7 @@ public class JiraService {
 				return null;
 			}
 
-			String issues = chatAiService.generateJira(generateJiraRequest.getMessage(), generateJiraRequest.getApiDocs()
+			String issues = chatAiService.generateJira(generateJiraRequest.getMessage(), apiDocsService.getApiDocsContent(projectId)
 					, generateJiraRequest.getAssignee(), generateJiraRequest.getStartDate(), generateJiraRequest.getEndDate());
 
 			return objectMapper.readValue(issues, GenerateJiraIssueResponse.class);

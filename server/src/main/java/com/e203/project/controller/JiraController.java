@@ -5,6 +5,8 @@ import static org.springframework.http.HttpStatus.*;
 import java.util.List;
 import java.util.Map;
 
+import com.e203.project.dto.jiraapi.GenerateJiraRequest;
+import com.e203.project.dto.response.GenerateJiraIssueResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -160,6 +162,18 @@ public class JiraController {
 			return ResponseEntity.status(OK).body("이슈 상태 전환을 성공했습니다.");
 		}
 		return ResponseEntity.status(NOT_FOUND).body("이슈 상태 전환을 실패했습니다.");
+	}
+
+	@GetMapping("api/v1/projects/{projectId}/issue/generate")
+	public ResponseEntity<GenerateJiraIssueResponse> generateIssues(@PathVariable("projectId") Integer projectId,
+												 @RequestBody GenerateJiraRequest generateJiraRequest) {
+
+		GenerateJiraIssueResponse generateJiraIssueResponse = jiraService.generateIssues(projectId, generateJiraRequest);
+
+		if (generateJiraIssueResponse == null) {
+			return ResponseEntity.status(NOT_FOUND).body(null);
+		}
+		return ResponseEntity.status(OK).body(generateJiraIssueResponse);
 	}
 
 }
