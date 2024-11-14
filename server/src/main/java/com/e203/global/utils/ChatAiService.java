@@ -105,4 +105,30 @@ public class ChatAiService {
         );
         return response.getResults().get(0).getOutput().getUrl(); // 생성된 이미지 URL 반환
     }
+
+    public String generateJira(String message, String apiDocs, String assignee, String startDate, String endDate) {
+
+        return chatClient.prompt()
+                .system(apiDocs + "\n" +
+                        "지라 스프린트의 이슈를 생성하고 싶어 스토리포인트는 일주일에 총 40 포인트로 맞춰서 생성해주고 " +
+                        "나머지는 위의 api 명세서와 아래의 양식과 사용자의 요구사항에 맞춰서 작성해줘 여기서 일주일은 월화수목금 5일을 말하는거야 \n" +
+                        "- 작성 형식은 assignee, summary, description, epic, issueType, storyPoint의 형식으로 작성해줘 \n" +
+                        "- 매일 summary: 오전 스크림, epic: 회의 / summary: 종로 미팅, epic: 회의 이슈를 작성해줘 둘다 issueType은 Task로 작성해주고 스토리 포인트는 1을 부여해줘 \n" +
+                        "- 시작 날짜는 " + startDate + "이고 끝나는 날짜는 " + endDate + "야. \n" +
+                        "- 스토리 포인트는 한번에 3 이상을 부여하지 말아줘 \n" +
+                        "- 각 이슈마다 summary 마지막에 (yymmdd)로 각 날짜를 작성해줘 yy는년도이고 mm은 월 dd는 요일이야 \n" +
+                        "- assignee는 " + assignee + "로 작성해줘 \n" +
+                        "- 하루에 8포인트씩 맞춰서 작성해줘 \n" +
+                        "- 코딩 관련 이슈의 issueType Story, 나머지 이슈는 Task로 작성해줘 \n" +
+                        "- json으로 작성해줘 근데 너가 응답할 때 ```json ``` 으로 묶는 마크다운은 제거하고 text로만 보내줘 \n" +
+                        "- json 형태는 [ { day: \"\", tasks: [ {\"assignee\": \"\",\n" +
+                        "        \"summary\": \"\",\n" +
+                        "        \"description\": \"\",\n" +
+                        "        \"epic\": \"\",\n" +
+                        "        \"issueType\": \"\",\n" +
+                        "        \"storyPoint\": } ] } ] 로 작성해줘")
+                .user(message)
+                .call()
+                .content();
+    }
 }

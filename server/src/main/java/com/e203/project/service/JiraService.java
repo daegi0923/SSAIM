@@ -8,8 +8,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.e203.document.service.ApiDocsService;
+import com.e203.global.utils.ChatAiService;
+import com.e203.meeting.request.MeetingRequestDto;
+import com.e203.project.dto.jiraapi.*;
+import com.e203.project.dto.response.*;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import com.fasterxml.jackson.core.type.TypeReference;
+
 
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -53,6 +64,8 @@ public class JiraService {
 	private final RestClient restClient;
 	private final ObjectMapper objectMapper;
 	private final String JIRA_URL = "https://ssafy.atlassian.net/rest";
+	private final ChatAiService chatAiService;
+	private final ApiDocsService apiDocsService;
 
 	@Transactional
 	public Boolean setJiraApi(ProjectJiraConnectDto jiraConnectDto, int projectId) {
@@ -413,6 +426,60 @@ public class JiraService {
 			return "완료";
 		}
 		return "fail";
+	}
+
+	public List<GenerateJiraIssueResponse> generateIssues(int projectId, GenerateJiraRequest generateJiraRequest) {
+
+		try{
+			Project project = projectRepository.findById(projectId).orElse(null);
+
+			if (project == null) {
+				return null;
+			}
+
+			String issues = chatAiService.generateJira(generateJiraRequest.getMessage(), apiDocsService.getApiDocsContent(projectId)
+					, generateJiraRequest.getAssignee(), generateJiraRequest.getStartDate(), generateJiraRequest.getEndDate());
+
+			return objectMapper.readValue(issues, new TypeReference<List<GenerateJiraIssueResponse>>() {});
+		}
+		catch(Exception e){
+			return null;
+		}
+	}
+
+	private List<JiraIssueResponseDto> jsonToJiraIssueDto(String jsonString) {
+		List<JiraIssueResponseDto> issues = new ArrayList<>();
+		ObjectMapper mapper = new ObjectMapper();
+
+		try {
+			JsonNode root = mapper.readTree(jsonString);
+
+			for (JsonNode dailyTasks : root) {
+				JsonNode tasks = dailyTasks.get("tasks");
+
+				for (JsonNode task : tasks) {
+					String summary = task.has("summary") ? task.get("summary").asText() : null;
+					String description = task.has("description") ? task.get("description").asText() : null;
+					String issueType = task.has("issueType") ? task.get("issueType").asText() : null;
+					double storyPoint = task.has("storyPoint") && !task.get("storyPoint").isNull()
+							? task.get("storyPoint").asDouble()
+							: 0.0;
+
+					JiraIssueResponseDto issueDto = JiraIssueResponseDto.builder()
+							.summary(summary)
+							.description(description)
+							.issueType(issueType)
+							.storyPoint(storyPoint)
+							.build();
+
+					issues.add(issueDto);
+				}
+			}
+		} catch (Exception e) {
+			System.err.println("Error parsing JSON: " + e.getMessage());
+		}
+
+		return issues;
 	}
 
 }
