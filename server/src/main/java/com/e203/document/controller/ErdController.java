@@ -68,7 +68,7 @@ public class ErdController {
 			case "Not found" -> ResponseEntity.status(404).body("Project를 찾을 수 없습니다.");
 			case "Not authorized" -> ResponseEntity.status(403).body("권한이 없습니다.");
 			case "fail" -> ResponseEntity.status(404).body("ERD 생성에 실패했습니다.");
-			default ->  ResponseEntity.status(200).body("생성이 완료되었습니다.");
+			default ->  ResponseEntity.status(200).body(result);
 		};
 	}
 }
