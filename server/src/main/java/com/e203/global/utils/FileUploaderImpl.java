@@ -27,7 +27,8 @@ public class FileUploaderImpl implements FileUploader {
         // 원본 파일 이름 가져오기
         String originalFileName = profileImage.getOriginalFilename();
         // UUID를 사용하여 고유한 파일 이름 생성
-        String fileExtension = originalFileName != null ? originalFileName.substring(originalFileName.lastIndexOf(".")) : "";
+        int index = originalFileName != null ? originalFileName.lastIndexOf(".") : -1;
+        String fileExtension = index >= 0 ? originalFileName.substring(index) : "";
         String uniqueFileName = UUID.randomUUID() + fileExtension;
 
         ObjectMetadata metadata = new ObjectMetadata();
