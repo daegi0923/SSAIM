@@ -2,10 +2,8 @@ package com.e203.user.controller;
 
 import com.e203.jwt.JWTUtil;
 import com.e203.user.request.UserEditInfoDto;
-import com.e203.user.request.UserLoginRequestDto;
 import com.e203.user.request.UserSignUpRequestDto;
 import com.e203.user.response.UserInfoResponseDto;
-import com.e203.user.service.UserDetailServiceImpl;
 import com.e203.user.service.UserService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +13,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.util.List;
+
+import static org.springframework.http.HttpStatus.OK;
 
 @RestController
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
@@ -72,6 +72,11 @@ public class UserController {
                 userGeneration, userNickname, userRole, userBirth, userGender);
 
         return ResponseEntity.status(200).body(dtos);
+    }
+
+    @GetMapping("/api/v1/users/check-email")
+    public ResponseEntity<Boolean> checkEmail(@RequestParam String email) {
+        return ResponseEntity.status(OK).body(userService.checkEmail(email));
     }
 
 }
