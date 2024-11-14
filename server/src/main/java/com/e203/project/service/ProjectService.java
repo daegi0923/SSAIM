@@ -120,12 +120,15 @@ public class ProjectService {
     }
 
     @Transactional
-    public String editProjectInfo(Integer projectId, ProjectEditRequestDto dto, MultipartFile image) {
+    public String editProjectInfo(Integer projectId, ProjectEditRequestDto dto, MultipartFile image, int userId) {
 
         Project project = findEntity(projectId);
 
         if (project == null) {
             return "Not found";
+        } else if (project.getProjectMembers().stream().noneMatch(
+                member -> member.getUser().getUserId() == userId && member.getRole() == 1)) {
+            return "Not authorized";
         }
 
         if (image != null) {
@@ -173,7 +176,7 @@ public class ProjectService {
 
     public String removeProject(int userId, Integer projectId) {
 
-        Project project = projectRepository.findById(projectId).orElse(null);
+        Project project = findEntity(projectId);
 
         if (project == null) {
             return "Not found";

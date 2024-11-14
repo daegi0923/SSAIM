@@ -49,12 +49,15 @@ public class ProjectController {
     @PatchMapping("/api/v1/projects/{projectId}")
     public ResponseEntity<String> editProjectInfo(@PathVariable Integer projectId,
                                                   @RequestPart(name = "projectInfo", required = false) ProjectEditRequestDto dto,
-                                                  @RequestPart(name = "projectImage", required = false) MultipartFile image) {
-        String result = projectService.editProjectInfo(projectId, dto, image);
-        if (result.equals("Not found")) {
-            return ResponseEntity.status(NOT_FOUND).body("프로젝트를 찾을 수 없습니다.");
-        }
-        return ResponseEntity.status(OK).body("프로젝트 정보가 성공적으로 변경되었습니다.");
+                                                  @RequestPart(name = "projectImage", required = false) MultipartFile image,
+                                                  @RequestHeader("Authorization") String auth) {
+        int userId = jwtUtil.getUserId(auth.substring(7));
+        String result = projectService.editProjectInfo(projectId, dto, image, userId);
+        return switch (result) {
+            case "Not found" -> ResponseEntity.status(NOT_FOUND).body("프로젝트를 찾을 수 없습니다.");
+            case "Not authorized" -> ResponseEntity.status(FORBIDDEN).body("권한이 없습니다.");
+            default -> ResponseEntity.status(OK).body("프로젝트 정보가 성공적으로 변경되었습니다.");
+        };
     }
 
     @DeleteMapping("/api/v1/projects/{projectId}")
