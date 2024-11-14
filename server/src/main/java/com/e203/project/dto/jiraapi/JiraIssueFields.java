@@ -8,10 +8,12 @@ import com.e203.project.dto.request.JiraIssueRequestDto;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class JiraIssueFields {
 	JiraIssueRequest fields;
 

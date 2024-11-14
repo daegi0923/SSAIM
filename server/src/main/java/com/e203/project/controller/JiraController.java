@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.e203.project.dto.jiraapi.GenerateJiraRequest;
+import com.e203.project.dto.request.IssuePutRequest;
 import com.e203.project.dto.response.GenerateJiraIssueResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +26,7 @@ import com.e203.project.dto.request.ProjectJiraConnectDto;
 import com.e203.project.dto.response.ProjectJiraEpicResponseDto;
 import com.e203.project.dto.response.SprintResponseDto;
 import com.e203.project.service.JiraService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -102,7 +104,7 @@ public class JiraController {
 
 	@PutMapping("/api/v1/projects/{projectId}/issue")
 	public ResponseEntity<String> modifyIssue(@PathVariable("projectId") int projectId,
-		@RequestBody JiraIssueRequestDto dto) {
+		@RequestBody IssuePutRequest dto){
 		ResponseEntity<Map> result = jiraService.modifyIssue(projectId, dto);
 
 		if (result.getStatusCode() == NO_CONTENT) {

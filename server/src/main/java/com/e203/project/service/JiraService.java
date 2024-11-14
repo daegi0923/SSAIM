@@ -12,7 +12,9 @@ import com.e203.document.service.ApiDocsService;
 import com.e203.global.utils.ChatAiService;
 import com.e203.meeting.request.MeetingRequestDto;
 import com.e203.project.dto.jiraapi.*;
+import com.e203.project.dto.request.IssuePutRequest;
 import com.e203.project.dto.response.*;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -179,23 +181,16 @@ public class JiraService {
 		return response;
 	}
 
-	public ResponseEntity<Map> modifyIssue(int projectId, JiraIssueRequestDto dto) {
+	public ResponseEntity<Map> modifyIssue(int projectId, IssuePutRequest dto) {
 		JiraInfo info = getInfo(projectId);
 		if (info == null) {
 			return null;
 		}
 
-		String jiraAccountId = "";
-
-		if (dto.getAssignee() != null && dto.getAssignee().equals("myself")) {
-			jiraAccountId = findJiraAccountId(info.getUserEmail(), info.getJiraApi());
-		}
-
 		String jiraUri = JIRA_URL + "/api/3/issue/" + dto.getIssueKey();
-		JiraIssueFields jiraIssueFields = JiraIssueFields.transferJsonObject(dto, info.getJiraProjectId(),
-			jiraAccountId);
+		JiraIssuePut jiraIssuePut = JiraIssuePut.createPutRequest(dto);
 
-		ResponseEntity<Map> response = putJiraApi(jiraUri, info, jiraIssueFields);
+		ResponseEntity<Map> response = putJiraApi(jiraUri, info, jiraIssuePut);
 
 		return response;
 	}
