@@ -188,4 +188,18 @@ public class JiraController {
 		return ResponseEntity.status(OK).body(generateJiraIssueResponse);
 	}
 
+	@PostMapping("/api/v1/projects/{projectId}/sprint/{sprintId}")
+	public ResponseEntity<String> uploadGenerateIssuesOnSprint(@PathVariable("projectId") int projectId,
+															   @PathVariable("sprintId") int sprintId,
+															   @RequestParam("issueString") String issueString) {
+
+		boolean result = jiraService.inputIssuesOnSprint(projectId, issueString, sprintId);
+
+		if (result) {
+			return ResponseEntity.status(OK).body("이슈 등록을 완료하였습니다.");
+		}
+
+		return ResponseEntity.status(NOT_FOUND).body("프로젝트를 찾을 수 없습니다.");
+	}
+
 }

@@ -442,12 +442,36 @@ public class JiraService {
 		}
 	}
 
-	private List<JiraIssueResponseDto> jsonToJiraIssueDto(String jsonString) {
-		List<JiraIssueResponseDto> issues = new ArrayList<>();
-		ObjectMapper mapper = new ObjectMapper();
+	public boolean inputIssuesOnSprint(int projectId, String issueString, int sprintId) {
+
+		Project project = projectRepository.findById(projectId).orElse(null);
+		if (project == null) {
+			return false;
+		}
+
+		List<JiraIssueRequestDto> jiraIssueRequestDtos = jsonToJiraIssueDto(issueString);
+		List<String> issueKeys = new ArrayList<>();
+
+
+		for (JiraIssueRequestDto jiraIssueRequestDto : jiraIssueRequestDtos) {
+			String epicKey = createEpic(projectId, jiraIssueRequestDto).getBody().get("key").toString();
+			jiraIssueRequestDto.setEpicKey(epicKey);
+			issueKeys.add(createIssue(projectId, jiraIssueRequestDto));
+		}
+
+		JiraSprintIssuesRequestDto jiraSprintIssuesRequestDto = new JiraSprintIssuesRequestDto();
+		jiraSprintIssuesRequestDto.setIssues(issueKeys);
+
+		uploadIssuesOnSprint(projectId, sprintId, jiraSprintIssuesRequestDto);
+
+		return true;
+	}
+
+	private List<JiraIssueRequestDto> jsonToJiraIssueDto(String jsonString) {
+		List<JiraIssueRequestDto> issues = new ArrayList<>();
 
 		try {
-			JsonNode root = mapper.readTree(jsonString);
+			JsonNode root = objectMapper.readTree(jsonString);
 
 			for (JsonNode dailyTasks : root) {
 				JsonNode tasks = dailyTasks.get("tasks");
@@ -456,11 +480,11 @@ public class JiraService {
 					String summary = task.has("summary") ? task.get("summary").asText() : null;
 					String description = task.has("description") ? task.get("description").asText() : null;
 					String issueType = task.has("issueType") ? task.get("issueType").asText() : null;
-					double storyPoint = task.has("storyPoint") && !task.get("storyPoint").isNull()
-							? task.get("storyPoint").asDouble()
-							: 0.0;
+					int storyPoint = task.has("storyPoint") && !task.get("storyPoint").isNull()
+							? task.get("storyPoint").asInt()
+							: 0;
 
-					JiraIssueResponseDto issueDto = JiraIssueResponseDto.builder()
+					JiraIssueRequestDto issueDto = JiraIssueRequestDto.builder()
 							.summary(summary)
 							.description(description)
 							.issueType(issueType)
@@ -471,7 +495,7 @@ public class JiraService {
 				}
 			}
 		} catch (Exception e) {
-			System.err.println("Error parsing JSON: " + e.getMessage());
+			return issues;
 		}
 
 		return issues;
