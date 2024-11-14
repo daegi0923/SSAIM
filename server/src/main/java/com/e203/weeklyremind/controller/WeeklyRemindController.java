@@ -75,4 +75,15 @@ public class WeeklyRemindController {
         }
     }
 
+    @DeleteMapping("/api/v1/projects/{projectId}/weekly-remind/{weeklyRemindId}")
+    public ResponseEntity<String> deleteWeeklyRemind(@PathVariable int weeklyRemindId) {
+        boolean result = weeklyRemindService.deleteWeeklyRemind(weeklyRemindId);
+
+        if(!result) {
+            return ResponseEntity.status(NOT_FOUND).body("주간 회고를 찾지 못했습니다.");
+        }
+
+        return ResponseEntity.status(OK).body("주간 회고 삭제에 성공했습니다.");
+    }
+
 }

@@ -109,4 +109,16 @@ public class DailyRemindService {
 
         return true;
     }
+
+    public boolean deleteDailyRemind(int dailyRemindId) {
+        DailyRemind dailyRemind = dailyRemindRepository.findById(dailyRemindId).orElse(null);
+
+        if (dailyRemind == null) {
+            return false;
+        }
+
+        dailyRemindRepository.delete(dailyRemind);
+
+        return true;
+    }
 }
