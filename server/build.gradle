@@ -51,9 +51,6 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
-//	SQL 로그에 값을 주입해주는 의존성
-    implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.1'
-
     // WebSocket
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
 
