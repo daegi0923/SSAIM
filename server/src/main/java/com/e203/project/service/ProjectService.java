@@ -79,8 +79,15 @@ public class ProjectService {
     }
 
     @Transactional
-    public ProjectFindResponseDto findProjectInfo(Integer projectId) {
+    public ProjectFindResponseDto findProjectInfo(Integer projectId, int userId) {
         Project project = findEntity(projectId);
+        if (project == null) {
+            return null;
+        } else if (project.getProjectMembers().stream().noneMatch(member -> member.getUser().getUserId() == userId)) {
+            return ProjectFindResponseDto.builder()
+                    .id(-1)
+                    .build();
+        }
         return getProjectFindResponseDto(project);
     }
 

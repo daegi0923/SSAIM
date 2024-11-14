@@ -35,13 +35,25 @@ public class ProjectController {
     }
 
     @GetMapping("/api/v1/projects/{projectId}")
-    public ResponseEntity<ProjectFindResponseDto> findProjectInfo(@PathVariable Integer projectId) {
-        ProjectFindResponseDto projectInfo = projectService.findProjectInfo(projectId);
+    public ResponseEntity<ProjectFindResponseDto> findProjectInfo(@PathVariable Integer projectId,
+                                                                  @RequestHeader("Authorization") String auth) {
+        int userId = jwtUtil.getUserId(auth.substring(7));
+        ProjectFindResponseDto projectInfo = projectService.findProjectInfo(projectId, userId);
+
+        if (projectInfo == null) {
+            return ResponseEntity.status(NOT_FOUND).body(null);
+        } else if (projectInfo.getId() == -1) {
+            return ResponseEntity.status(FORBIDDEN).body(null);
+        }
         return ResponseEntity.status(OK).body(projectInfo);
     }
 
     @GetMapping("/api/v1/user/{userId}/projects")
-    public ResponseEntity<List<ProjectFindResponseDto>> findAllProjects(@PathVariable Integer userId) {
+    public ResponseEntity<List<ProjectFindResponseDto>> findAllProjects(@PathVariable Integer userId,
+                                                                        @RequestHeader("Authorization") String auth) {
+        if (!jwtUtil.isPermitted(userId, auth)) {
+            return ResponseEntity.status(FORBIDDEN).body(null);
+        }
         List<ProjectFindResponseDto> projectFindResponseDtos = projectService.findAllProjects(userId);
         return ResponseEntity.status(OK).body(projectFindResponseDtos);
     }
