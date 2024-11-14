@@ -38,7 +38,7 @@ public class RecruitingMemberResponseDto {
         this.userId = member.getUser().getUserId();
         this.userName = member.getUser().getUserName();
         this.profileImage = member.getUser().getUserProfileImage();
-        this.position = member.getRecruitingMemberPosition();
+        this.position = member.getPosition();
         this.userEmail = member.getUser().getUserEmail();
     }
 
@@ -48,7 +48,7 @@ public class RecruitingMemberResponseDto {
                 .userId(member.getUser().getUserId())
                 .userName(member.getUser().getUserName())
                 .userEmail(member.getUser().getUserEmail())
-                .position(member.getRecruitingMemberPosition())
+                .position(member.getPosition())
                 .profileImage(member.getUser().getUserProfileImage())
                 .build();
     }

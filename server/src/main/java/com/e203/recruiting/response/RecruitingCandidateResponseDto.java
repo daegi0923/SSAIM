@@ -2,7 +2,6 @@ package com.e203.recruiting.response;
 
 import com.e203.recruiting.entity.RecruitingMember;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -23,8 +22,8 @@ public class RecruitingCandidateResponseDto extends RecruitingMemberResponseDto 
     public static RecruitingCandidateResponseDto fromEntity(RecruitingMember member) {
         return new RecruitingCandidateResponseDto(
                 member,
-                member.getRecruitingMemberMessage(),
-                member.getRecruitingMemberStatus()
+                member.getMessage(),
+                member.getStatus()
         );
 
     }

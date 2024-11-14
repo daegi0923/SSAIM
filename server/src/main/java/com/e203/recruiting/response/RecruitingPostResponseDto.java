@@ -4,7 +4,6 @@ import com.e203.global.entity.ProjectDomain;
 import com.e203.recruiting.entity.BoardRecruiting;
 import lombok.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -32,11 +31,20 @@ public class RecruitingPostResponseDto {
 
     private Integer memberTotal;
 
-    private Integer memberInfra;
+    private Integer infraLimit;
 
-    private Integer memberBackend;
+    @Setter
+    private Integer infraCurrent;
 
-    private Integer memberFrontend;
+    private Integer backendLimit;
+
+    @Setter
+    private Integer backendCurrent;
+
+    private Integer frontLimit;
+
+    @Setter
+    private Integer frontCurrent;
 
     private LocalDateTime createdDate;
 
@@ -48,10 +56,12 @@ public class RecruitingPostResponseDto {
     private Integer recruitedTotal;
 
     @Builder
-    private RecruitingPostResponseDto(Integer postId, Integer authorId, String authorProfileImageUrl, String authorName, String postTitle,
-                                      String postContent, Integer firstDomain, Integer secondDomain, Integer campus,
-                                      Integer memberTotal, Integer memberInfra, Integer memberBackend, Integer memberFrontend,
-                                      LocalDateTime createdDate, LocalDateTime updatedDate, Integer status) {
+    private RecruitingPostResponseDto(Integer postId, Integer authorId, String authorProfileImageUrl, String authorName,
+                                      String postTitle, String postContent, Integer firstDomain, Integer secondDomain,
+                                      Integer campus, Integer memberTotal, Integer infraLimit, Integer infraCurrent,
+                                      Integer backendLimit, Integer backendCurrent, Integer frontLimit,
+                                      Integer frontCurrent, LocalDateTime createdDate, LocalDateTime updatedDate,
+                                      Integer status, Integer recruitedTotal) {
         this.postId = postId;
         this.authorId = authorId;
         this.authorProfileImageUrl = authorProfileImageUrl;
@@ -62,13 +72,18 @@ public class RecruitingPostResponseDto {
         this.secondDomain = secondDomain;
         this.campus = campus;
         this.memberTotal = memberTotal;
-        this.memberInfra = memberInfra;
-        this.memberBackend = memberBackend;
-        this.memberFrontend = memberFrontend;
+        this.infraLimit = infraLimit;
+        this.infraCurrent = infraCurrent;
+        this.backendLimit = backendLimit;
+        this.backendCurrent = backendCurrent;
+        this.frontLimit = frontLimit;
+        this.frontCurrent = frontCurrent;
         this.createdDate = createdDate;
         this.updatedDate = updatedDate;
         this.status = status;
+        this.recruitedTotal = recruitedTotal;
     }
+
 
     RecruitingPostResponseDto(BoardRecruiting recruiting) {
         this.postId = recruiting.getRecruitingId();
@@ -85,9 +100,9 @@ public class RecruitingPostResponseDto {
                 .orElse(null);
         this.campus = recruiting.getCampus();
         this.memberTotal = recruiting.getMemberTotal();
-        this.memberInfra = recruiting.getMemberInfra();
-        this.memberBackend = recruiting.getMemberBackend();
-        this.memberFrontend = recruiting.getMemberFrontend();
+        this.infraLimit = recruiting.getMemberInfra();
+        this.backendLimit = recruiting.getMemberBackend();
+        this.frontLimit = recruiting.getMemberFrontend();
         this.createdDate = recruiting.getCreatedAt();
         this.updatedDate = recruiting.getModifiedAt();
         this.status = recruiting.getStatus();
@@ -109,9 +124,9 @@ public class RecruitingPostResponseDto {
                         .orElse(null))
                 .campus(recruiting.getCampus())
                 .memberTotal(recruiting.getMemberTotal())
-                .memberInfra(recruiting.getMemberInfra())
-                .memberBackend(recruiting.getMemberBackend())
-                .memberFrontend(recruiting.getMemberFrontend())
+                .infraLimit(recruiting.getMemberInfra())
+                .backendLimit(recruiting.getMemberBackend())
+                .frontLimit(recruiting.getMemberFrontend())
                 .createdDate(recruiting.getCreatedAt())
                 .updatedDate(recruiting.getModifiedAt())
                 .status(recruiting.getStatus())
