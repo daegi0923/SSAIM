@@ -454,8 +454,13 @@ public class JiraService {
 
 
 		for (JiraIssueRequestDto jiraIssueRequestDto : jiraIssueRequestDtos) {
+			String issueType = jiraIssueRequestDto.getIssueType();
+			String issueName = jiraIssueRequestDto.getSummary();
+			jiraIssueRequestDto.setSummary(jiraIssueRequestDto.getEpicName());
 			String epicKey = createEpic(projectId, jiraIssueRequestDto).getBody().get("key").toString();
+			jiraIssueRequestDto.setSummary(issueName);
 			jiraIssueRequestDto.setEpicKey(epicKey);
+			jiraIssueRequestDto.setIssueType(issueType);
 			issueKeys.add(createIssue(projectId, jiraIssueRequestDto));
 		}
 
@@ -478,6 +483,7 @@ public class JiraService {
 
 				for (JsonNode task : tasks) {
 					String summary = task.has("summary") ? task.get("summary").asText() : null;
+					String epicName = task.has("epic") ? task.get("epic").asText() : null;
 					String description = task.has("description") ? task.get("description").asText() : null;
 					String issueType = task.has("issueType") ? task.get("issueType").asText() : null;
 					int storyPoint = task.has("storyPoint") && !task.get("storyPoint").isNull()
@@ -486,6 +492,7 @@ public class JiraService {
 
 					JiraIssueRequestDto issueDto = JiraIssueRequestDto.builder()
 							.summary(summary)
+							.epicName(epicName)
 							.description(description)
 							.issueType(issueType)
 							.storyPoint(storyPoint)
