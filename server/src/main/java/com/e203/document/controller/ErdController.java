@@ -30,17 +30,15 @@ public class ErdController {
 		@RequestHeader("Authorization") String auth) {
 
 		int userId = jwtUtil.getUserId(auth.substring(7));
-		String erd = erdService.createErd(projectId, userId, image);
+		String result = erdService.createErd(projectId, userId, image);
 
-		if ("success".equals(erd)) {
-			return ResponseEntity.status(OK).body("ERD가 성공적으로 저장되었습니다.");
-		} else if ("Not authorized".equals(erd)) {
-			return ResponseEntity.status(UNAUTHORIZED).body(erd);
-		} else if ("Not found".equals(erd)) {
-			return ResponseEntity.status(NOT_FOUND).body(erd);
-		} else {
-			return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(erd);
-		}
+		return switch (result) {
+			case "Not found" -> ResponseEntity.status(404).body("Project를 찾을 수 없습니다.");
+			case "Not authorized" -> ResponseEntity.status(403).body("권한이 없습니다.");
+			case "success" -> ResponseEntity.status(200).body("ERD 생성에 완료되었습니다.");
+			case "fail" -> ResponseEntity.status(404).body("ERD 생성에 실패했습니다.");
+			default ->  ResponseEntity.status(200).body("생성이 완료되었습니다.");
+		};
 	}
 
 	@PatchMapping("/api/v1/projects/{projectId}/ERD")
@@ -48,31 +46,30 @@ public class ErdController {
 		@RequestPart(name = "ErdImage", required = false) MultipartFile image,
 		@RequestHeader("Authorization") String auth) {
 		int userId = jwtUtil.getUserId(auth.substring(7));
-		String erd = erdService.updateErd(projectId, userId, image);
+		String result = erdService.updateErd(projectId, userId, image);
 
-		if ("success".equals(erd)) {
-			return ResponseEntity.status(OK).body("ERD가 성공적으로 수정되었습니다.");
-		} else if ("Not authorized".equals(erd)) {
-			return ResponseEntity.status(UNAUTHORIZED).body(erd);
-		} else if ("Not found".equals(erd)) {
-			return ResponseEntity.status(NOT_FOUND).body(erd);
-		} else {
-			return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(erd);
-		}
+		return switch (result) {
+			case "Project not found" -> ResponseEntity.status(NOT_FOUND).body("Project를 찾을 수 없습니다.");
+			case "Not authorized" -> ResponseEntity.status(UNAUTHORIZED).body("권한이 없습니다.");
+			case "ERD not found" -> ResponseEntity.status(NOT_FOUND).body("ERD 찾을 수 없습니다.");
+			case "success" -> ResponseEntity.status(OK).body("ERD 수정이 완료되었습니다.");
+			case "fail" -> ResponseEntity.status(NOT_FOUND).body("ERD 수정에 실패했습니다.");
+			default ->  ResponseEntity.status(OK).body("수정이 완료되었습니다.");
+		};
 	}
 
 	@GetMapping("/api/v1/projects/{projectId}/ERD")
 	public ResponseEntity<String> findErd(@PathVariable Integer projectId,
 		@RequestHeader("Authorization") String auth) {
 		int userId = jwtUtil.getUserId(auth.substring(7));
-		String erd = erdService.findErd(projectId, userId);
-		if("Not authorized".equals(erd)) {
-			return ResponseEntity.status(UNAUTHORIZED).body(erd);
-		}else if("Not found".equals(erd)) {
-			return ResponseEntity.status(NOT_FOUND).body(erd);
-		}else{
-			return ResponseEntity.status(OK).body(erd);
-		}
+		String result = erdService.findErd(projectId, userId);
+
+		return switch (result) {
+			case "Not found" -> ResponseEntity.status(404).body("Project를 찾을 수 없습니다.");
+			case "Not authorized" -> ResponseEntity.status(403).body("권한이 없습니다.");
+			case "fail" -> ResponseEntity.status(404).body("ERD 생성에 실패했습니다.");
+			default ->  ResponseEntity.status(200).body("생성이 완료되었습니다.");
+		};
 	}
 }
 

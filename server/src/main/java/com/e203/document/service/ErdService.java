@@ -44,7 +44,7 @@ public class ErdService {
 			return "success";
 		}
 
-		return "ERD upload fail";
+		return "fail";
 
 	}
 
@@ -52,7 +52,7 @@ public class ErdService {
 	public String updateErd(Integer projectId, int userId, MultipartFile image) {
 		Optional<Project> project = projectRepository.findById(projectId);
 		if (project.isEmpty()) {
-			return "Not found";
+			return "Project not found";
 		} else if (project.get()
 			.getProjectMembers()
 			.stream()
@@ -61,16 +61,16 @@ public class ErdService {
 		}
 
 		if (image != null) {
-			Erd erd = erdRepository.findById(projectId).orElse(null);
+			List<Erd> erd = erdRepository.findByProjectId(projectId);
 			if (erd == null) {
-				return "fail";
+				return "ERD not found";
 			}
 			String imageUrl = fileUploader.upload(image);
-			erd.setImageUrl(imageUrl);
-			return "success";
+			erd.get(0).setImageUrl(imageUrl);
+			return "Success";
 		}
 
-		return "fail";
+		return "Fail";
 	}
 
 	public String findErd(int projectId, int userId) {

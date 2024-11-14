@@ -171,6 +171,7 @@ public class JiraController {
 			return ResponseEntity.status(OK).body("이슈 상태 전환을 성공했습니다.");
 		}
 		return ResponseEntity.status(NOT_FOUND).body("이슈 상태 전환을 실패했습니다.");
+
 	}
 
 	@GetMapping("api/v1/projects/{projectId}/issue/generate")
