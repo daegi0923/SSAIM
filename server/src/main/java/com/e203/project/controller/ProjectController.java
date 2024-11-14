@@ -1,5 +1,6 @@
 package com.e203.project.controller;
 
+import com.e203.jwt.JWTUtil;
 import com.e203.project.dto.request.ProjectCreateRequestDto;
 import com.e203.project.dto.request.ProjectEditRequestDto;
 import com.e203.project.dto.response.ProjectFindResponseDto;
@@ -16,7 +17,10 @@ import static org.springframework.http.HttpStatus.*;
 @RestController
 @RequiredArgsConstructor
 public class ProjectController {
+
     private final ProjectService projectService;
+
+    private final JWTUtil jwtUtil;
 
     @PostMapping("/api/v1/projects")
     public ResponseEntity<String> createProject(@RequestPart("projectInfo") ProjectCreateRequestDto dto,
@@ -51,6 +55,19 @@ public class ProjectController {
             return ResponseEntity.status(NOT_FOUND).body("프로젝트를 찾을 수 없습니다.");
         }
         return ResponseEntity.status(OK).body("프로젝트 정보가 성공적으로 변경되었습니다.");
+    }
+
+    @DeleteMapping("/api/v1/projects/{projectId}")
+    public ResponseEntity<String> removeProject(@PathVariable Integer projectId,
+                                                @RequestHeader("Authorization") String auth) {
+        int userId = jwtUtil.getUserId(auth.substring(7));
+        String result = projectService.removeProject(userId, projectId);
+
+        return switch (result) {
+            case "Not found" -> ResponseEntity.status(NOT_FOUND).body("프로젝트를 찾을 수 없습니다.");
+            case "Not authorized" -> ResponseEntity.status(FORBIDDEN).body("권한이 없습니다.");
+            default -> ResponseEntity.status(OK).body("삭제가 완료되었습니다.");
+        };
     }
 
 }
