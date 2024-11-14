@@ -181,7 +181,7 @@ public class JiraService {
 		return response;
 	}
 
-	public ResponseEntity<Map> modifyIssue(int projectId, IssuePutRequest dto) throws JsonProcessingException {
+	public ResponseEntity<Map> modifyIssue(int projectId, IssuePutRequest dto) {
 		JiraInfo info = getInfo(projectId);
 		if (info == null) {
 			return null;
@@ -189,7 +189,7 @@ public class JiraService {
 
 		String jiraUri = JIRA_URL + "/api/3/issue/" + dto.getIssueKey();
 		JiraIssuePut jiraIssuePut = JiraIssuePut.createPutRequest(dto);
-		String jsonString = objectMapper.writeValueAsString(jiraIssuePut);
+
 		ResponseEntity<Map> response = putJiraApi(jiraUri, info, jiraIssuePut);
 
 		return response;

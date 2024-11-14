@@ -3,7 +3,6 @@ package com.e203.project.dto.jiraapi;
 import java.util.List;
 
 import com.e203.project.dto.request.IssuePutRequest;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Builder;
@@ -18,7 +17,6 @@ public class JiraIssuePut {
 	private JiraIssuePutField fields;
 
 	static public JiraIssuePut createPutRequest(IssuePutRequest request) {
-		;
 		JiraIssuePutField fields = new JiraIssuePutField();
 
 		IssueContent issueContent = new IssueContent("text", request.getDescription());

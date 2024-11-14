@@ -104,7 +104,7 @@ public class JiraController {
 
 	@PutMapping("/api/v1/projects/{projectId}/issue")
 	public ResponseEntity<String> modifyIssue(@PathVariable("projectId") int projectId,
-		@RequestBody IssuePutRequest dto) throws JsonProcessingException {
+		@RequestBody IssuePutRequest dto){
 		ResponseEntity<Map> result = jiraService.modifyIssue(projectId, dto);
 
 		if (result.getStatusCode() == NO_CONTENT) {
