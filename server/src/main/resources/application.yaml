@@ -31,10 +31,13 @@ spring:
   ## MongoDB 설정
   data:
     mongodb:
-      user: ENC(MHMXCpK8eV5lIFF44EYH8g==)
+      host: ENC(IlhDVHF6uzjYhN9AmLp5Cw==)
+      port: 27017
+      authentication-database: ENC(QVXtoH7OkouDMs4+vQwU7g==)
+      username: ENC(qms77jCMi7vofAfKJiA4JA==)
       password: ENC(li2CDuI3TTMtfQ8IzL6fSGCFfXzS1+ul)
-      uri: ENC(qHVHRsYCKJfzhuGKzJo6t0zd7m4rhRoY1jh4HDvu9LyQFvjjrmvFukBZ1jJJUKWx)
-  
+      database: ENC(G3upljZXHU1KH1FCs7RbgtauHBFdK6J1)
+
   ## JPA 설정
   jpa:
     hibernate:
