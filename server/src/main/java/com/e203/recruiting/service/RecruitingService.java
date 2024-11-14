@@ -55,8 +55,8 @@ public class RecruitingService {
         boardRecruiting.setRecruitingMembers(List.of(RecruitingMember.builder()
                 .boardRecruiting(boardRecruiting)
                 .user(boardRecruiting.getAuthor())
-                .recruitingMemberStatus(1)
-                .recruitingMemberPosition(dto.getPosition())
+                .status(1)
+                .position(dto.getPosition())
                 .build()));
 
         recruitingRepository.save(boardRecruiting);
@@ -83,7 +83,7 @@ public class RecruitingService {
 
     private List<RecruitingMemberResponseDto> getActiveRecruitingMembers(List<RecruitingMember> recruiting) {
         return recruiting.stream()
-                .filter(member -> member.getRecruitingMemberStatus() == 1)
+                .filter(member -> member.getStatus() == 1)
                 .map(RecruitingMemberResponseDto::fromEntity)
                 .toList();
     }
@@ -99,7 +99,7 @@ public class RecruitingService {
 
     private List<RecruitingCandidateResponseDto> getAllCandidates(List<RecruitingMember> members) {
         return members.stream()
-                .filter(member -> member.getRecruitingMemberStatus() != 1)
+                .filter(member -> member.getStatus() != 1)
                 .map(RecruitingCandidateResponseDto::fromEntity)
                 .toList();
     }
@@ -107,7 +107,7 @@ public class RecruitingService {
     private List<RecruitingCandidateResponseDto> getUserCandidates(List<RecruitingMember> members, int userId) {
         return members.stream()
                 .filter(member -> member.getUser().getUserId() == userId
-                        && member.getRecruitingMemberStatus() != 1)
+                        && member.getStatus() != 1)
                 .map(RecruitingCandidateResponseDto::fromEntity)
                 .toList();
     }
@@ -119,6 +119,7 @@ public class RecruitingService {
         RecruitingPostDetailResponseDto dto = RecruitingPostDetailResponseDto.fromEntity(recruiting, recruitingMembers, recruitingCandidates);
         dto.setRecruitedTotal(recruitingMembers.size());
         dto.setCandidateCount(members.size() - recruitingMembers.size());
+        setCurrentPositionCounts(members.stream().filter(member -> member.getStatus() == 1).toList(), dto);
         return dto;
     }
 
@@ -139,14 +140,33 @@ public class RecruitingService {
                 .data(recruiting.stream()
                         .map(post -> {
                             RecruitingPostResponseDto dto = RecruitingPostResponseDto.fromEntity(post);
-                            long count = post.getRecruitingMembers().stream()
-                                    .filter(member -> member.getDeletedAt() == null && member.getRecruitingMemberStatus() == 1)
-                                    .count();
-                            dto.setRecruitedTotal((int) count);
+                            List<RecruitingMember> recruitingMembers = post.getRecruitingMembers().stream()
+                                    .filter(member -> member.getDeletedAt() == null && member.getStatus() == 1)
+                                    .toList();
+
+                            setCurrentPositionCounts(recruitingMembers, dto);
+                            dto.setRecruitedTotal(recruitingMembers.size());
+
                             return dto;
                         })
                         .collect(Collectors.toList()))
                 .build();
+    }
+
+    private static void setCurrentPositionCounts(List<RecruitingMember> recruitingMembers, RecruitingPostResponseDto dto) {
+        int front = 0, back = 0, infra = 0;
+
+        for (RecruitingMember recruitingMember : recruitingMembers) {
+            switch (recruitingMember.getPosition()) {
+                case 1 -> front++;
+                case 2 -> back++;
+                case 3 -> infra++;
+            }
+        }
+
+        dto.setFrontCurrent(front);
+        dto.setBackendCurrent(back);
+        dto.setInfraCurrent(infra);
     }
 
     @Transactional
@@ -202,7 +222,7 @@ public class RecruitingService {
     }
 
     private void updateMember(RecruitingMember member, RecruitingMemberEditRequestDto memberEdit) {
-        updateFieldIfPresent(memberEdit.getPosition(), member::setRecruitingMemberPosition);
+        updateFieldIfPresent(memberEdit.getPosition(), member::setPosition);
         if (memberEdit.isDelete()) {
             member.setDeletedAt(LocalDateTime.now());
         }
@@ -247,9 +267,9 @@ public class RecruitingService {
         RecruitingMember applicant = RecruitingMember.builder()
                 .boardRecruiting(recruiting)
                 .user(new User(dto.getUserId()))
-                .recruitingMemberMessage(dto.getMessage())
-                .recruitingMemberPosition(dto.getPosition())
-                .recruitingMemberStatus(0)
+                .message(dto.getMessage())
+                .position(dto.getPosition())
+                .status(0)
                 .build();
 
         recruitingMemberRepository.save(applicant);
@@ -272,14 +292,14 @@ public class RecruitingService {
 
         if (applicant.getUser().getUserId() == userId) {
             if (dto.getPosition() != null) {
-                applicant.setRecruitingMemberPosition(dto.getPosition());
+                applicant.setPosition(dto.getPosition());
             }
             if (dto.getMessage() != null) {
-                applicant.setRecruitingMemberMessage(dto.getMessage());
+                applicant.setMessage(dto.getMessage());
             }
         } else if (recruiting.getAuthor().getUserId() == userId) {
             if (dto.getStatus() != null) {
-                applicant.setRecruitingMemberStatus(dto.getStatus());
+                applicant.setStatus(dto.getStatus());
             }
         } else {
             return "Not authorized";

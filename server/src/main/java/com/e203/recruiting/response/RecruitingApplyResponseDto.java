@@ -46,8 +46,8 @@ public class RecruitingApplyResponseDto {
                         member.getBoardRecruiting().getFirstDomain().getProjectDomainId() : null)
                 .secondDomain(member.getBoardRecruiting().getSecondDomain() != null ?
                         member.getBoardRecruiting().getSecondDomain().getProjectDomainId() : null)
-                .position(member.getRecruitingMemberPosition())
-                .status(member.getRecruitingMemberStatus())
+                .position(member.getPosition())
+                .status(member.getStatus())
                 .build();
     }
 }

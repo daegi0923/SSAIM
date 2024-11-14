@@ -28,24 +28,24 @@ public class RecruitingMember extends BaseEntity {
 
     @Setter
     @Column(name = "recruiting_member_status")
-    private Integer recruitingMemberStatus;
+    private Integer status;
 
     @Setter
     @Column(name = "recruiting_member_message")
-    private String recruitingMemberMessage;
+    private String message;
 
     @Setter
     @Column(name = "recruiting_member_position")
-    private Integer recruitingMemberPosition;
+    private Integer position;
 
     @Builder
-    private RecruitingMember(BoardRecruiting boardRecruiting, User user, Integer recruitingMemberStatus,
-                            String recruitingMemberMessage, Integer recruitingMemberPosition) {
+    private RecruitingMember(BoardRecruiting boardRecruiting, User user, Integer status,
+                             String message, Integer position) {
         this.boardRecruiting = boardRecruiting;
         this.user = user;
-        this.recruitingMemberStatus = recruitingMemberStatus;
-        this.recruitingMemberMessage = recruitingMemberMessage;
-        this.recruitingMemberPosition = recruitingMemberPosition;
+        this.status = status;
+        this.message = message;
+        this.position = position;
     }
 
 }
