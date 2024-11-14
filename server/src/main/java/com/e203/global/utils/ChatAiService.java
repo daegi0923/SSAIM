@@ -127,7 +127,7 @@ public class ChatAiService {
                         "        \"epic\": \"\",\n" +
                         "        \"issueType\": \"\",\n" +
                         "        \"storyPoint\": } ] } ] 로 작성해줘")
-                .user(message)
+                .user(message == null ? "" : message)
                 .call()
                 .content();
     }
