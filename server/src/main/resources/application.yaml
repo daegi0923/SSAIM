@@ -31,9 +31,7 @@ spring:
   ## MongoDB 설정
   data:
     mongodb:
-      user: ENC(19fGr4KfjVU1zSATuSv6hA==)
-      password: ENC(uiWBd8R9xkhDD2xmqG3waWOKu344Lh1b)
-      uri: ENC(qHVHRsYCKJfzhuGKzJo6t0zd7m4rhRoY1jh4HDvu9LyQFvjjrmvFukBZ1jJJUKWx)
+      uri: ENC(xdOJ+1FSBHJv/zO6uSv2EEiYzcGvIAHhamS3D16TluS07xlI8VVKwy6Q+tteWK49a5O7exSFf6J1c9QxC6FGOOUr7dr4eRaPeLZxFcL7kFdQXygzAwl7lzonL9Zx5uW4)
   
   ## JPA 설정
   jpa:
