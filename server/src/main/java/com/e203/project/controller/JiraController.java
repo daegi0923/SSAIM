@@ -6,23 +6,12 @@ import java.util.List;
 import java.util.Map;
 
 import com.e203.project.dto.jiraapi.GenerateJiraRequest;
-import com.e203.project.dto.request.IssuePutRequest;
+import com.e203.project.dto.request.*;
 import com.e203.project.dto.response.GenerateJiraIssueResponse;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import com.e203.project.dto.request.JiraIssueRequestDto;
-import com.e203.project.dto.request.JiraSprintCreateRequestDto;
-import com.e203.project.dto.request.JiraSprintIssuesRequestDto;
 import com.e203.project.dto.response.JiraIssueResponseDto;
-import com.e203.project.dto.request.ProjectJiraConnectDto;
 import com.e203.project.dto.response.ProjectJiraEpicResponseDto;
 import com.e203.project.dto.response.SprintResponseDto;
 import com.e203.project.service.JiraService;
@@ -176,7 +165,7 @@ public class JiraController {
 
 	}
 
-	@GetMapping("api/v1/projects/{projectId}/issue/generate")
+	@PostMapping("api/v1/projects/{projectId}/issue/generate")
 	public ResponseEntity<List<GenerateJiraIssueResponse>> generateIssues(@PathVariable("projectId") Integer projectId,
 												 @RequestBody GenerateJiraRequest generateJiraRequest) {
 
@@ -186,6 +175,20 @@ public class JiraController {
 			return ResponseEntity.status(NOT_FOUND).body(null);
 		}
 		return ResponseEntity.status(OK).body(generateJiraIssueResponse);
+	}
+
+	@PostMapping("/api/v1/projects/{projectId}/sprint/{sprintId}")
+	public ResponseEntity<String> uploadGenerateIssuesOnSprint(@PathVariable("projectId") int projectId,
+															   @PathVariable("sprintId") int sprintId,
+															   @RequestBody List<GenerateJiraIssueRequestDto> requestDto) {
+
+		boolean result = jiraService.inputIssuesOnSprint(projectId, requestDto, sprintId);
+
+		if (result) {
+			return ResponseEntity.status(OK).body("이슈 등록을 완료하였습니다.");
+		}
+
+		return ResponseEntity.status(NOT_FOUND).body("프로젝트를 찾을 수 없습니다.");
 	}
 
 }

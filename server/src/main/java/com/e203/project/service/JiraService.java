@@ -12,7 +12,7 @@ import com.e203.document.service.ApiDocsService;
 import com.e203.global.utils.ChatAiService;
 import com.e203.meeting.request.MeetingRequestDto;
 import com.e203.project.dto.jiraapi.*;
-import com.e203.project.dto.request.IssuePutRequest;
+import com.e203.project.dto.request.*;
 import com.e203.project.dto.response.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -39,12 +39,8 @@ import com.e203.project.dto.jiraapi.Sprint;
 import com.e203.project.dto.jiraapi.SprintResponse;
 import com.e203.project.dto.jiraapi.Transition;
 import com.e203.project.dto.jiraapi.TransitionRequest;
-import com.e203.project.dto.request.JiraIssueRequestDto;
-import com.e203.project.dto.request.JiraSprintCreateRequestDto;
-import com.e203.project.dto.request.JiraSprintIssuesRequestDto;
 import com.e203.project.dto.response.JiraInfo;
 import com.e203.project.dto.response.JiraIssueResponseDto;
-import com.e203.project.dto.request.ProjectJiraConnectDto;
 import com.e203.project.dto.jiraapi.JiraResponse;
 import com.e203.project.dto.response.ProjectJiraEpicResponseDto;
 import com.e203.project.dto.response.SprintResponseDto;
@@ -129,7 +125,6 @@ public class JiraService {
 
 		String jql = "/api/3/search?jql=" +"project=\"" + info.getJiraProjectId() + "\" AND issuetype=Epic";
 		String fields = "&fields=key,summary";
-
 		List<JiraContent> epics = retrieve(jql, fields, info.getEncodedCredentials());
 		return epics.stream().map(ProjectJiraEpicResponseDto::transferDto).collect(Collectors.toList());
 	}
@@ -442,39 +437,50 @@ public class JiraService {
 		}
 	}
 
-	private List<JiraIssueResponseDto> jsonToJiraIssueDto(String jsonString) {
-		List<JiraIssueResponseDto> issues = new ArrayList<>();
-		ObjectMapper mapper = new ObjectMapper();
+	public boolean inputIssuesOnSprint(int projectId, List<GenerateJiraIssueRequestDto> issueDto, int sprintId) {
 
-		try {
-			JsonNode root = mapper.readTree(jsonString);
-
-			for (JsonNode dailyTasks : root) {
-				JsonNode tasks = dailyTasks.get("tasks");
-
-				for (JsonNode task : tasks) {
-					String summary = task.has("summary") ? task.get("summary").asText() : null;
-					String description = task.has("description") ? task.get("description").asText() : null;
-					String issueType = task.has("issueType") ? task.get("issueType").asText() : null;
-					double storyPoint = task.has("storyPoint") && !task.get("storyPoint").isNull()
-							? task.get("storyPoint").asDouble()
-							: 0.0;
-
-					JiraIssueResponseDto issueDto = JiraIssueResponseDto.builder()
-							.summary(summary)
-							.description(description)
-							.issueType(issueType)
-							.storyPoint(storyPoint)
-							.build();
-
-					issues.add(issueDto);
-				}
-			}
-		} catch (Exception e) {
-			System.err.println("Error parsing JSON: " + e.getMessage());
+		Project project = projectRepository.findById(projectId).orElse(null);
+		if (project == null) {
+			return false;
 		}
 
-		return issues;
+		List<JiraIssueRequestDto> jiraIssueRequestDtos = new ArrayList<>();
+
+		for(GenerateJiraIssueRequestDto dto : issueDto) {
+			List<JiraIssueRequestDto> tasks = dto.getTasks().stream()
+					.map(task -> JiraIssueRequestDto.builder()
+							.summary(task.getSummary())
+							.description(task.getDescription())
+							.assignee(task.getAssignee())
+							.issueType(task.getIssueType())
+							.storyPoint(task.getStoryPoint() != null ? task.getStoryPoint() : 0)
+							.epicName(task.getEpic())
+							.build())
+					.collect(Collectors.toList());
+
+			jiraIssueRequestDtos.addAll(tasks);
+		}
+
+		List<String> issueKeys = new ArrayList<>();
+
+
+		for (JiraIssueRequestDto jiraIssueRequestDto : jiraIssueRequestDtos) {
+			String issueType = jiraIssueRequestDto.getIssueType();
+			String issueName = jiraIssueRequestDto.getSummary();
+			jiraIssueRequestDto.setSummary(jiraIssueRequestDto.getEpicName());
+			String epicKey = createEpic(projectId, jiraIssueRequestDto).getBody().get("key").toString();
+			jiraIssueRequestDto.setSummary(issueName);
+			jiraIssueRequestDto.setEpicKey(epicKey);
+			jiraIssueRequestDto.setIssueType(issueType);
+			issueKeys.add(createIssue(projectId, jiraIssueRequestDto));
+		}
+
+		JiraSprintIssuesRequestDto jiraSprintIssuesRequestDto = new JiraSprintIssuesRequestDto();
+		jiraSprintIssuesRequestDto.setIssues(issueKeys);
+
+		uploadIssuesOnSprint(projectId, sprintId, jiraSprintIssuesRequestDto);
+
+		return true;
 	}
 
 }
