@@ -8,10 +8,12 @@ import java.util.Map;
 import com.e203.project.dto.jiraapi.GenerateJiraRequest;
 import com.e203.project.dto.request.*;
 import com.e203.project.dto.response.GenerateJiraIssueResponse;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.e203.project.dto.response.JiraIssueResponseDto;
+import com.e203.project.dto.response.JiraSprintIssueResponseDto;
 import com.e203.project.dto.response.ProjectJiraEpicResponseDto;
 import com.e203.project.dto.response.SprintResponseDto;
 import com.e203.project.service.JiraService;
@@ -51,8 +53,9 @@ public class JiraController {
 	}
 
 	@GetMapping("/api/v1/projects/{projectId}/sprint/{sprintId}/issue")
-	public ResponseEntity<List<JiraIssueResponseDto>> findSprintIssues(@PathVariable Integer projectId, @PathVariable Integer sprintId){
-		List<JiraIssueResponseDto> sprintIssue = jiraService.findSprintIssue(projectId, sprintId);
+	public ResponseEntity<List<JiraSprintIssueResponseDto>> findSprintIssues(@PathVariable Integer projectId,
+		@PathVariable Integer sprintId) {
+		List<JiraSprintIssueResponseDto> sprintIssue = jiraService.findSprintIssue(projectId, sprintId);
 		if (sprintIssue == null) {
 			return ResponseEntity.status(NOT_FOUND).body(null);
 		}
@@ -93,7 +96,7 @@ public class JiraController {
 
 	@PutMapping("/api/v1/projects/{projectId}/issue")
 	public ResponseEntity<String> modifyIssue(@PathVariable("projectId") int projectId,
-		@RequestBody IssuePutRequest dto){
+		@RequestBody IssuePutRequest dto) {
 		ResponseEntity<Map> result = jiraService.modifyIssue(projectId, dto);
 
 		if (result.getStatusCode() == NO_CONTENT) {
@@ -167,9 +170,10 @@ public class JiraController {
 
 	@PostMapping("api/v1/projects/{projectId}/issue/generate")
 	public ResponseEntity<List<GenerateJiraIssueResponse>> generateIssues(@PathVariable("projectId") Integer projectId,
-												 @RequestBody GenerateJiraRequest generateJiraRequest) {
+		@RequestBody GenerateJiraRequest generateJiraRequest) {
 
-		List<GenerateJiraIssueResponse> generateJiraIssueResponse = jiraService.generateIssues(projectId, generateJiraRequest);
+		List<GenerateJiraIssueResponse> generateJiraIssueResponse = jiraService.generateIssues(projectId,
+			generateJiraRequest);
 
 		if (generateJiraIssueResponse == null) {
 			return ResponseEntity.status(NOT_FOUND).body(null);
@@ -179,8 +183,8 @@ public class JiraController {
 
 	@PostMapping("/api/v1/projects/{projectId}/sprint/{sprintId}")
 	public ResponseEntity<String> uploadGenerateIssuesOnSprint(@PathVariable("projectId") int projectId,
-															   @PathVariable("sprintId") int sprintId,
-															   @RequestBody List<GenerateJiraIssueRequestDto> requestDto) {
+		@PathVariable("sprintId") int sprintId,
+		@RequestBody List<GenerateJiraIssueRequestDto> requestDto) {
 
 		boolean result = jiraService.inputIssuesOnSprint(projectId, requestDto, sprintId);
 
