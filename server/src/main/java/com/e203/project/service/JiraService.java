@@ -424,7 +424,7 @@ public class JiraService {
 			Project project = projectRepository.findById(projectId).orElse(null);
 
 			if (project == null) {
-				return null;
+				return new ArrayList<>();
 			}
 
 			String issues = chatAiService.generateJira(generateJiraRequest.getMessage(), apiDocsService.getApiDocsContent(projectId)
@@ -433,6 +433,7 @@ public class JiraService {
 			return objectMapper.readValue(issues, new TypeReference<List<GenerateJiraIssueResponse>>() {});
 		}
 		catch(Exception e){
+			e.printStackTrace();
 			return null;
 		}
 	}

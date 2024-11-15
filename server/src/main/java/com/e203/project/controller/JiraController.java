@@ -172,6 +172,9 @@ public class JiraController {
 		List<GenerateJiraIssueResponse> generateJiraIssueResponse = jiraService.generateIssues(projectId, generateJiraRequest);
 
 		if (generateJiraIssueResponse == null) {
+			return ResponseEntity.status(BAD_REQUEST).body(null);
+		}
+		else if(generateJiraIssueResponse.isEmpty()) {
 			return ResponseEntity.status(NOT_FOUND).body(null);
 		}
 		return ResponseEntity.status(OK).body(generateJiraIssueResponse);
