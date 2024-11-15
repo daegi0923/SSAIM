@@ -125,7 +125,6 @@ public class JiraService {
 
 		String jql = "/api/3/search?jql=" +"project=\"" + info.getJiraProjectId() + "\" AND issuetype=Epic";
 		String fields = "&fields=key,summary";
-		System.out.println(jql);
 		List<JiraContent> epics = retrieve(jql, fields, info.getEncodedCredentials());
 		return epics.stream().map(ProjectJiraEpicResponseDto::transferDto).collect(Collectors.toList());
 	}
