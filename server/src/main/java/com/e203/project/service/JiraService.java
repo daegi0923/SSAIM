@@ -99,7 +99,7 @@ public class JiraService {
 		String jql ="/api/3/search?jql=" +
 			"project=\"" + info.getJiraProjectId() + "\" AND created >= \"" + startDate + "\" AND created <= \""
 				+ endDate + "\"";
-		String fields = "&fields= summary,status,assignee,customfield_10014,customfield_10031, issuetype, description,";
+		String fields = "&fields= summary,status,assignee,customfield_10014,customfield_10031, issuetype, ";
 
 		List<JiraContent> issues = retrieve(jql, fields, info.getEncodedCredentials());
 		return issues.stream().map(JiraIssueResponseDto::transferDto).collect(Collectors.toList());
@@ -112,7 +112,7 @@ public class JiraService {
 			return null;
 		}
 		String jql = "/agile/1.0/sprint/" + sprintId + "/issue";
-		String fields ="?fields=summary,status,assignee,customfield_10014,customfield_10031, issuetype, description,";
+		String fields ="?fields=summary,status,assignee,customfield_10014,customfield_10031, issuetype,";
 
 
 		List<JiraContent> issues = retrieve(jql, fields, info.getEncodedCredentials());
