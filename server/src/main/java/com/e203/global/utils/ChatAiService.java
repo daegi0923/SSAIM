@@ -21,14 +21,10 @@ public class ChatAiService {
     public String generateWeeklyRemind(String message) {
 
         return chatClient.prompt()
-                .system("아래의 내용의 답변을 한글로 해주고 일기 형태로 요약해줘 1일차 2일차 이렇게 구분하지 말고 하나의 이야기처럼 요약해줘\n" +
-                        "그리고 답변을 생성할때 keep 내용 따로 problem 내용 따로 try 내용 따로 요약해줘 요약할때 keep:, problem:, try: 이렇게 하지말고\n" +
-                        "keep 내용\n" +
-                        "\n" +
-                        "problem 내용\n" +
-                        "\n" +
-                        "try 내용 이렇게 보이도록 작성해줘" +
-                        "마지막으로 요약된 내용에 이모티콘을 넣어서 귀엽게 보이도록 작성해줘, 이모티콘은 최소 3개 이상으로 설정해줘")
+                .system("아래 회고의 내용을 요약해서 한글로 답변해주고 답변 형태는 다음의 예시처럼 작성해줘" +
+                        "Keep:\\n- API를 수정사항에 맞게 업데이트하고 다시 작성했습니다. \uD83D\uDCCB\\n- meeting 서비스의 조회 기능을 완료하여 API 연결이 가능하도록 설정했습니다. \uD83D\uDD17\\n- 프론트와 진행상황을 공유하며 필요한 부분을 수정하고 API를 최신화했습니다. \uD83D\uDD04\\n- 금요일과 주말을 활용하여 STT 생성 및 조회, 화자 수정 작업을 모두 완료했습니다. \uD83D\uDDC2\uFE0F\\n- 요청받은 수정사항들을 모두 반영했습니다. \uD83D\uDD27\\n\\n\uD83D\uDFE0 Problem:\\n- 특정 문제점에 대한 언급은 없었습니다.\\n\\n\uD83D\uDD35 Try:\\n- 다음 회의에서는 더 효율적인 작업 분배와 일정 관리 방법을 시도해보세요. ⏰\\n- API의 성능을 더 향상시킬 수 있는 방법을 연구해보세요. \n" +
+                        "그리고 요약된 내용에 이모티콘을 넣어서 귀엽게 보이도록 작성해줘, 이모티콘은 최소 3개 이상으로 설정해줘 " +
+                        "회고 내용은 이 밑에 있어\n")
                 .user(message)
                 .call()
                 .content();
@@ -133,8 +129,9 @@ public class ChatAiService {
                         "        \"description\": \"\",\n" +
                         "        \"epic\": \"\",\n" +
                         "        \"issueType\": \"\",\n" +
-                        "        \"storyPoint\": } ] } ] 로 작성해줘")
-                .user(message == null ? "" : message)
+                        "        \"storyPoint\": } ] } ] 로 작성해줘 \n" +
+                        "만약 api 명세서와 무관한 요구사항이 오면 그냥 api 명세서 따라 스프린트 이슈를 생성해줘")
+                .user(message.isBlank() ? "잘 만들어줘" : message)
                 .call()
                 .content();
     }

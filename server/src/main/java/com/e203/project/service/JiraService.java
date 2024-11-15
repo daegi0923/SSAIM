@@ -431,7 +431,7 @@ public class JiraService {
 			Project project = projectRepository.findById(projectId).orElse(null);
 
 			if (project == null) {
-				return null;
+				return new ArrayList<>();
 			}
 
 			String issues = chatAiService.generateJira(generateJiraRequest.getMessage(),
