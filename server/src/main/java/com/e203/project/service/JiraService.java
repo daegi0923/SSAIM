@@ -125,7 +125,7 @@ public class JiraService {
 
 		String jql = "/api/3/search?jql=" +"project=\"" + info.getJiraProjectId() + "\" AND issuetype=Epic";
 		String fields = "&fields=key,summary";
-
+		System.out.println(jql);
 		List<JiraContent> epics = retrieve(jql, fields, info.getEncodedCredentials());
 		return epics.stream().map(ProjectJiraEpicResponseDto::transferDto).collect(Collectors.toList());
 	}
@@ -483,41 +483,5 @@ public class JiraService {
 
 		return true;
 	}
-
-//	private List<JiraIssueRequestDto> jsonToJiraIssueDto(String jsonString) {
-//		List<JiraIssueRequestDto> issues = new ArrayList<>();
-//
-//		try {
-//			JsonNode root = objectMapper.readTree(jsonString);
-//
-//			for (JsonNode dailyTasks : root) {
-//				JsonNode tasks = dailyTasks.get("tasks");
-//
-//				for (JsonNode task : tasks) {
-//					String summary = task.has("summary") ? task.get("summary").asText() : "빈 요약입니다.";
-//					String epicName = task.has("epic") ? task.get("epic").asText() : "에픽이름이 비었습니다.";
-//					String description = task.has("description") ? task.get("description").asText() : "설명이 비었습니다.";
-//					String issueType = task.has("issueType") ? task.get("issueType").asText() : "이슈타입이 비었습니다.";
-//					int storyPoint = task.has("storyPoint") && !task.get("storyPoint").isNull()
-//							? task.get("storyPoint").asInt()
-//							: 1;
-//
-//					JiraIssueRequestDto issueDto = JiraIssueRequestDto.builder()
-//							.summary(summary)
-//							.epicName(epicName)
-//							.description(description)
-//							.issueType(issueType)
-//							.storyPoint(storyPoint)
-//							.build();
-//
-//					issues.add(issueDto);
-//				}
-//			}
-//		} catch (Exception e) {
-//			return issues;
-//		}
-//
-//		return issues;
-//	}
 
 }
