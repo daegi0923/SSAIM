@@ -174,6 +174,10 @@ public class ProjectService {
         updateFieldIfPresent(dto.getName(), project::setName);
         updateFieldIfPresent(dto.getStartDate(), project::setStartDate);
         updateFieldIfPresent(dto.getEndDate(), project::setEndDate);
+        updateFieldIfPresent(dto.getGitlabUrl(), project::setGitlabUrl);
+        updateFieldIfPresent(dto.getJiraUrl(), project::setJiraUrl);
+        updateFieldIfPresent(dto.getFigmaUrl(), project::setFigmaUrl);
+        updateFieldIfPresent(dto.getSheetUrl(), project::setSheetUrl);
     }
 
 
