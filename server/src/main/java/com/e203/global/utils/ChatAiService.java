@@ -21,7 +21,14 @@ public class ChatAiService {
     public String generateWeeklyRemind(String message) {
 
         return chatClient.prompt()
-                .system("아래의 내용의 답변을 한글로 해주고 일기 형태로 요약해줘 1일차 2일차 이렇게 구분하지 말고 하나의 이야기처럼 요약해줘")
+                .system("아래의 내용의 답변을 한글로 해주고 일기 형태로 요약해줘 1일차 2일차 이렇게 구분하지 말고 하나의 이야기처럼 요약해줘\n" +
+                        "그리고 답변을 생성할때 keep 내용 따로 problem 내용 따로 try 내용 따로 요약해줘 요약할때 keep:, problem:, try: 이렇게 하지말고\n" +
+                        "keep 내용\n" +
+                        "\n" +
+                        "problem 내용\n" +
+                        "\n" +
+                        "try 내용 이렇게 보이도록 작성해줘" +
+                        "마지막으로 요약된 내용에 이모티콘을 넣어서 귀엽게 보이도록 작성해줘, 이모티콘은 최소 3개 이상으로 설정해줘")
                 .user(message)
                 .call()
                 .content();
