@@ -29,15 +29,20 @@ public class DailyRemindService {
     private final UserRepository userRepository;
     private final ProjectMemberRepository projectMemberRepository;
 
-    public boolean saveDailyRemind(DailyRemindRequestDto requestDto, int projectId) {
+    public String saveDailyRemind(int userId, DailyRemindRequestDto requestDto, int projectId) {
 
         log.info("projectId: {}", projectId);
 
         Project project = projectRepository.findById(projectId).orElse(null);
+
+        if (project == null) {
+            return "Not found";
+        }
+
         ProjectMember projectMember = projectMemberRepository.findById(requestDto.getProjectMemberId()).orElse(null);
 
-        if (projectMember == null) {
-            return false;
+        if (projectMember == null || projectMember.getUser().getUserId() != userId) {
+            return "Not authorized";
         }
 
         DailyRemind dailyRemind = DailyRemind.builder()
@@ -48,15 +53,22 @@ public class DailyRemindService {
 
         dailyRemindRepository.save(dailyRemind);
 
-        return true;
+        return "Created";
     }
 
-    public List<DailyRemindResponseDto> searchDailyRemind(Integer projectId, Integer projectMemberId
-    , LocalDate startDate, LocalDate endDate) {
+    public List<DailyRemindResponseDto> searchDailyRemind(int userId, Integer projectId, Integer projectMemberId,
+                                                          LocalDate startDate, LocalDate endDate) {
 
+        Project project = projectRepository.findById(projectId).orElse(null);
 
-        List<DailyRemind> dailyRemindList = dailyRemindRepository.searchDailyReminds(projectMemberId
-        , startDate, endDate, projectId);
+        if (project == null
+                || project.getProjectMembers().stream().noneMatch(member -> member.getUser().getUserId() == userId)) {
+            return null;
+        }
+
+        List<DailyRemind> dailyRemindList
+                = dailyRemindRepository.searchDailyReminds(projectMemberId, startDate, endDate, projectId);
+
         List<DailyRemindResponseDto> dailyRemindResponseDtoList = new ArrayList<>();
 
 
@@ -98,27 +110,35 @@ public class DailyRemindService {
     }
 
     @Transactional
-    public boolean putDailyRemind(DailyRemindRequestDto requestDto, int dailyRemindId) {
+    public String putDailyRemind(int userId, DailyRemindRequestDto requestDto, int dailyRemindId) {
         DailyRemind dailyRemind = dailyRemindRepository.findById(dailyRemindId).orElse(null);
 
         if (dailyRemind == null) {
-            return false;
+            return "Not found";
+        }
+
+        if (dailyRemind.getDailyRemindAuthor().getUser().getUserId() != userId) {
+            return "Not authorized";
         }
 
         dailyRemind.updateDailyRemind(requestDto.getDailyRemindContents());
 
-        return true;
+        return "Edited";
     }
 
-    public boolean deleteDailyRemind(int dailyRemindId) {
+    public String deleteDailyRemind(int userId, int dailyRemindId) {
         DailyRemind dailyRemind = dailyRemindRepository.findById(dailyRemindId).orElse(null);
 
         if (dailyRemind == null) {
-            return false;
+            return "Not found";
+        }
+
+        if (dailyRemind.getDailyRemindAuthor().getUser().getUserId() != userId) {
+            return "Not authorized";
         }
 
         dailyRemindRepository.delete(dailyRemind);
 
-        return true;
+        return "Deleted";
     }
 }

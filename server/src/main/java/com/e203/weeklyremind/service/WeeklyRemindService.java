@@ -32,13 +32,14 @@ public class WeeklyRemindService {
     private final DailyRemindRepository dailyRemindRepository;
     private final AsyncGenerateImageClass asyncGenerateImageClass;
 
-    public boolean saveWeeklyRemind(WeeklyRemindRequestDto message, int projectId) {
+    public boolean saveWeeklyRemind(int userId, WeeklyRemindRequestDto message, int projectId) {
 
         ProjectMember projectMember = projectMemberRepository
                 .findById(message.getProjectMemberId())
                 .orElse(null);
 
-        if (projectMember == null) {
+        if (projectMember == null
+                || projectMember.getUser().getUserId() != userId) {
             return false;
         }
         Project project = projectRepository.findById(projectId).orElse(null);
@@ -70,30 +71,34 @@ public class WeeklyRemindService {
         return true;
     }
 
-    public List<WeeklyRemindResponseDto> searchWeeklyRemind (int projectId, Integer author
-            ,LocalDate checkDate ,LocalDate startDate, LocalDate endDate) {
+    public List<WeeklyRemindResponseDto> searchWeeklyRemind(int userId, int projectId, Integer author,
+                                                            LocalDate checkDate, LocalDate startDate, LocalDate endDate) {
 
-        List<WeeklyRemind> weeklyRemindList = weeklyRemindRepository.findWeeklyReminds(projectId, author
-                , checkDate, startDate ,endDate);
-        List<WeeklyRemindResponseDto> weeklyRemindResponseDtoList = new ArrayList<>();
+        Project project = projectRepository.findById(projectId).orElse(null);
 
-        for(WeeklyRemind weeklyRemind : weeklyRemindList) {
-
-            weeklyRemindResponseDtoList.add(WeeklyRemindResponseDto.builder()
-                    .projectMemberId(weeklyRemind.getWeeklyRemindAuthor().getId())
-                    .projectId(weeklyRemind.getProjectId().getId())
-                    .username(weeklyRemind.getWeeklyRemindAuthor().getUser().getUserName())
-                    .userImage(weeklyRemind.getWeeklyRemindAuthor().getUser().getUserProfileImage())
-                    .content(weeklyRemind.getWeeklyRemindContents())
-                    .weeklyRemindId(weeklyRemind.getWeeklyRemindId())
-                    .startDate(weeklyRemind.getWeeklyRemindStartDate())
-                    .endDate(weeklyRemind.getWeeklyRemindEndDate()).build());
+        if (project == null
+                || project.getProjectMembers().stream().noneMatch(member -> member.getUser().getUserId() == userId)) {
+            return null;
         }
 
-        return weeklyRemindResponseDtoList;
+        List<WeeklyRemind> weeklyRemindList =
+                weeklyRemindRepository.findWeeklyReminds(projectId, author, checkDate, startDate, endDate);
+
+        return weeklyRemindList.stream()
+                .map(weeklyRemind -> WeeklyRemindResponseDto.builder()
+                        .projectMemberId(weeklyRemind.getWeeklyRemindAuthor().getId())
+                        .projectId(weeklyRemind.getProjectId().getId())
+                        .username(weeklyRemind.getWeeklyRemindAuthor().getUser().getUserName())
+                        .userImage(weeklyRemind.getWeeklyRemindAuthor().getUser().getUserProfileImage())
+                        .content(weeklyRemind.getWeeklyRemindContents())
+                        .weeklyRemindId(weeklyRemind.getWeeklyRemindId())
+                        .startDate(weeklyRemind.getWeeklyRemindStartDate())
+                        .endDate(weeklyRemind.getWeeklyRemindEndDate())
+                        .build())
+                .toList();
     }
 
-    public List<DevelopmentStoryResponseDto> searchDevelopmentStory (Integer userId) {
+    public List<DevelopmentStoryResponseDto> searchDevelopmentStory(Integer userId) {
 
         List<WeeklyRemind> weeklyRemindList = weeklyRemindRepository.findWeeklyRemindsByUserId(userId);
         Map<Integer, DevelopmentStoryResponseDto> developmentStoryResponseDtoMap = new HashMap<>();
@@ -136,10 +141,14 @@ public class WeeklyRemindService {
     }
 
     @Transactional
-    public boolean editWeeklyRemind(int weeklyRemindId, int projectId, WeeklyRemindRequestDto message) {
+    public String editWeeklyRemind(int userId, int weeklyRemindId, int projectId, WeeklyRemindRequestDto message) {
         WeeklyRemind weeklyRemind = weeklyRemindRepository.findById(weeklyRemindId).orElse(null);
         if (weeklyRemind == null) {
-            return false;
+            return "Not found";
+        }
+
+        if (weeklyRemind.getWeeklyRemindAuthor().getUser().getUserId() != userId) {
+            return "Not authorized";
         }
 
         List<DailyRemind> dailyRemindList = dailyRemindRepository.searchDailyReminds(message.getProjectMemberId(),
@@ -156,18 +165,22 @@ public class WeeklyRemindService {
         weeklyRemind.updateWeeklyRemind(summary);
         asyncGenerateImageClass.generateImage(summary, weeklyRemindId);
 
-        return true;
+        return "Edited";
     }
 
-    public boolean deleteWeeklyRemind(int weeklyRemindId) {
+    public String deleteWeeklyRemind(int userId, int weeklyRemindId) {
         WeeklyRemind weeklyRemind = weeklyRemindRepository.findById(weeklyRemindId).orElse(null);
 
         if (weeklyRemind == null) {
-            return false;
+            return "Not found";
+        }
+
+        if (weeklyRemind.getWeeklyRemindAuthor().getUser().getUserId() != userId) {
+            return "Not authorized";
         }
 
         weeklyRemindRepository.delete(weeklyRemind);
 
-        return true;
+        return "Deleted";
     }
 }
