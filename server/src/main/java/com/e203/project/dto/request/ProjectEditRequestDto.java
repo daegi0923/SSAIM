@@ -19,5 +19,13 @@ public class ProjectEditRequestDto {
 
     private LocalDate endDate;
 
+    private String gitlabUrl;
+
+    private String jiraUrl;
+
+    private String figmaUrl;
+
+    private String sheetUrl;
+
     private List<ProjectMemberEditRequestDto> projectMembers;
 }
