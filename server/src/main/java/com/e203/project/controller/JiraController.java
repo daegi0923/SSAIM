@@ -9,14 +9,7 @@ import com.e203.project.dto.jiraapi.GenerateJiraRequest;
 import com.e203.project.dto.request.*;
 import com.e203.project.dto.response.GenerateJiraIssueResponse;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.e203.project.dto.response.JiraIssueResponseDto;
 import com.e203.project.dto.response.ProjectJiraEpicResponseDto;
@@ -172,7 +165,7 @@ public class JiraController {
 
 	}
 
-	@GetMapping("api/v1/projects/{projectId}/issue/generate")
+	@PostMapping("api/v1/projects/{projectId}/issue/generate")
 	public ResponseEntity<List<GenerateJiraIssueResponse>> generateIssues(@PathVariable("projectId") Integer projectId,
 												 @RequestBody GenerateJiraRequest generateJiraRequest) {
 
