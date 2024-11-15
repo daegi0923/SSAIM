@@ -12,7 +12,7 @@ import com.e203.document.service.ApiDocsService;
 import com.e203.global.utils.ChatAiService;
 import com.e203.meeting.request.MeetingRequestDto;
 import com.e203.project.dto.jiraapi.*;
-import com.e203.project.dto.request.IssuePutRequest;
+import com.e203.project.dto.request.*;
 import com.e203.project.dto.response.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -39,12 +39,8 @@ import com.e203.project.dto.jiraapi.Sprint;
 import com.e203.project.dto.jiraapi.SprintResponse;
 import com.e203.project.dto.jiraapi.Transition;
 import com.e203.project.dto.jiraapi.TransitionRequest;
-import com.e203.project.dto.request.JiraIssueRequestDto;
-import com.e203.project.dto.request.JiraSprintCreateRequestDto;
-import com.e203.project.dto.request.JiraSprintIssuesRequestDto;
 import com.e203.project.dto.response.JiraInfo;
 import com.e203.project.dto.response.JiraIssueResponseDto;
-import com.e203.project.dto.request.ProjectJiraConnectDto;
 import com.e203.project.dto.jiraapi.JiraResponse;
 import com.e203.project.dto.response.ProjectJiraEpicResponseDto;
 import com.e203.project.dto.response.SprintResponseDto;
@@ -442,14 +438,14 @@ public class JiraService {
 		}
 	}
 
-	public boolean inputIssuesOnSprint(int projectId, String issueString, int sprintId) {
+	public boolean inputIssuesOnSprint(int projectId, JiraIssueStringRequestDto issueStringDto, int sprintId) {
 
 		Project project = projectRepository.findById(projectId).orElse(null);
 		if (project == null) {
 			return false;
 		}
 
-		List<JiraIssueRequestDto> jiraIssueRequestDtos = jsonToJiraIssueDto(issueString);
+		List<JiraIssueRequestDto> jiraIssueRequestDtos = jsonToJiraIssueDto(issueStringDto.getIssueString());
 		List<String> issueKeys = new ArrayList<>();
 
 
@@ -482,13 +478,13 @@ public class JiraService {
 				JsonNode tasks = dailyTasks.get("tasks");
 
 				for (JsonNode task : tasks) {
-					String summary = task.has("summary") ? task.get("summary").asText() : null;
-					String epicName = task.has("epic") ? task.get("epic").asText() : null;
-					String description = task.has("description") ? task.get("description").asText() : null;
-					String issueType = task.has("issueType") ? task.get("issueType").asText() : null;
+					String summary = task.has("summary") ? task.get("summary").asText() : "빈 요약입니다.";
+					String epicName = task.has("epic") ? task.get("epic").asText() : "에픽이름이 비었습니다.";
+					String description = task.has("description") ? task.get("description").asText() : "설명이 비었습니다.";
+					String issueType = task.has("issueType") ? task.get("issueType").asText() : "이슈타입이 비었습니다.";
 					int storyPoint = task.has("storyPoint") && !task.get("storyPoint").isNull()
 							? task.get("storyPoint").asInt()
-							: 0;
+							: 1;
 
 					JiraIssueRequestDto issueDto = JiraIssueRequestDto.builder()
 							.summary(summary)
