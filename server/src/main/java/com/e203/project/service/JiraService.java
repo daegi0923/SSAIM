@@ -4,25 +4,20 @@ import static org.springframework.http.HttpStatus.*;
 
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 import com.e203.document.service.ApiDocsService;
 import com.e203.global.utils.ChatAiService;
-import com.e203.meeting.request.MeetingRequestDto;
 import com.e203.project.dto.jiraapi.*;
 import com.e203.project.dto.request.*;
 import com.e203.project.dto.response.*;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.core.type.TypeReference;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -92,28 +87,28 @@ public class JiraService {
 		if (info == null) {
 			return null;
 		}
-		String jql ="/api/3/search?jql=" +
+		String jql = "/api/3/search?jql=" +
 			"project=\"" + info.getJiraProjectId() + "\" AND created >= \"" + startDate + "\" AND created <= \""
-				+ endDate + "\"";
-		String fields = "&fields= summary,status,assignee,customfield_10014,customfield_10031, issuetype, ";
+			+ endDate + "\"";
+		String fields = "&fields= summary,status,assignee,customfield_10014,customfield_10031, issuetype, description, ";
 
-		List<JiraContent> issues = retrieve(jql, fields, info.getEncodedCredentials());
+		List<JiraContent> issues = retrieve(jql, fields, info.getEncodedCredentials(), JiraContent.class);
 		return issues.stream().map(JiraIssueResponseDto::transferDto).collect(Collectors.toList());
 	}
 
-
-	public List<JiraIssueResponseDto> findSprintIssue(int projectId, int sprintId) {
+	public List<JiraSprintIssueResponseDto> findSprintIssue(int projectId, int sprintId) {
 		JiraInfo info = getInfo(projectId);
 		if (info == null) {
 			return null;
 		}
 		String jql = "/agile/1.0/sprint/" + sprintId + "/issue";
-		String fields ="?fields=summary,status,assignee,customfield_10014,customfield_10031, issuetype,";
+		String fields = "?fields=summary,status,assignee,customfield_10014,customfield_10031, issuetype,description, ";
 
+		List<JiraSprintFindIssueRequest> issues = retrieve(jql, fields, info.getEncodedCredentials(),
+			JiraSprintFindIssueRequest.class);
 
-		List<JiraContent> issues = retrieve(jql, fields, info.getEncodedCredentials());
+		return issues.stream().map(JiraSprintIssueResponseDto::transferDto).collect(Collectors.toList());
 
-		return  issues.stream().map(JiraIssueResponseDto::transferDto).collect(Collectors.toList());
 	}
 
 	public List<ProjectJiraEpicResponseDto> findAllEpics(int projectId) {
@@ -123,9 +118,9 @@ public class JiraService {
 			return null;
 		}
 
-		String jql = "/api/3/search?jql=" +"project=\"" + info.getJiraProjectId() + "\" AND issuetype=Epic";
+		String jql = "/api/3/search?jql=" + "project=\"" + info.getJiraProjectId() + "\" AND issuetype=Epic";
 		String fields = "&fields=key,summary";
-		List<JiraContent> epics = retrieve(jql, fields, info.getEncodedCredentials());
+		List<JiraContent> epics = retrieve(jql, fields, info.getEncodedCredentials(), JiraContent.class);
 		return epics.stream().map(ProjectJiraEpicResponseDto::transferDto).collect(Collectors.toList());
 	}
 
@@ -242,21 +237,33 @@ public class JiraService {
 		return sprints.stream().map(SprintResponseDto::transferDto).collect(Collectors.toList());
 	}
 
-	private List<JiraContent> retrieve(String jql, String fields, String encodedCredentials) {
-		List<JiraContent> issues = new ArrayList<>();
+	private <T> List<T> retrieve(String jql, String fields, String encodedCredentials, Class<T> reqType) {
+		List<T> issues = new ArrayList<>();
 		int startAt = 0;
 		int maxResults = 100;
 		boolean hasMore = true;
+
 		while (hasMore) {
-			String jiraUri =
-				JIRA_URL  + jql + fields + "&startAt=" + startAt + "&maxResults="
-					+ maxResults;
+			String jiraUri = JIRA_URL + jql + fields + "&startAt=" + startAt + "&maxResults=" + maxResults;
+
 			try {
 				String responseBody = getRequestString(jiraUri, encodedCredentials);
-				JiraResponse response = objectMapper.readValue(responseBody, JiraResponse.class);
-				issues.addAll(response.getIssues());
-				startAt += response.getIssues().size();
-				hasMore = startAt < response.getTotal();
+
+				if (reqType.equals(JiraContent.class)) {
+					JiraResponse response = objectMapper.readValue(responseBody, JiraResponse.class);
+					issues.addAll((Collection<? extends T>)response.getIssues()); //	private List<JiraContent> issues;
+					startAt += response.getIssues().size();
+					hasMore = startAt < response.getTotal();
+					
+				} else if (reqType.equals(JiraSprintFindIssueRequest.class)) {
+					JiraSprintFindIssue sprintFindIssue = objectMapper.readValue(responseBody,
+						JiraSprintFindIssue.class);
+					issues.addAll(
+						(Collection<? extends T>)sprintFindIssue.getIssues()); // List<JiraSprintFindIssueRequest> issues;
+					startAt += sprintFindIssue.getIssues().size();
+					hasMore = startAt < sprintFindIssue.getTotal();
+				}
+
 			} catch (Exception e) {
 				handleException("Error occurred while calling Jira API", e);
 				break;
@@ -376,7 +383,7 @@ public class JiraService {
 			return true;
 		} catch (HttpClientErrorException e) {
 			log.error(e.getResponseBodyAsString());
-		}catch(Exception e){
+		} catch (Exception e) {
 			log.error(e.getMessage());
 		}
 		return false;
@@ -406,13 +413,13 @@ public class JiraService {
 	}
 
 	public String parseTransitionName(String origin) {
-		if(origin.equals("todo")){
+		if (origin.equals("todo")) {
 			return "해야 할 일";
 		}
-		if(origin.equals("inProgress")){
+		if (origin.equals("inProgress")) {
 			return "진행 중";
 		}
-		if(origin.equals("done")){
+		if (origin.equals("done")) {
 			return "완료";
 		}
 		return "fail";
@@ -420,20 +427,21 @@ public class JiraService {
 
 	public List<GenerateJiraIssueResponse> generateIssues(int projectId, GenerateJiraRequest generateJiraRequest) {
 
-		try{
+		try {
 			Project project = projectRepository.findById(projectId).orElse(null);
 
 			if (project == null) {
 				return new ArrayList<>();
 			}
 
-			String issues = chatAiService.generateJira(generateJiraRequest.getMessage(), apiDocsService.getApiDocsContent(projectId)
-					, generateJiraRequest.getAssignee(), generateJiraRequest.getStartDate(), generateJiraRequest.getEndDate());
+			String issues = chatAiService.generateJira(generateJiraRequest.getMessage(),
+				apiDocsService.getApiDocsContent(projectId)
+				, generateJiraRequest.getAssignee(), generateJiraRequest.getStartDate(),
+				generateJiraRequest.getEndDate());
 
-			return objectMapper.readValue(issues, new TypeReference<List<GenerateJiraIssueResponse>>() {});
-		}
-		catch(Exception e){
-			e.printStackTrace();
+			return objectMapper.readValue(issues, new TypeReference<List<GenerateJiraIssueResponse>>() {
+			});
+		} catch (Exception e) {
 			return null;
 		}
 	}
@@ -447,23 +455,22 @@ public class JiraService {
 
 		List<JiraIssueRequestDto> jiraIssueRequestDtos = new ArrayList<>();
 
-		for(GenerateJiraIssueRequestDto dto : issueDto) {
+		for (GenerateJiraIssueRequestDto dto : issueDto) {
 			List<JiraIssueRequestDto> tasks = dto.getTasks().stream()
-					.map(task -> JiraIssueRequestDto.builder()
-							.summary(task.getSummary())
-							.description(task.getDescription())
-							.assignee(task.getAssignee())
-							.issueType(task.getIssueType())
-							.storyPoint(task.getStoryPoint() != null ? task.getStoryPoint() : 0)
-							.epicName(task.getEpic())
-							.build())
-					.collect(Collectors.toList());
+				.map(task -> JiraIssueRequestDto.builder()
+					.summary(task.getSummary())
+					.description(task.getDescription())
+					.assignee(task.getAssignee())
+					.issueType(task.getIssueType())
+					.storyPoint(task.getStoryPoint() != null ? task.getStoryPoint() : 0)
+					.epicName(task.getEpic())
+					.build())
+				.collect(Collectors.toList());
 
 			jiraIssueRequestDtos.addAll(tasks);
 		}
 
 		List<String> issueKeys = new ArrayList<>();
-
 
 		for (JiraIssueRequestDto jiraIssueRequestDto : jiraIssueRequestDtos) {
 			String issueType = jiraIssueRequestDto.getIssueType();

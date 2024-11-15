@@ -1,6 +1,7 @@
 package com.e203.project.dto.response;
 
-import com.e203.project.dto.jiraapi.JiraContent;
+import com.e203.project.dto.jiraapi.JiraSprintFields;
+import com.e203.project.dto.jiraapi.JiraSprintFindIssueRequest;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -8,7 +9,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class JiraIssueResponseDto {
+public class JiraSprintIssueResponseDto {
 	private String summary;
 	private String epicCode;
 	private String progress;
@@ -19,7 +20,8 @@ public class JiraIssueResponseDto {
 	private String issueType;
 
 	@Builder
-	private JiraIssueResponseDto(String issueKey, String summary, String epicCode, String progress, double storyPoint,
+	private JiraSprintIssueResponseDto(String issueKey, String summary, String epicCode, String progress,
+		double storyPoint,
 		String allocator, String issueType, String description) {
 		this.issueKey = issueKey;
 		this.summary = summary;
@@ -31,18 +33,19 @@ public class JiraIssueResponseDto {
 		this.description = description;
 	}
 
-	public static JiraIssueResponseDto transferDto(JiraContent jiraContent) {
-		return JiraIssueResponseDto.builder()
+	public static JiraSprintIssueResponseDto transferDto(JiraSprintFindIssueRequest jiraContent) {
+		return JiraSprintIssueResponseDto.builder()
 			.summary(jiraContent.getFields().getSummary())
 			.epicCode(jiraContent.getFields().getEpicCode())
 			.progress(jiraContent.getFields().getStatus().getProgress())
 			.storyPoint(jiraContent.getFields().getStoryPoint() == null ? 0 : jiraContent.getFields().getStoryPoint())
-			.allocator(jiraContent.getFields().getAssignee() == null ? "할당되지 않음" :
-				jiraContent.getFields().getAssignee().getDisplayName())
+			.allocator(
+				jiraContent.getFields().getAssignee() == null ? "할당되지 않음" :
+					jiraContent.getFields().getAssignee().getDisplayName())
 			.issueKey(jiraContent.getKey())
 			.issueType(jiraContent.getFields().getIssuetype().get("name"))
-			.description(jiraContent.getFields().getDescription() == null ? null :
-				jiraContent.getFields().getDescription().getContent().get(0).getContent().get(0).get("text"))
+			.description(jiraContent.getFields().getDescription() == null ? "" :
+				jiraContent.getFields().getDescription())
 			.build();
 
 	}
