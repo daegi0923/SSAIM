@@ -53,11 +53,10 @@ public class GitlabService {
 		project.setGitlabApi(gitlabDto.getGitlabApi());
 		project.setGitlabProjectId(gitlabDto.getGitlabProjectId());
 
-		connectWebhook(gitlabDto.getGitlabProjectId() ,gitlabDto.getGitlabApi());
+		connectWebhook(gitlabDto.getGitlabProjectId(), gitlabDto.getGitlabApi());
 
 		return true;
 	}
-
 
 	public List<ProjectGitlabMRResponseDto> findUserMR(String startDate, String endDate, Integer projectId,
 		int userId) {
@@ -86,20 +85,20 @@ public class GitlabService {
 
 		allMR.stream()
 			.filter(mr -> mr.getMergedBy().getUsername() != null)
-			.filter(mr -> isSameUser(mr.getMergedBy().getUsername(), username))
+			.filter(mr -> isSameUser(mr.getAuthor().getUsername(), username))
 			.forEach(mr -> allMrList.add(
 				ProjectGitlabMRResponseDto.builder().title(mr.getTitle()).mergeDate(mr.getMergedAt()).build()));
 
 		return allMrList;
 	}
 
-	public boolean connectWebhook(String gitlabProjectId, String gitlabApiKey){
-		String uri = "https://lab.ssafy.com/api/v4/projects/"+gitlabProjectId+"/hooks";
+	public boolean connectWebhook(String gitlabProjectId, String gitlabApiKey) {
+		String uri = "https://lab.ssafy.com/api/v4/projects/" + gitlabProjectId + "/hooks";
 
 		ResponseEntity<Map> response = restClient.post()
 			.uri(uri)
 			.contentType(MediaType.APPLICATION_JSON)
-			.header("PRIVATE-TOKEN",gitlabApiKey)
+			.header("PRIVATE-TOKEN", gitlabApiKey)
 			.body(GitlabWebhook.create())
 			.retrieve()
 			.toEntity(Map.class);
