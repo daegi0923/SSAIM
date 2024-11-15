@@ -187,9 +187,9 @@ public class JiraController {
 	@PostMapping("/api/v1/projects/{projectId}/sprint/{sprintId}")
 	public ResponseEntity<String> uploadGenerateIssuesOnSprint(@PathVariable("projectId") int projectId,
 															   @PathVariable("sprintId") int sprintId,
-															   @RequestBody JiraIssueStringRequestDto jiraIssueRequestDto) {
+															   @RequestBody List<GenerateJiraIssueRequestDto> requestDto) {
 
-		boolean result = jiraService.inputIssuesOnSprint(projectId, jiraIssueRequestDto, sprintId);
+		boolean result = jiraService.inputIssuesOnSprint(projectId, requestDto, sprintId);
 
 		if (result) {
 			return ResponseEntity.status(OK).body("이슈 등록을 완료하였습니다.");

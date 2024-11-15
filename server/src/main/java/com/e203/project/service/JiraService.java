@@ -438,14 +438,30 @@ public class JiraService {
 		}
 	}
 
-	public boolean inputIssuesOnSprint(int projectId, JiraIssueStringRequestDto issueStringDto, int sprintId) {
+	public boolean inputIssuesOnSprint(int projectId, List<GenerateJiraIssueRequestDto> issueDto, int sprintId) {
 
 		Project project = projectRepository.findById(projectId).orElse(null);
 		if (project == null) {
 			return false;
 		}
 
-		List<JiraIssueRequestDto> jiraIssueRequestDtos = jsonToJiraIssueDto(issueStringDto.getIssueString());
+		List<JiraIssueRequestDto> jiraIssueRequestDtos = new ArrayList<>();
+
+		for(GenerateJiraIssueRequestDto dto : issueDto) {
+			List<JiraIssueRequestDto> tasks = dto.getTasks().stream()
+					.map(task -> JiraIssueRequestDto.builder()
+							.summary(task.getSummary())
+							.description(task.getDescription())
+							.assignee(task.getAssignee())
+							.issueType(task.getIssueType())
+							.storyPoint(task.getStoryPoint() != null ? task.getStoryPoint() : 0)
+							.epicName(task.getEpic())
+							.build())
+					.collect(Collectors.toList());
+
+			jiraIssueRequestDtos.addAll(tasks);
+		}
+
 		List<String> issueKeys = new ArrayList<>();
 
 
@@ -468,40 +484,40 @@ public class JiraService {
 		return true;
 	}
 
-	private List<JiraIssueRequestDto> jsonToJiraIssueDto(String jsonString) {
-		List<JiraIssueRequestDto> issues = new ArrayList<>();
-
-		try {
-			JsonNode root = objectMapper.readTree(jsonString);
-
-			for (JsonNode dailyTasks : root) {
-				JsonNode tasks = dailyTasks.get("tasks");
-
-				for (JsonNode task : tasks) {
-					String summary = task.has("summary") ? task.get("summary").asText() : "빈 요약입니다.";
-					String epicName = task.has("epic") ? task.get("epic").asText() : "에픽이름이 비었습니다.";
-					String description = task.has("description") ? task.get("description").asText() : "설명이 비었습니다.";
-					String issueType = task.has("issueType") ? task.get("issueType").asText() : "이슈타입이 비었습니다.";
-					int storyPoint = task.has("storyPoint") && !task.get("storyPoint").isNull()
-							? task.get("storyPoint").asInt()
-							: 1;
-
-					JiraIssueRequestDto issueDto = JiraIssueRequestDto.builder()
-							.summary(summary)
-							.epicName(epicName)
-							.description(description)
-							.issueType(issueType)
-							.storyPoint(storyPoint)
-							.build();
-
-					issues.add(issueDto);
-				}
-			}
-		} catch (Exception e) {
-			return issues;
-		}
-
-		return issues;
-	}
+//	private List<JiraIssueRequestDto> jsonToJiraIssueDto(String jsonString) {
+//		List<JiraIssueRequestDto> issues = new ArrayList<>();
+//
+//		try {
+//			JsonNode root = objectMapper.readTree(jsonString);
+//
+//			for (JsonNode dailyTasks : root) {
+//				JsonNode tasks = dailyTasks.get("tasks");
+//
+//				for (JsonNode task : tasks) {
+//					String summary = task.has("summary") ? task.get("summary").asText() : "빈 요약입니다.";
+//					String epicName = task.has("epic") ? task.get("epic").asText() : "에픽이름이 비었습니다.";
+//					String description = task.has("description") ? task.get("description").asText() : "설명이 비었습니다.";
+//					String issueType = task.has("issueType") ? task.get("issueType").asText() : "이슈타입이 비었습니다.";
+//					int storyPoint = task.has("storyPoint") && !task.get("storyPoint").isNull()
+//							? task.get("storyPoint").asInt()
+//							: 1;
+//
+//					JiraIssueRequestDto issueDto = JiraIssueRequestDto.builder()
+//							.summary(summary)
+//							.epicName(epicName)
+//							.description(description)
+//							.issueType(issueType)
+//							.storyPoint(storyPoint)
+//							.build();
+//
+//					issues.add(issueDto);
+//				}
+//			}
+//		} catch (Exception e) {
+//			return issues;
+//		}
+//
+//		return issues;
+//	}
 
 }
