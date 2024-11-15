@@ -245,17 +245,16 @@ public class JiraService {
 
 		while (hasMore) {
 			String jiraUri = JIRA_URL + jql + fields + "&startAt=" + startAt + "&maxResults=" + maxResults;
-			System.out.println(hasMore);
+
 			try {
 				String responseBody = getRequestString(jiraUri, encodedCredentials);
 
-				// 제네릭 타입으로 응답을 파싱
-				// JiraResponse response = objectMapper.readValue(responseBody, new TypeReference<JiraResponse<T>>()
 				if (reqType.equals(JiraContent.class)) {
 					JiraResponse response = objectMapper.readValue(responseBody, JiraResponse.class);
 					issues.addAll((Collection<? extends T>)response.getIssues()); //	private List<JiraContent> issues;
 					startAt += response.getIssues().size();
 					hasMore = startAt < response.getTotal();
+					
 				} else if (reqType.equals(JiraSprintFindIssueRequest.class)) {
 					JiraSprintFindIssue sprintFindIssue = objectMapper.readValue(responseBody,
 						JiraSprintFindIssue.class);
