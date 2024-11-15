@@ -39,10 +39,12 @@ public class JiraSprintIssueResponseDto {
 			.epicCode(jiraContent.getFields().getEpicCode())
 			.progress(jiraContent.getFields().getStatus().getProgress())
 			.storyPoint(jiraContent.getFields().getStoryPoint() == null ? 0 : jiraContent.getFields().getStoryPoint())
-			.allocator("할당되지 않음")
+			.allocator(
+				jiraContent.getFields().getAssignee() == null ? "할당되지 않음" :
+					jiraContent.getFields().getAssignee().getDisplayName())
 			.issueKey(jiraContent.getKey())
 			.issueType(jiraContent.getFields().getIssuetype().get("name"))
-			.description(jiraContent.getFields().getDescription() == null ? null :
+			.description(jiraContent.getFields().getDescription() == null ? "" :
 				jiraContent.getFields().getDescription())
 			.build();
 
