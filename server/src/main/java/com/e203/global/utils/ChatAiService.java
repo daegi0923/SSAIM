@@ -51,7 +51,7 @@ public class ChatAiService {
                         "\t  \"effect\": \"[기대효과]\"" +
                         "}\n" +
                         "json 내용을 파싱하고 싶어. json만 응답해줘.")
-                .user(message)
+                .user(message.isBlank() ? "잘 만들어줘" : message)
                 .call()
                 .content();
     }
@@ -61,15 +61,15 @@ public class ChatAiService {
                 .system("사용자의 요청과 아래의 프로젝트 기획서 내용을 바탕으로 소프트웨어 프로젝트의 기능 명세서를 작성해줘.\n" +
                         proposal +
                         "\n" +
-                        "기능 명세서 양식은 아래와 같이 한글로 자세하게 작성해줘.\n" +
+                        "기능 명세서 양식은 아래와 같은 형식으로 한글로 자세하게 작성해줘.\n" +
                         "{\n" +
                         "    \"category\": [\"분류1\", \"분류2\", ...],\n" +
                         "    \"functionName\": [\"기능1\", \"기능2\", ...],\n" +
                         "    \"description\": [\"설명1\", \"설명2\", ...],\n" +
-                        "    \"priority\": [\"n순위\", \"m순위\", ...]\n" +
+                        "    \"priority\": [\"높음\", \"중간\", ...]\n" +
                         "}\n" +
                         "json 내용을 파싱하고 싶어. json만 응답해줘.")
-                .user(message)
+                .user(message.isBlank() ? "잘 만들어줘" : message)
                 .call()
                 .content();
     }
@@ -79,17 +79,17 @@ public class ChatAiService {
                 .system("사용자의 요청과 아래의 프로젝트 기능 명세서 내용을 바탕으로 소프트웨어 프로젝트의 API 명세서를 작성해줘.\n" +
                         funcDesc +
                         "\n" +
-                        "기능 명세서 양식은 아래와 같이 한글로 자세하게 작성해줘.\n" +
+                        "API 명세서 양식은 아래와 같은 형식으로 한글로 자세하게 작성해줘.\n" +
                         "{\n" +
                         "    \"category\": [\"분류1\", \"분류2\", ...],\n" +
                         "    \"functionName\": [\"기능1\", \"기능2\", ...],\n" +
                         "    \"description\": [\"설명1\", \"설명2\", ...],\n" +
                         "    \"uri\": [\"uri1\", \"uri2\", ...],\n" +
                         "    \"method\": [\"메소드1\", \"메소드2\", ...],\n" +
-                        "    \"priority\": [\"n순위\", \"m순위\", ...],\n" +
+                        "    \"priority\": [\"높음\", \"중간\", ...],\n" +
                         "}\n" +
                         "json 내용을 파싱하고 싶어. json만 응답해줘.")
-                .user(message)
+                .user(message.isBlank() ? "잘 만들어줘" : message)
                 .call()
                 .content();
     }
