@@ -59,7 +59,6 @@ public class JiraController {
 
 		LocalDate localDateStartDate = LocalDate.parse(startDate, formatter);
 		LocalDate localDateEndDate = LocalDate.parse(endDate, formatter);
-		System.out.println(localDateEndDate);
 		if (localDateStartDate.isAfter(localDateEndDate)) {
 			return ResponseEntity.status(BAD_REQUEST).body(null);
 		}
