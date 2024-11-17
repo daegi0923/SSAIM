@@ -25,7 +25,7 @@ public class ProjectEditRequestDto {
 
     private String figmaUrl;
 
-    private String sheetUrl;
+    private String notionUrl;
 
     private List<ProjectMemberEditRequestDto> projectMembers;
 }

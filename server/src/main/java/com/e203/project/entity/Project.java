@@ -71,9 +71,9 @@ public class Project extends BaseEntity {
     @Setter
     private String figmaUrl;
 
-    @Column(name = "project_sheet_url")
+    @Column(name = "project_notion_url")
     @Setter
-    private String sheetUrl;
+    private String notionUrl;
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ProjectMember> projectMembers;
