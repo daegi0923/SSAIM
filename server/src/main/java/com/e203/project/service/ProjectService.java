@@ -177,7 +177,7 @@ public class ProjectService {
         updateFieldIfPresent(dto.getGitlabUrl(), project::setGitlabUrl);
         updateFieldIfPresent(dto.getJiraUrl(), project::setJiraUrl);
         updateFieldIfPresent(dto.getFigmaUrl(), project::setFigmaUrl);
-        updateFieldIfPresent(dto.getSheetUrl(), project::setSheetUrl);
+        updateFieldIfPresent(dto.getNotionUrl(), project::setNotionUrl);
     }
 
 

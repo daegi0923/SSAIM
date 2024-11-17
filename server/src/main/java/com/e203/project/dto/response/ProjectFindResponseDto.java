@@ -22,15 +22,21 @@ public class ProjectFindResponseDto {
     private String jiraBoardId;
     private String gitlabApi;
     private String gitlabId;
+    private String gitlabUrl;
+    private String jiraUrl;
+    private String figmaUrl;
+    private String notionUrl;
     private Integer progressFront;
     private Integer progressBack;
     private List<ProjectMemberFindResponseDto> projectMembers;
 
+
     @Builder
-    private ProjectFindResponseDto(int id, String name, String title, String projectImage, LocalDate startDate,
-                                   LocalDate endDate, String jiraApi, String jiraId, String jiraBoardId,
-                                   String gitlabApi, String gitlabId, Integer progressFront, Integer progressBack,
-                                   List<ProjectMemberFindResponseDto> projectMembers) {
+    public ProjectFindResponseDto(int id, String name, String title, String projectImage, LocalDate startDate,
+                                  LocalDate endDate, String jiraApi, String jiraId, String jiraBoardId, String gitlabApi,
+                                  String gitlabId, String gitlabUrl, String jiraUrl, String figmaUrl, String notionUrl,
+                                  Integer progressFront, Integer progressBack,
+                                  List<ProjectMemberFindResponseDto> projectMembers) {
         this.id = id;
         this.name = name;
         this.title = title;
@@ -42,10 +48,15 @@ public class ProjectFindResponseDto {
         this.jiraBoardId = jiraBoardId;
         this.gitlabApi = gitlabApi;
         this.gitlabId = gitlabId;
+        this.gitlabUrl = gitlabUrl;
+        this.jiraUrl = jiraUrl;
+        this.figmaUrl = figmaUrl;
+        this.notionUrl = notionUrl;
         this.progressFront = progressFront;
         this.progressBack = progressBack;
         this.projectMembers = projectMembers;
     }
+
 
     public static ProjectFindResponseDto fromEntity(Project project, Integer progressFront, Integer progressBack, List<ProjectMemberFindResponseDto> members) {
         return ProjectFindResponseDto.builder()
@@ -60,6 +71,10 @@ public class ProjectFindResponseDto {
                 .jiraBoardId(project.getJiraBoardId())
                 .gitlabApi(project.getGitlabApi())
                 .gitlabId(project.getGitlabProjectId())
+                .gitlabUrl(project.getGitlabUrl())
+                .jiraUrl(project.getJiraUrl())
+                .figmaUrl(project.getFigmaUrl())
+                .notionUrl(project.getNotionUrl())
                 .progressFront(progressFront)
                 .progressBack(progressBack)
                 .projectMembers(members)
