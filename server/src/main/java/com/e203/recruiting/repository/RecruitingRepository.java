@@ -31,7 +31,8 @@ public interface RecruitingRepository extends JpaRepository<BoardRecruiting, Int
             "WHEN 2 THEN r.memberBackend " +
             "WHEN 3 THEN r.memberInfra " +
             "ELSE 0 " +
-            "END)"
+            "END) " +
+            "ORDER BY r.createdAt DESC "
     )
     Page<BoardRecruiting> searchPosts(
             @Param("title") String title,
