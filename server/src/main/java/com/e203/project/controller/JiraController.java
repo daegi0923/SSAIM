@@ -3,6 +3,7 @@ package com.e203.project.controller;
 import static org.springframework.http.HttpStatus.*;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -52,12 +53,18 @@ public class JiraController {
 
 	@GetMapping("/api/v1/projects/{projectId}/issue")
 	public ResponseEntity<List<JiraIssueResponseDto>> findAllJiraIssue(@PathVariable("projectId") Integer projectId,
-		@RequestParam("startDate") LocalDate startDate, @RequestParam("endDate") LocalDate endDate) {
-		if (startDate.isAfter(endDate)) {
+		@RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate) {
+
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-M-d");
+
+		LocalDate localDateStartDate = LocalDate.parse(startDate, formatter);
+		LocalDate localDateEndDate = LocalDate.parse(endDate, formatter);
+		System.out.println(localDateEndDate);
+		if (localDateStartDate.isAfter(localDateEndDate)) {
 			return ResponseEntity.status(BAD_REQUEST).body(null);
 		}
-		List<JiraIssueResponseDto> allJiraIssues = jiraService.findAllJiraIssues(startDate.toString(),
-			endDate.toString(), projectId);
+		List<JiraIssueResponseDto> allJiraIssues = jiraService.findAllJiraIssues(startDate,
+			endDate, projectId);
 		if (allJiraIssues == null) {
 			return ResponseEntity.status(NOT_FOUND).body(null);
 		}
