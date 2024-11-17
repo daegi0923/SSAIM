@@ -116,7 +116,7 @@ public class ChatAiService {
                         "지라 스프린트의 이슈를 생성하고 싶어 스토리포인트는 일주일에 총 40 포인트로 맞춰서 생성해주고 " +
                         "나머지는 위의 api 명세서와 아래의 양식과 사용자의 요구사항에 맞춰서 작성해줘 여기서 일주일은 월화수목금 5일을 말하는거야 \n" +
                         "- 작성 형식은 assignee, summary, description, epic, issueType, storyPoint의 형식으로 작성해줘 \n" +
-                        "- 매일 summary: 오전 스크림, epic: 회의 / summary: 종로 미팅, epic: 회의 이슈를 작성해줘 둘다 issueType은 Task로 작성해주고 스토리 포인트는 1을 부여해줘 \n" +
+                        "- 매일 summary: 오전 스크럼, epic: 회의 / summary: 종료 미팅, epic: 회의 이슈를 작성해줘 둘다 issueType은 Task로 작성해주고 스토리 포인트는 1을 부여해줘 \n" +
                         "- 시작 날짜는 " + startDate + "이고 끝나는 날짜는 " + endDate + "야. \n" +
                         "- 스토리 포인트는 한번에 3 이상을 부여하지 말아줘 \n" +
                         "- 각 이슈마다 summary 마지막에 (yymmdd)로 각 날짜를 작성해줘 yy는년도이고 mm은 월 dd는 요일이야 \n" +
