@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -14,17 +15,24 @@ public interface RecruitingRepository extends JpaRepository<BoardRecruiting, Int
     BoardRecruiting findByRecruitingIdAndDeletedAtIsNull(int recruitingId);
 
     @Query("SELECT r FROM BoardRecruiting r " +
+            "LEFT OUTER JOIN RecruitingMember m " +
+            "ON r.recruitingId = m.boardRecruiting.recruitingId " +
+            "AND (:position IS NULL OR m.position = :position) " +
             "WHERE (r.deletedAt IS NULL)" +
             "AND (:title IS NULL OR r.title LIKE CONCAT('%', :title, '%')) " +
-            "AND (:position IS NULL OR (" +
-            "   (:position = 1 AND r.memberFrontend > 0) OR " +
-            "   (:position = 2 AND r.memberBackend > 0) OR " +
-            "   (:position = 3 AND r.memberInfra > 0)) " +
-            ") " +
             "AND (:campus IS NULL OR r.campus = :campus) " +
             "AND (:domain IS NULL OR r.firstDomain.projectDomainId = :domain OR r.secondDomain.projectDomainId = :domain) " +
             "AND (:status IS NULL OR r.status = :status) " +
-            "AND (:author IS NULL OR r.author.userId = :author)")
+            "AND (:author IS NULL OR r.author.userId = :author) " +
+            "GROUP BY r.recruitingId, r.memberFrontend, r.memberBackend, r.memberInfra " +
+            "HAVING (:position IS NULL OR " +
+            "COUNT(m.id) < CASE :position " +
+            "WHEN 1 THEN r.memberFrontend " +
+            "WHEN 2 THEN r.memberBackend " +
+            "WHEN 3 THEN r.memberInfra " +
+            "ELSE 0 " +
+            "END)"
+    )
     Page<BoardRecruiting> searchPosts(
             @Param("title") String title,
             @Param("position") Integer position,
