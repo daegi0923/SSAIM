@@ -70,7 +70,6 @@ public class JiraController {
 
 		LocalDate localDateStartDate = LocalDate.parse(startDate, formatter);
 		LocalDate localDateEndDate = LocalDate.parse(endDate, formatter);
-
 		if (localDateStartDate.isAfter(localDateEndDate)) {
 			return ResponseEntity.status(BAD_REQUEST).body(null);
 		}
@@ -220,14 +219,14 @@ public class JiraController {
 		if (projectId == null || issueKey == null) {
 			return ResponseEntity.status(NOT_FOUND).body(null);
 		}
-		if (!status.equals("todo") || !status.equals("done") || !status.equals("inProgress")) {
-			return ResponseEntity.status(BAD_REQUEST).body(null);
+		if (status.equals("todo") || status.equals("done") || status.equals("inProgress")) {
+			boolean result = jiraService.transitionIssue(projectId, issueKey, status);
+			if (result) {
+				return ResponseEntity.status(OK).body("이슈 상태 전환을 성공했습니다.");
+			}
 		}
-		boolean result = jiraService.transitionIssue(projectId, issueKey, status);
-		if (!result) {
-			return ResponseEntity.status(NOT_FOUND).body("이슈 상태 전환을 실패했습니다.");
-		}
-		return ResponseEntity.status(OK).body("이슈 상태 전환을 성공했습니다.");
+
+		return ResponseEntity.status(BAD_REQUEST).body(null);
 
 	}
 
