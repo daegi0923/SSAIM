@@ -144,9 +144,7 @@ public class JiraService {
 		JiraInfo info = getInfo(projectId);
 		String jiraUri = JIRA_URL + "/api/3/issue";
 
-		String jiraAccountId = findJiraAccountId(info.getUserEmail(), info.getJiraApi());
-		JiraIssueFields jiraIssueFields = JiraIssueFields.transferJsonObject(dto, info.getJiraProjectId(),
-			jiraAccountId);
+		JiraIssueFields jiraIssueFields = JiraIssueFields.transferJsonObject(dto, info.getJiraProjectId());
 
 		ResponseEntity<Map> result = createIssueAndEpic(jiraUri, info, jiraIssueFields);
 		if (result.getStatusCode() == CREATED) {
@@ -466,8 +464,8 @@ public class JiraService {
 				.map(task -> JiraIssueRequestDto.builder()
 					.summary(task.getSummary())
 					.description(task.getDescription())
-					.assignee(task.getAssignee())
-					.issueType(getAccountId(userId, projectId))
+					.assignee(getAccountId(userId, projectId))
+					.issueType(task.getIssueType())
 					.storyPoint(task.getStoryPoint() != null ? task.getStoryPoint() : 0)
 					.epicName(task.getEpic())
 					.build())
@@ -486,6 +484,7 @@ public class JiraService {
 			jiraIssueRequestDto.setSummary(issueName);
 			jiraIssueRequestDto.setEpicKey(epicKey);
 			jiraIssueRequestDto.setIssueType(issueType);
+			jiraIssueRequestDto.setAssignee(jiraIssueRequestDto.getAssignee());
 			issueKeys.add(createIssue(projectId, jiraIssueRequestDto));
 		}
 
@@ -520,7 +519,7 @@ public class JiraService {
 			if (user == null) {
 				return null;
 			}
-			System.out.println(result.getBody().size());
+
 			for (JiraAccount accounts : Objects.requireNonNull(result.getBody())) {
 				if (accounts.getDisplayName().equals(user.getUserName())) {
 					return accounts.getAccountId();
@@ -532,12 +531,7 @@ public class JiraService {
 		} catch (Exception e) {
 			log.error(e.getMessage());
 		}
-
-		//projectMembers 조회, project에 소속되어 있는지 확인
-
-		//rest api 날려서 accountId 조회
-
-		//해당 user의 name과 비교하여 accountId 찾아내고 return
+		
 		return null;
 	}
 

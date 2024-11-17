@@ -19,18 +19,18 @@ public class JiraIssueFields {
 
 	@Builder
 	private JiraIssueFields(JiraIssueRequest fields) {
-		this.fields= fields;
+		this.fields = fields;
 	}
 
-	public static JiraIssueFields createEpicJsonObject(JiraIssueRequestDto dto, String jiraProjectId){
+	public static JiraIssueFields createEpicJsonObject(JiraIssueRequestDto dto, String jiraProjectId) {
 		dto.setEpicName(dto.getEpicName());
 		dto.setIssueType("Epic");
 
-		return transferJsonObject(dto, jiraProjectId, "");
+		return transferJsonObject(dto, jiraProjectId);
 
 	}
 
-	public static JiraIssueFields transferJsonObject(JiraIssueRequestDto dto, String jiraProjectId, String jiraAccountId) {
+	public static JiraIssueFields transferJsonObject(JiraIssueRequestDto dto, String jiraProjectId) {
 		Map<String, String> content = new HashMap<String, String>();
 		content.put("text", dto.getDescription());
 		content.put("type", "text");
@@ -43,7 +43,7 @@ public class JiraIssueFields {
 			.build();
 
 		JiraIssueRequest jiraIssueRequest = new JiraIssueRequest();
-		jiraIssueRequest.setProject(new HashMap<>(){{
+		jiraIssueRequest.setProject(new HashMap<>() {{
 			put("key", jiraProjectId);
 		}});
 		jiraIssueRequest.setSummary(dto.getSummary());
@@ -53,12 +53,11 @@ public class JiraIssueFields {
 		jiraIssueRequest.setIssueType(new HashMap<>() {{
 			put("name", dto.getIssueType());
 		}});
-		if(!jiraAccountId.isEmpty()){
+		if (!dto.getAssignee().isBlank()) {
 			jiraIssueRequest.setAssignee(new HashMap<>() {{
-				put("id",jiraAccountId);
+				put("id", dto.getAssignee());
 			}});
 		}
-
 
 		return JiraIssueFields.builder()
 			.fields(jiraIssueRequest)
