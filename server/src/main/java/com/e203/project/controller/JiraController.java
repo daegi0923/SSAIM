@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.e203.jwt.JWTUtil;
+
 import com.e203.project.dto.jiraapi.GenerateJiraRequest;
 import com.e203.project.dto.request.*;
 import com.e203.project.dto.response.GenerateJiraIssueResponse;
@@ -26,9 +28,14 @@ import org.springframework.web.bind.annotation.*;
 
 import com.e203.project.dto.response.JiraIssueResponseDto;
 import com.e203.project.dto.response.JiraSprintIssueResponseDto;
+import com.e203.project.dto.response.ProjectFindResponseDto;
 import com.e203.project.dto.response.ProjectJiraEpicResponseDto;
 import com.e203.project.dto.response.SprintResponseDto;
 import com.e203.project.service.JiraService;
+import com.e203.project.service.ProjectService;
+import com.e203.user.entity.User;
+import com.e203.user.repository.UserRepository;
+import com.e203.user.service.UserService;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
@@ -38,6 +45,10 @@ import lombok.RequiredArgsConstructor;
 public class JiraController {
 
 	private final JiraService jiraService;
+	private final JWTUtil jwtUtil;
+	private final ProjectService projectService;
+	private final UserService userService;
+	private final UserRepository userRepository;
 
 	@PatchMapping("/api/v1/projects/{projectId}/jira-api")
 	public ResponseEntity<String> connectJiraApi(@PathVariable("projectId") Integer projectId,
@@ -59,7 +70,7 @@ public class JiraController {
 
 		LocalDate localDateStartDate = LocalDate.parse(startDate, formatter);
 		LocalDate localDateEndDate = LocalDate.parse(endDate, formatter);
-		System.out.println(localDateEndDate);
+
 		if (localDateStartDate.isAfter(localDateEndDate)) {
 			return ResponseEntity.status(BAD_REQUEST).body(null);
 		}
@@ -95,13 +106,17 @@ public class JiraController {
 
 	@PostMapping("/api/v1/projects/{projectId}/issue")
 	public ResponseEntity<String> createIssue(@PathVariable("projectId") Integer projectId,
-		@RequestBody JiraIssueRequestDto dto) {
+		@RequestBody JiraIssueRequestDto dto, @RequestHeader("Authorization") String auth) {
 		if (dto.getSummary().isBlank()) {
 			return ResponseEntity.status(BAD_REQUEST).body(null);
 		}
 		if (dto.getDescription().isBlank()) {
 			dto.setDescription(" ");
 		}
+		int userId = jwtUtil.getUserId(auth.substring(7));
+		String accountId = jiraService.getAccountId(userId, projectId);
+		dto.setAssignee(accountId);
+
 		String result = jiraService.createIssue(projectId, dto);
 
 		if (result.equals("create fail")) {
@@ -234,9 +249,19 @@ public class JiraController {
 	@PostMapping("/api/v1/projects/{projectId}/sprint/{sprintId}")
 	public ResponseEntity<String> uploadGenerateIssuesOnSprint(@PathVariable("projectId") int projectId,
 		@PathVariable("sprintId") int sprintId,
-		@RequestBody List<GenerateJiraIssueRequestDto> requestDto) {
+		@RequestBody List<GenerateJiraIssueRequestDto> requestDto,
+		@RequestHeader("Authorization") String auth) {
 
-		boolean result = jiraService.inputIssuesOnSprint(projectId, requestDto, sprintId);
+		int userId = jwtUtil.getUserId(auth.substring(7));
+		ProjectFindResponseDto projectInfo = projectService.findProjectInfo(projectId, userId);
+
+		if (projectInfo == null) {
+			return ResponseEntity.status(NOT_FOUND).body(null);
+		} else if (projectInfo.getId() == -1) {
+			return ResponseEntity.status(FORBIDDEN).body(null);
+		}
+
+		boolean result = jiraService.inputIssuesOnSprint(projectId, requestDto, sprintId, userId);
 
 		if (result) {
 			return ResponseEntity.status(OK).body("이슈 등록을 완료하였습니다.");
@@ -244,5 +269,4 @@ public class JiraController {
 
 		return ResponseEntity.status(NOT_FOUND).body("프로젝트를 찾을 수 없습니다.");
 	}
-
 }
