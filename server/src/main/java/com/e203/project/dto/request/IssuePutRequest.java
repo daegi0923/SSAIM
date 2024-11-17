@@ -2,11 +2,13 @@ package com.e203.project.dto.request;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 public class IssuePutRequest {
 	private String issueKey;
 	private String summary;
+	@Setter
 	private String description;
 	private int storyPoint;
 
