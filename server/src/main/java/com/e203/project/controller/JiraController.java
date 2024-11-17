@@ -28,7 +28,6 @@ import com.e203.project.dto.response.JiraSprintIssueResponseDto;
 import com.e203.project.dto.response.ProjectJiraEpicResponseDto;
 import com.e203.project.dto.response.SprintResponseDto;
 import com.e203.project.service.JiraService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
@@ -129,7 +128,7 @@ public class JiraController {
 			return ResponseEntity.status(BAD_REQUEST).body(null);
 		}
 		if (dto.getDescription().isBlank()) {
-			dto.setSummary(" ");
+			dto.setDescription(" ");
 		}
 		ResponseEntity<Map> result = jiraService.modifyIssue(projectId, dto);
 

@@ -7,8 +7,8 @@ import lombok.Setter;
 @Getter
 public class IssuePutRequest {
 	private String issueKey;
-	@Setter
 	private String summary;
+	@Setter
 	private String description;
 	private int storyPoint;
 
