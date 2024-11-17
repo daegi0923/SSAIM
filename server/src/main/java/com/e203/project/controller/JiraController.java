@@ -78,7 +78,6 @@ public class JiraController {
 		return ResponseEntity.status(OK).body(sprintIssue);
 	}
 
-
 	@GetMapping("/api/v1/projects/{projectId}/epics")
 	public ResponseEntity<List<ProjectJiraEpicResponseDto>> findAllEpic(@PathVariable("projectId") Integer projectId) {
 		List<ProjectJiraEpicResponseDto> epics = jiraService.findAllEpics(projectId);
@@ -200,11 +199,14 @@ public class JiraController {
 		if (projectId == null || issueKey == null) {
 			return ResponseEntity.status(NOT_FOUND).body(null);
 		}
-		boolean result = jiraService.transitionIssue(projectId, issueKey, status);
-		if (result) {
-			return ResponseEntity.status(OK).body("이슈 상태 전환을 성공했습니다.");
+		if (!status.equals("todo") || !status.equals("done") || !status.equals("inProgress")) {
+			return ResponseEntity.status(BAD_REQUEST).body(null);
 		}
-		return ResponseEntity.status(NOT_FOUND).body("이슈 상태 전환을 실패했습니다.");
+		boolean result = jiraService.transitionIssue(projectId, issueKey, status);
+		if (!result) {
+			return ResponseEntity.status(NOT_FOUND).body("이슈 상태 전환을 실패했습니다.");
+		}
+		return ResponseEntity.status(OK).body("이슈 상태 전환을 성공했습니다.");
 
 	}
 
@@ -217,8 +219,7 @@ public class JiraController {
 
 		if (generateJiraIssueResponse == null) {
 			return ResponseEntity.status(BAD_REQUEST).body(null);
-		}
-		else if(generateJiraIssueResponse.isEmpty()) {
+		} else if (generateJiraIssueResponse.isEmpty()) {
 			return ResponseEntity.status(NOT_FOUND).body(null);
 		}
 		return ResponseEntity.status(OK).body(generateJiraIssueResponse);
