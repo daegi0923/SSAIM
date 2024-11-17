@@ -10,6 +10,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class JiraIssueRequestDto {
 	private String issueKey;
+
 	private String summary;
 	private String description;
 	private String assignee;
@@ -19,7 +20,7 @@ public class JiraIssueRequestDto {
 	private String epicName;
 
 	@Builder
-	private JiraIssueRequestDto(String issueKey,String summary, String description, String assignee,
+	private JiraIssueRequestDto(String issueKey, String summary, String description, String assignee,
 		String epicKey, String issueType, int storyPoint, String epicName) {
 		this.issueKey = issueKey;
 		this.summary = summary;
