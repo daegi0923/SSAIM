@@ -7,6 +7,7 @@ import java.util.Base64;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import com.e203.document.service.ApiDocsService;
@@ -14,11 +15,14 @@ import com.e203.global.utils.ChatAiService;
 import com.e203.project.dto.jiraapi.*;
 import com.e203.project.dto.request.*;
 import com.e203.project.dto.response.*;
+import com.e203.user.entity.User;
+import com.e203.user.repository.UserRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -59,6 +63,7 @@ public class JiraService {
 	private final String JIRA_URL = "https://ssafy.atlassian.net/rest";
 	private final ChatAiService chatAiService;
 	private final ApiDocsService apiDocsService;
+	private final UserRepository userRepository;
 
 	@Transactional
 	public Boolean setJiraApi(ProjectJiraConnectDto jiraConnectDto, int projectId) {
@@ -254,7 +259,7 @@ public class JiraService {
 					issues.addAll((Collection<? extends T>)response.getIssues()); //	private List<JiraContent> issues;
 					startAt += response.getIssues().size();
 					hasMore = startAt < response.getTotal();
-					
+
 				} else if (reqType.equals(JiraSprintFindIssueRequest.class)) {
 					JiraSprintFindIssue sprintFindIssue = objectMapper.readValue(responseBody,
 						JiraSprintFindIssue.class);
@@ -446,13 +451,14 @@ public class JiraService {
 		}
 	}
 
-	public boolean inputIssuesOnSprint(int projectId, List<GenerateJiraIssueRequestDto> issueDto, int sprintId) {
+	public boolean inputIssuesOnSprint(int projectId, List<GenerateJiraIssueRequestDto> issueDto, int sprintId,
+		int userId) {
 
 		Project project = projectRepository.findById(projectId).orElse(null);
 		if (project == null) {
 			return false;
 		}
-
+		String accountId = getAccountId(userId, projectId);
 		List<JiraIssueRequestDto> jiraIssueRequestDtos = new ArrayList<>();
 
 		for (GenerateJiraIssueRequestDto dto : issueDto) {
@@ -461,7 +467,7 @@ public class JiraService {
 					.summary(task.getSummary())
 					.description(task.getDescription())
 					.assignee(task.getAssignee())
-					.issueType(task.getIssueType())
+					.issueType(getAccountId(userId, projectId))
 					.storyPoint(task.getStoryPoint() != null ? task.getStoryPoint() : 0)
 					.epicName(task.getEpic())
 					.build())
@@ -489,6 +495,50 @@ public class JiraService {
 		uploadIssuesOnSprint(projectId, sprintId, jiraSprintIssuesRequestDto);
 
 		return true;
+	}
+
+	public String getAccountId(Integer userId, Integer projectId) {
+		//https://ssafy.atlassian.net/rest/api/3/user/assignable/search?project=S11P31E203
+
+		JiraInfo info = getInfo(projectId);
+		if (info == null) {
+			return "Not Found";
+		}
+		String jiraUri = JIRA_URL + "/api/3/user/assignable/search?project=" + info.getJiraProjectId();
+		try {
+			ResponseEntity<List<JiraAccount>> result = restClient.get()
+				.uri(jiraUri)
+				.header("Authorization", "Basic " + info.getEncodedCredentials())
+				.retrieve()
+				.toEntity(new ParameterizedTypeReference<List<JiraAccount>>() {
+				}); // 리스트로 처리
+
+			if (!result.getStatusCode().is2xxSuccessful()) {
+				return null;
+			}
+			User user = userRepository.findById(userId).orElse(null);
+			if (user == null) {
+				return null;
+			}
+			System.out.println(result.getBody().size());
+			for (JiraAccount accounts : Objects.requireNonNull(result.getBody())) {
+				if (accounts.getDisplayName().equals(user.getUserName())) {
+					return accounts.getAccountId();
+				}
+			}
+
+		} catch (HttpClientErrorException e) {
+			log.error(e.getResponseBodyAsString());
+		} catch (Exception e) {
+			log.error(e.getMessage());
+		}
+
+		//projectMembers 조회, project에 소속되어 있는지 확인
+
+		//rest api 날려서 accountId 조회
+
+		//해당 user의 name과 비교하여 accountId 찾아내고 return
+		return null;
 	}
 
 }
