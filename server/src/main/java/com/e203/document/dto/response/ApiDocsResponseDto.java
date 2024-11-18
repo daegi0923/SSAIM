@@ -25,6 +25,6 @@ public class ApiDocsResponseDto {
 	private List<String> responseHeader;
 	private List<String> requestBody;
 	private List<String> responseBody;
-	private Map<String, List<Integer>> participant;
+	private Map<String, List<String>> participant;
 
 }
