@@ -94,7 +94,7 @@ public class JiraService {
 		}
 		String jql = "/api/2/search?jql=" +
 			"project=\"" + info.getJiraProjectId() + "\" AND created >= \"" + startDate + "\" AND created <= \""
-			+ endDate + "\"";
+			+ endDate + "\"" + " AND issuetype!=Epic ";
 		String fields = "&fields= summary,status,assignee,customfield_10014,customfield_10031, issuetype, description, ";
 
 		List<JiraContent> issues = retrieve(jql, fields, info.getEncodedCredentials(), JiraContent.class);
