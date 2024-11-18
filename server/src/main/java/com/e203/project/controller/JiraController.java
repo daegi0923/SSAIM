@@ -106,10 +106,11 @@ public class JiraController {
 	@PostMapping("/api/v1/projects/{projectId}/issue")
 	public ResponseEntity<String> createIssue(@PathVariable("projectId") Integer projectId,
 		@RequestBody JiraIssueRequestDto dto, @RequestHeader("Authorization") String auth) {
-		if (dto.getSummary().isBlank()) {
+		if (dto.getSummary() == null || dto.getSummary().isBlank()) {
 			return ResponseEntity.status(BAD_REQUEST).body(null);
 		}
-		if (dto.getDescription().isBlank()) {
+
+		if (dto.getDescription() == null || dto.getDescription().isBlank()) {
 			dto.setDescription(" ");
 		}
 		int userId = jwtUtil.getUserId(auth.substring(7));
@@ -127,10 +128,10 @@ public class JiraController {
 	@PutMapping("/api/v1/projects/{projectId}/epics")
 	public ResponseEntity<String> modifyEpic(@PathVariable("projectId") Integer projectId,
 		@RequestBody JiraIssueRequestDto epicUpdateRequestDto) {
-		if (epicUpdateRequestDto.getSummary().isBlank()) {
+		if (epicUpdateRequestDto.getSummary() == null || epicUpdateRequestDto.getSummary().isBlank()) {
 			return ResponseEntity.status(BAD_REQUEST).body(null);
 		}
-		if (epicUpdateRequestDto.getDescription().isBlank()) {
+		if (epicUpdateRequestDto.getDescription() == null || epicUpdateRequestDto.getDescription().isBlank()) {
 			epicUpdateRequestDto.setDescription(" ");
 		}
 
@@ -145,10 +146,10 @@ public class JiraController {
 	@PutMapping("/api/v1/projects/{projectId}/issue")
 	public ResponseEntity<String> modifyIssue(@PathVariable("projectId") int projectId,
 		@RequestBody IssuePutRequest dto) {
-		if (dto.getSummary().isBlank()) {
+		if (dto.getSummary() == null || dto.getSummary().isBlank()) {
 			return ResponseEntity.status(BAD_REQUEST).body(null);
 		}
-		if (dto.getDescription().isBlank()) {
+		if (dto.getDescription() == null || dto.getDescription().isBlank()) {
 			dto.setDescription(" ");
 		}
 		ResponseEntity<Map> result = jiraService.modifyIssue(projectId, dto);
@@ -171,7 +172,7 @@ public class JiraController {
 	@PostMapping("/api/v1/projects/{projectId}/sprint")
 	public ResponseEntity<String> createSprint(@PathVariable("projectId") int projectId,
 		@RequestBody JiraSprintCreateRequestDto dto) {
-		if (dto.getName().isBlank()) {
+		if (dto.getName() == null || dto.getName().isBlank()) {
 			return ResponseEntity.status(BAD_REQUEST).body("스프린트 이름을 지정해주세요.");
 		}
 		String sprint = jiraService.createSprint(dto, projectId);
@@ -201,7 +202,9 @@ public class JiraController {
 		if (projectId == null || sprintId == null) {
 			return ResponseEntity.status(NOT_FOUND).body("project id 또는 sprint id 값이 올바르지 않습니다.");
 		}
-		if (dto.getIssues().isEmpty() || dto.getIssues().stream().anyMatch(String::isBlank)) {
+		if (dto.getIssues() == null || dto.getIssues().isEmpty() || dto.getIssues()
+			.stream()
+			.anyMatch(String::isBlank)) {
 			return ResponseEntity.status(BAD_REQUEST).body("issue list 값이 올바르지 않습니다.");
 		}
 

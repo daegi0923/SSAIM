@@ -92,7 +92,7 @@ public class JiraService {
 		if (info == null) {
 			return null;
 		}
-		String jql = "/api/3/search?jql=" +
+		String jql = "/api/2/search?jql=" +
 			"project=\"" + info.getJiraProjectId() + "\" AND created >= \"" + startDate + "\" AND created <= \""
 			+ endDate + "\"";
 		String fields = "&fields= summary,status,assignee,customfield_10014,customfield_10031, issuetype, description, ";
@@ -123,7 +123,7 @@ public class JiraService {
 			return null;
 		}
 
-		String jql = "/api/3/search?jql=" + "project=\"" + info.getJiraProjectId() + "\" AND issuetype=Epic";
+		String jql = "/api/2/search?jql=" + "project=\"" + info.getJiraProjectId() + "\" AND issuetype=Epic";
 		String fields = "&fields=key,summary";
 		List<JiraContent> epics = retrieve(jql, fields, info.getEncodedCredentials(), JiraContent.class);
 		return epics.stream().map(ProjectJiraEpicResponseDto::transferDto).collect(Collectors.toList());
@@ -531,7 +531,7 @@ public class JiraService {
 		} catch (Exception e) {
 			log.error(e.getMessage());
 		}
-		
+
 		return null;
 	}
 
