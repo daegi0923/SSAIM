@@ -23,9 +23,9 @@ public class JiraIssueFields {
 	}
 
 	public static JiraIssueFields createEpicJsonObject(JiraIssueRequestDto dto, String jiraProjectId) {
-		dto.setEpicName(dto.getEpicName());
+		dto.setSummary(dto.getEpicName());
 		dto.setIssueType("Epic");
-
+		
 		return transferJsonObject(dto, jiraProjectId);
 
 	}
