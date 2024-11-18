@@ -1,6 +1,7 @@
 package com.e203.document.dto.response;
 
 import java.util.List;
+import java.util.Map;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,6 +25,6 @@ public class ApiDocsResponseDto {
 	private List<String> responseHeader;
 	private List<String> requestBody;
 	private List<String> responseBody;
-
+	private Map<String, List<Integer>> participant;
 
 }
