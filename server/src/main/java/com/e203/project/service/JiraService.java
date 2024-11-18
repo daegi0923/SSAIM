@@ -456,18 +456,19 @@ public class JiraService {
 		if (project == null) {
 			return false;
 		}
-		String accountId = getAccountId(userId, projectId);
 		List<JiraIssueRequestDto> jiraIssueRequestDtos = new ArrayList<>();
 
 		for (GenerateJiraIssueRequestDto dto : issueDto) {
 			List<JiraIssueRequestDto> tasks = dto.getTasks().stream()
 				.map(task -> JiraIssueRequestDto.builder()
 					.summary(task.getSummary())
-					.description(task.getDescription())
+					.description(
+						task.getDescription() == null || task.getDescription().isBlank() ? " " : task.getDescription())
 					.assignee(getAccountId(userId, projectId))
-					.issueType(task.getIssueType())
+					.issueType(
+						task.getIssueType() == null || task.getIssueType().isBlank() ? "Story" : task.getIssueType())
 					.storyPoint(task.getStoryPoint() != null ? task.getStoryPoint() : 0)
-					.epicName(task.getEpic())
+					.epicName(task.getEpic() == null || task.getEpic().isBlank() ? null : task.getEpic())
 					.build())
 				.collect(Collectors.toList());
 
@@ -480,9 +481,11 @@ public class JiraService {
 			String issueType = jiraIssueRequestDto.getIssueType();
 			String issueName = jiraIssueRequestDto.getSummary();
 			jiraIssueRequestDto.setSummary(jiraIssueRequestDto.getEpicName());
-			String epicKey = createEpic(projectId, jiraIssueRequestDto).getBody().get("key").toString();
 			jiraIssueRequestDto.setSummary(issueName);
-			jiraIssueRequestDto.setEpicKey(epicKey);
+			if (jiraIssueRequestDto.getEpicName() != null) {
+				String epicKey = createEpic(projectId, jiraIssueRequestDto).getBody().get("key").toString();
+				jiraIssueRequestDto.setEpicKey(epicKey);
+			}
 			jiraIssueRequestDto.setIssueType(issueType);
 			jiraIssueRequestDto.setAssignee(jiraIssueRequestDto.getAssignee());
 			issueKeys.add(createIssue(projectId, jiraIssueRequestDto));
