@@ -18,7 +18,6 @@ public class JiraFields {
 	private String epicCode;
 	private JiraStatus status;
 	private Map<String, String> issuetype;
-	private IssueDescription description;
-
+	private String description;
 
 }

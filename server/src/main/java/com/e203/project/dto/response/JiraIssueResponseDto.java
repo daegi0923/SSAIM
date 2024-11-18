@@ -42,7 +42,7 @@ public class JiraIssueResponseDto {
 			.issueKey(jiraContent.getKey())
 			.issueType(jiraContent.getFields().getIssuetype().get("name"))
 			.description(jiraContent.getFields().getDescription() == null ? null :
-				jiraContent.getFields().getDescription().getContent().get(0).getContent().get(0).get("text"))
+				jiraContent.getFields().getDescription())
 			.build();
 
 	}
