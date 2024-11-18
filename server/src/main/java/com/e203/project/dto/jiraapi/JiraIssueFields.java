@@ -23,11 +23,12 @@ public class JiraIssueFields {
 	}
 
 	public static JiraIssueFields createEpicJsonObject(JiraIssueRequestDto dto, String jiraProjectId) {
+		String summary = dto.getSummary();
 		dto.setSummary(dto.getEpicName());
 		dto.setIssueType("Epic");
-		
-		return transferJsonObject(dto, jiraProjectId);
-
+		JiraIssueFields jiraIssueFields = transferJsonObject(dto, jiraProjectId);
+		dto.setSummary(summary);
+		return jiraIssueFields;
 	}
 
 	public static JiraIssueFields transferJsonObject(JiraIssueRequestDto dto, String jiraProjectId) {
