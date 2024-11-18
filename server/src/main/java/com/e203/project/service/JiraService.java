@@ -94,7 +94,7 @@ public class JiraService {
 		}
 		String jql = "/api/2/search?jql=" +
 			"project=\"" + info.getJiraProjectId() + "\" AND created >= \"" + startDate + "\" AND created <= \""
-			+ endDate + "\"" + " AND issuetype!=Epic ";
+			+ endDate + "\"" + " AND issuetype!=Epic ORDER BY created ASC";
 		String fields = "&fields= summary,status,assignee,customfield_10014,customfield_10031, issuetype, description, ";
 
 		List<JiraContent> issues = retrieve(jql, fields, info.getEncodedCredentials(), JiraContent.class);
@@ -107,7 +107,7 @@ public class JiraService {
 			return null;
 		}
 		String jql = "/agile/1.0/sprint/" + sprintId + "/issue";
-		String fields = "?fields=summary,status,assignee,customfield_10014,customfield_10031, issuetype,description, ";
+		String fields = "?fields=summary,status,assignee,customfield_10014,customfield_10031, issuetype,description&jql=issuetype != Epic ORDER BY created ASC ";
 
 		List<JiraSprintFindIssueRequest> issues = retrieve(jql, fields, info.getEncodedCredentials(),
 			JiraSprintFindIssueRequest.class);
@@ -123,7 +123,7 @@ public class JiraService {
 			return null;
 		}
 
-		String jql = "/api/2/search?jql=" + "project=\"" + info.getJiraProjectId() + "\" AND issuetype=Epic";
+		String jql = "/api/3/search?jql=" + "project=\"" + info.getJiraProjectId() + "\" AND issuetype=Epic";
 		String fields = "&fields=key,summary";
 		List<JiraContent> epics = retrieve(jql, fields, info.getEncodedCredentials(), JiraContent.class);
 		return epics.stream().map(ProjectJiraEpicResponseDto::transferDto).collect(Collectors.toList());
