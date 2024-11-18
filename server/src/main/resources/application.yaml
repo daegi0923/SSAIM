@@ -61,7 +61,7 @@ spring:
   ## OpenAI 설정
   ai:
     openai:
-      api-key: ENC(Q3Uz+kDQOa6uqGIIOPKQir6wuluFtPJh//eW64znzhcEgLQicPcQEbhvzSwIVnYuJJTj0UbT+113Py5wLQJEUsR9X1xViczbxSgwcOZ/2QiSlvZnVVrRs8gKdro6zUhQcVDOacXRa0POlqxgmvXl+u9OMKASTKbiLd0LInJIr2eReoxCpwlAM8xEkFmMg5fImKZahb1VbUwdQXpTHuCqDFOIkoFn9uQN1uVIJy/hDx4=)
+      api-key: ENC(lqAqTTkXvzx6GWOoDXgfBTtW7AyaMU2FdylJXtTtKBCrQzi1k2sfewx0iTcB0rz7rO79lDcf9/YYGvAxz8CcrBmotpUngAhYEIpIgGkHmUQpZmbeeNlM/gCd8uaMsXS8yXXmgpLUNYEc9vew1R5GHEmwnxTcVJdZZT4XvvTDk/nV2pmjevO2JoFiC6f9ImvMWHukKbGFz9VWq60lotMGrL8pmSKsz3UbgXyKQEl1Hzg=)
       chat:
         options:
           model: gpt-4o
