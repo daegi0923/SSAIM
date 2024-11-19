@@ -1,0 +1,6 @@
+/* ProjectRemindPage.module.css */
+.pageContainer {
+    position: relative; /* 상대 위치로 설정하여 절대 위치 요소에 기준이 됩니다 */
+  }
+  
+  

@@ -1,0 +1,50 @@
+.container {
+  overflow-y: auto; /* 세로 스크롤 활성화 */
+  border-right: 0.1px solid #ddd;
+  background-color: #fff;
+  height : 400px;
+  max-height : 400px;
+  min-width: 300px;
+  scrollbar-width: none !important; /* Firefox */
+  -ms-overflow-style: none !important; /* IE, Edge */
+}
+
+.container::-webkit-scrollbar {
+  display: none !important; /* 우선순위 강제 */
+}
+
+.header {
+  border-bottom: 1px solid #ddd;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 1.1em;
+  color: #555;
+  font-weight: 600;
+  padding: 0 16px;
+  background-color: #f4f4f4;
+  position: sticky;
+  top: 0; /* sticky 작동 기준 */
+  z-index: 10; /* 다른 요소 위로 표시 */
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto; /* 컨텐츠 스크롤 가능 */
+  flex: 1; /* 남은 공간 채우기 */
+}
+.noData {
+  text-align: center;
+  color: #888;
+  font-style: italic;
+  margin-top: 20px;
+}
+
+.loadingContent{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 300px;
+}

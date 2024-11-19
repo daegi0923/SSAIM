@@ -1,0 +1,126 @@
+.signUpContainer {
+  min-width: 100%;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 40px;
+  color: #333;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+.label {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 5px;
+}
+
+/* 이미지 선택 섹션 */
+.imageSection {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+  cursor: pointer;
+}
+
+.imagePlaceholder {
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #e0e0e0;
+  border-radius: 50%;
+  font-size: 14px;
+  color: #666;
+  text-align: center;
+}
+
+.imagePreview {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="date"],
+select {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+  color: #333;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="number"]:focus,
+input[type="date"]:focus,
+select:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 4px rgba(0, 123, 255, 0.3);
+}
+
+/* 에러 메시지 스타일 */
+.errorMessage {
+  color: #d9534f;
+  font-size: 14px;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+/* 제출 버튼 스타일 */
+.submitButton {
+  padding: 12px;
+  background-color: #007bff;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.submitButton:hover {
+  background-color: #0056b3;
+}
+
+/* 뒤로 가기 버튼 스타일 */
+.backButton {
+  position: absolute;
+  left: 30px;
+  top: 40px;
+  color: #333;
+  font-weight: 500;
+  transition: color 0.3s, font-weight 0.3s;
+}
+
+.backButton:hover {
+  color: #000;
+  font-weight: 700;
+}

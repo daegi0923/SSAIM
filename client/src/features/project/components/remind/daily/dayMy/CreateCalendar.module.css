@@ -1,0 +1,32 @@
+.calendar {
+    width: 280px;
+}
+
+:global(.react-calendar) {
+    border: none ;
+}
+
+:global(.react-calendar__navigation__label) {
+    font-size: 14px; 
+    font-weight: bold;
+    pointer-events: none; /* 클릭을 비활성화 */
+    opacity: 1 !important; /* 흐려지지 않도록 유지 */
+    cursor: default; /* 커서를 기본 모양으로 */
+}
+
+:global(.react-calendar__month-view__weekdays__weekday abbr) {
+    text-decoration: none;
+} 
+
+:global(.react-calendar__tile--now) {
+    background-color: #FBFFAA ; 
+}
+
+:global(.react-calendar__tile) {
+    margin-bottom: 3px ;
+}
+
+:global(.react-calendar__tile--active) {
+    background-color: #007bff !important; 
+    color: white ; 
+}

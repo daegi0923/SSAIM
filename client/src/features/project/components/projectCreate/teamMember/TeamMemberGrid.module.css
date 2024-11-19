@@ -1,0 +1,122 @@
+.gridContainer {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(5, auto);
+  gap: 10px;
+}
+
+.memberBox {
+  display: flex;
+  justify-content: space-between;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 5px 30px;
+  position : relative;
+  height : 50px;
+}
+.memberBoxLeft {
+  display: flex;
+  align-items: center;
+}
+.profileImage {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+  border : 1px solid #ddd;
+}
+
+.memberInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.email {
+  font-size: 12px;
+  color: #aaa;
+}
+
+.addBox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed #ddd;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 24px;
+  color: #666;
+}
+
+.name {
+  text-align: left;
+}
+.memberBoxRight {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.removeButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  color: #ff4d4f;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 24px;
+  transition: background-color 0.3s ease;
+}
+
+.removeButton:hover {
+  color : white;
+  background-color: #d9363e; /* 호버 시 더 어두운 색상 */
+}
+.leaderButton {
+  background-color: #4CAF50; /* 기본 녹색 */
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.leaderButton:hover {
+  background-color: #45a049; /* 호버 시 조금 더 어두운 녹색 */
+  transform: scale(1.05); /* 약간 확대 */
+}
+
+.leaderButton:disabled {
+  background-color: #ddd; /* 비활성화 시 회색 */
+  color: #aaa;
+  cursor: not-allowed;
+}
+
+.leaderCrown{
+  position: absolute;
+  left :-7.5px;
+  top: 5px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+.leaderRibbon{
+  position : absolute;
+  background-color : #0000F7;
+  left : 5px;
+  width : 15px;
+  height : 110%;
+  border-radius : 3px;
+}

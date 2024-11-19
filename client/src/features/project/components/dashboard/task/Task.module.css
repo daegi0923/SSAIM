@@ -1,0 +1,71 @@
+/* Task.module.css */
+.jira {
+  background-color: #e2edfb; /* Jira 연한 파란색 */
+  color: #357DE8;
+  border-bottom : 1px solid rgba(53, 125, 232, 0.2);
+}
+
+.gitlab {
+  background-color: #ffe0cc; /* GitLab 연한 오렌지 */
+  color: #fc6d26;
+  border-bottom : 1px solid rgba(252, 109, 38, 0.2);
+}
+
+.meeting {
+  background-color:#b9eddb; /* 회의록 연한 초록색 */
+  color: #198861;
+  border-bottom : 1px solid rgba(25, 136, 97, 0.2);
+}
+
+.task {
+  font-size : 0.9rem;
+  line-height : 1.3rem;
+  min-height : 40px;
+  display: flex;
+  align-items: center;
+  /* transition: transform 0.5s, box-shadow 0.5s; 애니메이션 효과 */
+
+  opacity: 0; /* 초기 상태: 투명 */
+  animation: fadeIn 1s forwards; /* fadeIn 애니메이션 적용 */
+  padding-left: 0.5rem;
+}
+
+@keyframes fadeIn {
+  from {
+      opacity: 0; /* 애니메이션 시작: 투명 */
+  }
+  to {
+      opacity: 1; /* 애니메이션 종료: 불투명 */
+  }
+}
+
+.task:hover {
+  /* filter: brightness(0.95); 마우스 오버 시 밝아짐 */
+
+}
+
+.taskTitle {
+  /* 공통 스타일 */
+  font-weight: bold;
+  padding: 8px 12px; /* 가로 여백을 살짝 더 넓게 */
+  color: white; /* 텍스트 색상을 흰색으로 통일 */
+  transition: background-color 0.3s ease; /* 배경색 전환 효과 */
+  display : flex;
+  justify-content: space-between;
+}
+
+.jira-title {
+  background-color: #4a90e2; /* Jira 색상 변경 */
+}
+
+.gitlab-title {
+  background-color: #fc6d26; /* GitLab 오렌지 */
+}
+
+.meeting-title {
+  background-color:#1dab79; /* 회의록 초록 */
+}
+
+.taskTitle:hover {
+  filter: brightness(1.1); /* 마우스 오버 시 밝아짐 */
+}

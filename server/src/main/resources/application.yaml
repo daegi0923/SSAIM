@@ -1,0 +1,85 @@
+server:
+  ## SSL 설정
+  ssl:
+    key-store: classpath:ssl/keystore.p12
+    key-store-password: ENC(ZhwAAvI0E4+27aMceE1yX6S4xGNQ8hv7)
+    key-store-type: PKCS12
+
+spring:
+  ## 기본 설정
+  application:
+    name: server
+
+  ## Jackson 설정
+  jackson:
+    time-zone: Asia/Seoul
+
+  ## 서블릿 설정
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 100MB
+      max-request-size: 100MB
+  
+  ## MySQL 설정
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: ENC(xPjELBLjOj95Wwe3SELd9A==)
+    password: ENC(MlhBMa4p/8AyE+JrRf2VmurvINVU+c2V)
+    url: ENC(PvrdFqoZIXCEQ2cHxPY14dJDWacC4qKiV08pKtjbYIKXBsS5K+91jcn4vQkeQeb8)
+  
+  ## MongoDB 설정
+  data:
+    mongodb:
+      host: ENC(IlhDVHF6uzjYhN9AmLp5Cw==)
+      port: 27017
+      authentication-database: ENC(QVXtoH7OkouDMs4+vQwU7g==)
+      username: ENC(qms77jCMi7vofAfKJiA4JA==)
+      password: ENC(li2CDuI3TTMtfQ8IzL6fSGCFfXzS1+ul)
+      database: ENC(G3upljZXHU1KH1FCs7RbgtauHBFdK6J1)
+
+  ## JPA 설정
+  jpa:
+    hibernate:
+      ddl-auto: update
+  
+  ## JWT 설정
+  jwt:
+    secret: 5wlXHtmN2l/i74J7a/A7mxiR5xYNmiRLJa6kfwgBg74biLDj1wT62BNoltMxw9sEDMzb/CEB4l0=
+  
+  ## 로깅
+  logging:
+    level:
+      org.springframework.data.mongodb.core.MongoTemplate: DEBUG
+  
+  ## CLOVA 설정
+  naver:
+    cloud:
+      url: ENC(V60O8eTNILfEkz6CQXGUo39Ts3ketkXbhG8m3z5A8+ocwQf3xu8L8omgeDmNDt+57y2hD7uV4DgEr3XeLuG18FajJ93pfZE/m5XIy3+sj5j2rQjYNc9VTyCYRvVIjjiDmc4+ancKTyYdfGKeUkWAxKRZ4wtlouIWKOYp5AYXgRo=)
+      secret: ENC(xA03xBoT+28mrbdQW4sUZL+5HgtlIALzgXpOUEbng2ByQagV//PNUxMGBhLCpTEJ)
+
+  ## OpenAI 설정
+  ai:
+    openai:
+      api-key: ENC(lqAqTTkXvzx6GWOoDXgfBTtW7AyaMU2FdylJXtTtKBCrQzi1k2sfewx0iTcB0rz7rO79lDcf9/YYGvAxz8CcrBmotpUngAhYEIpIgGkHmUQpZmbeeNlM/gCd8uaMsXS8yXXmgpLUNYEc9vew1R5GHEmwnxTcVJdZZT4XvvTDk/nV2pmjevO2JoFiC6f9ImvMWHukKbGFz9VWq60lotMGrL8pmSKsz3UbgXyKQEl1Hzg=)
+      chat:
+        options:
+          model: gpt-4o
+          temperature: 0.6
+
+
+
+# AWS 설정
+cloud:
+  aws:
+    s3:
+      bucket: ENC(fq697tmFV3OHQLZOGqQAba+ZLwUKjJRb)
+    credentials:
+      access-key: ENC(jKK17HUN1wKki+Sy+ToRoke9E6HSdzlXE3A1eBmCaAQ=)
+      secret-key: ENC(pIxK6ZbcPRyLp+3nrtxQuy5XSZwSl/NUdtlmE4pTBTMapQrKyA6exgz3WlQcW6cjTwEyMNALh6w=)
+    region:
+      static: ap-northeast-2
+      auto: false
+    stack:
+      auto: false
+    cloudfront: ENC(PjxAffgcS0Ykunp4ZT6xC2HxfVw5PRDWeCaOLiO3jCItSWEooUbP9crTq5Gfv++2)

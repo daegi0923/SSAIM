@@ -1,0 +1,18 @@
+.container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    margin: 50px 0px;
+}
+
+.h1{
+    font-size: 60px;
+    width: 270px;
+}
+
+.stopIcon{
+    width: 7%;
+    height: 7%;
+}

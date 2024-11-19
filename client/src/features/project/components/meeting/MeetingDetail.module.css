@@ -1,0 +1,235 @@
+.container {
+    display: flex;
+    height: 80vh;
+}
+
+.left {
+    flex: 4; /* 왼쪽 섹션 크기 */
+    padding: 0px 40px;
+    border-right: 1px solid #ccc; /* 오른쪽 경계선 */
+    display: flex;
+    flex-direction: column;
+}
+
+.right {
+    flex: 1; /* 오른쪽 섹션 크기 */
+    display: flex;
+    padding: 0px 20px;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+.summaryBox {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    margin-top: 20px;
+    padding: 15px;
+    width: auto;
+    max-height: 50vh; /* 최대 높이 설정 */
+    border: 1px solid rgba(25, 136, 97, 0.5);
+    border-radius: 10px;
+    font-size: 14px;
+    line-height: 1.2;
+    overflow: hidden; /* 기본 오버플로우 숨김 */
+}
+
+.summaryText {
+    max-height: 100%;
+    overflow-y: auto; 
+    line-height: 1.6;
+}
+
+/* WebKit 기반 브라우저의 스크롤바 숨김 */
+.summaryText::-webkit-scrollbar {
+    display: none; 
+}
+
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 0;
+    gap: 20px;
+}
+
+.headerLeft {
+    width: 600px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.title {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 0px;
+}
+
+.titleEditContainer {
+    position: relative;
+    display: inline-block;
+    width: 17vw; /* 원하는 width로 설정 */
+  }
+  
+.titleInput {
+    width: 90%;
+    padding-right: 50px; /* 버튼 자리 확보 */
+    padding: 5px 20px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+  
+.saveButton {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 5px;
+    font-size: 12px;
+    background-color: #198861;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.meetingInfo {
+    display: flex;
+    gap: 30px;
+    color: #666;
+    font-size: 14px;
+}
+
+.deleteButton {
+    width: 50px;
+    height: 23px;
+    margin-left: auto;
+    background-color: #FA563B;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.deleteButton:hover {
+    background-color: #c94d35; 
+}
+
+.stickyBox {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: #fff;
+    padding: 10px 0px;
+    border-bottom: 0.1px solid #dedddd;
+}
+
+.content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px 0;
+    height: calc(100vh - 140px);
+    margin-top: 20px;
+}
+
+.contentTitle {
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.participants {
+    display: flex;
+    flex-direction: column;
+}
+
+.participantBox {
+    display: flex;
+    padding: 15px;
+}
+
+.participantBox img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.participantName {
+    display: inline-block;
+    font-weight: bold;
+    margin-top: 0px;
+    margin-bottom: 5px;
+    transition: color 0.2s ease, font-size 0.2s ease;
+}
+
+.participantName:hover {
+    color: #198861; /* 글자 색상 변경 */
+    font-size: 17px; /* 글자 크기 증가 */
+    cursor: pointer;
+}
+
+.comment {
+    margin: 0;
+    line-height: 1.5;
+    color: #333;
+    font-size: 14px;
+}
+
+.comment:hover {
+    color: #198861; 
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.noHover {
+    color: inherit; /* 기존 색상 유지 */
+    cursor: default; /* 기본 커서 유지 */
+  }
+
+.noHover:hover {
+    color: inherit; /* 기존 색상 유지 */
+    cursor: default; /* 기본 커서 유지 */
+  }
+
+
+.highlight {
+    background-color: #ade06a;
+}
+
+.h3 {
+    font-size: 18px;
+    margin: 0;
+    text-align: start;
+
+}
+
+
+.commentEditContainer {
+    position: relative;
+    display: inline-block;
+    width: 60vw; /* 원하는 width로 설정 */
+    
+}
+.commentInput {
+    width: 90%;
+    padding: 5px 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    word-wrap: break-word; /* 긴 단어 줄바꿈 */
+    word-break: break-word; /* 긴 단어 줄바꿈 */
+    white-space: pre-wrap; /* 공백과 줄바꿈 유지 */
+    resize: none; /* 사용자가 크기 조정 못하도록 */
+    overflow: hidden; /* 스크롤바 숨김 */
+    line-height: 1.5;
+    
+}

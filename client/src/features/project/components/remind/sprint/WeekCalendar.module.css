@@ -1,0 +1,33 @@
+.calendarWrapper {
+    width: 280px;
+}
+
+.customCalendar {
+    border: none;
+}
+
+.customCalendar__navigation__label {
+    font-size: 14px;
+    font-weight: bold;
+    pointer-events: none; /* 클릭을 비활성화 */
+    opacity: 1 !important; /* 흐려지지 않도록 유지 */
+    cursor: default; /* 커서를 기본 모양으로 */
+}
+
+.customCalendar__month-view__weekdays__weekday abbr {
+    text-decoration: none;
+}
+
+.customCalendar__tile {
+    margin-bottom: 3px;
+}
+
+.weekdayTile {
+    background-color: #913BF6;
+    color: white;
+}
+
+.activeTile {
+    background-color: #913BF6 !important; /* 선택된 월요일 스타일 */
+    color: white !important;
+}

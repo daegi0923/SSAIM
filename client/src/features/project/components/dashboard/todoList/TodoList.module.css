@@ -1,0 +1,97 @@
+/* TodoList.module.css */
+
+.todoList {
+  width: 800px;
+  height: 300px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background-color: #f4f4f4;
+  margin : 20px;
+
+}
+
+.todoListHeader {
+  width : 100%;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #333;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+  border-radius: 8px;
+
+  padding: 12px 0;
+  position: sticky;
+  top: 0;
+  background-color: #f4f4f4;
+  z-index: 1;
+}
+.todoListBody{
+  height: calc(100% - 60px); /* todoListHeader height */
+  overflow-y : scroll;
+  border-radius: 8px;
+
+}
+.todoListItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  background-color: #ffffff;
+  margin: 5px 0px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  color: #333;
+  font-size: 1rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.todoListItem:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.taskTitle {
+  font-weight: 500;
+  color: #333;
+  font-size: 1.1rem;
+  margin-left : 5px;
+}
+
+.taskEpic {
+  font-size: 0.9rem;
+  color: #ffffff;
+  background-color: #3c90e2;
+  padding: 4px 8px;
+  border-radius: 4px;
+  margin-right: 1.0rem;
+
+}
+
+.taskPriority {
+  font-size: 0.8rem;
+  font-weight: bold;
+  padding: 4px 8px;
+  border-radius: 5px;
+  background-color: #e6e6e6;
+}
+
+.taskPriority.low {
+  background-color: #a5d6a7;
+  color: #2e7d32;
+}
+
+.taskPriority.medium {
+  background-color: #ffcc80;
+  color: #ef6c00;
+}
+
+.taskPriority.high {
+  background-color: #ef9a9a;
+  color: #c62828;
+}
+.noData {
+  text-align: center;
+  color: #888;
+  font-style: italic;
+  margin-top: 20px;
+}

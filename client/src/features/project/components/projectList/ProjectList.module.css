@@ -1,0 +1,45 @@
+/* ProjectList.module.css */
+.header {
+  padding: 10px 20px;
+  display: flex;
+  border-bottom: 2px solid #e0e0e0;
+  justify-content: space-between;
+}
+
+.projectTitle {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.body {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px; /* 카드 사이 간격 */
+  padding: 20px;
+}
+.profileImage {
+  width: 150px;
+  height: 150px;
+  border-radius: 10%;
+  overflow: hidden;
+}
+.projectItem {
+  width: calc(45% - 30px); /* 한 줄에 두 개 배치 */
+  padding: 20px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-size: 18px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+}
+.cardLeft {
+  margin-right : 20px;
+}
+.cardRight p{
+  font-size : 16px;
+
+}

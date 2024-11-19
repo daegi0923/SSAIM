@@ -1,0 +1,31 @@
+body {
+    overflow-y: scroll; /* 스크롤바를 항상 표시 */
+}
+
+.body {
+    box-sizing: border-box; /* 컨테이너 안의 여백 계산 포함 */
+}
+
+.outputHeader {
+    display: flex;
+    width: 90%;
+    flex-direction: row;
+    justify-self: center;
+    justify-content: space-between;
+    margin-bottom: 40px;
+    border-bottom: 1px solid #d9d9d9;
+}
+
+.outputButton {
+    width: 25%;
+    padding: 10px 0;
+    font-size: 24px;
+    color: #949494;
+    font-weight: 700;
+    text-align: center;
+    cursor: pointer;
+}
+
+.active {
+    color: #4B0082;
+}

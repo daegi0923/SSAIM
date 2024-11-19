@@ -1,0 +1,57 @@
+.remindBG {
+    position: fixed; /* 고정 위치 */
+    top: 0; /* 화면 상단에 맞춤 */
+    left: 0; /* 화면 좌측에 맞춤 */
+    width: 100vw; /* 화면 전체 너비 */
+    height: 100vh; /* 화면 전체 높이 */
+    object-fit: cover; /* 비율을 유지하면서 꽉 채움 */
+    z-index: -1; /* 다른 요소들 뒤에 배치 */
+    opacity: 0.9;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 150px;
+    gap: 100px;
+}
+
+.remindIntroText{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 100px;
+
+}
+
+.remindIntro {
+    width: 70%;
+}
+
+.remindIntroDesc {
+    color: white;
+    font-size: 24px;
+    white-space: pre-line;
+}
+
+.remindButton{
+    display: flex;
+    justify-content: space-evenly;
+    gap: 40px;
+    width: auto;
+    height: auto;
+}
+
+.remindCreate{
+    width: 40%;
+    height: 40%;
+
+}
+
+.remindList{
+    width: 40%;
+    height: 40%;
+
+}

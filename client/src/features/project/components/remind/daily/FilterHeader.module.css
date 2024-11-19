@@ -1,0 +1,88 @@
+.filterHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    height: 50px;
+    padding: 10px 20px;
+}
+
+.dateTitle{
+    display: flex;
+    align-items: center;
+    text-align: center;
+    gap: 10px;
+    color: #007bff;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.filter {
+    display: flex;
+    gap: 50px;
+}
+
+.dayWeek {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    cursor: pointer;
+}
+
+.myTeam {
+    display: flex;
+    gap: 20px;
+}
+
+.active {
+    display: flex;
+    align-items: center;
+    color: #007bff;
+    font-weight: bold;
+    gap: 5px;
+}
+
+.disactive {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.members{
+    width: auto;
+    height: auto;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    gap: 2px;
+}
+
+.teamMember{
+    margin: 0px;
+    position: relative;
+}
+
+.memberImage {
+    width: 25px;
+    height: 25px;
+    margin: 0px;
+    border-radius: 50%;
+    border: 1px solid #ddd;
+}
+
+.selected {
+    border: 2px solid #007bff;
+  }
+
+.tooltip {
+    position: absolute;
+    /* bottom: 35px; */
+    background-color: gray;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+    transform: translateX(-50%);
+    z-index: 1;
+}

@@ -1,0 +1,30 @@
+.container {
+    display: flex;
+    height: 82vh;
+}
+
+.left {
+    flex: 4; /* 왼쪽 섹션 크기 */
+    padding: 0px 20px;
+    border-right: 1px solid #ccc; /* 오른쪽 경계선 */
+}
+
+.right {
+    flex: 1; /* 오른쪽 섹션 크기 */
+    display: flex;
+    padding: 0px 20px;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+.remindContent {
+    display: flex;
+    flex-direction: column;
+}
+
+
+.description {
+    color: #808080;
+}
+

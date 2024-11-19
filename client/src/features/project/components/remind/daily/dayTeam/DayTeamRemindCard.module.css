@@ -1,0 +1,67 @@
+
+.DayTeamRemindCard {
+    background-color: #f1f1f1;
+    height: 16vh;
+    padding: 15px;
+    border-radius: 10px;
+    position: relative;
+    overflow: hidden;
+    transform-origin: center; 
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    z-index: 1; 
+}
+
+
+.DayTeamRemindCard:nth-child(1) { background-color: #FDE3E3; }
+.DayTeamRemindCard:nth-child(2) { background-color: #FFF6D1; }
+.DayTeamRemindCard:nth-child(3) { background-color: #E7F4DD; }
+.DayTeamRemindCard:nth-child(4) { background-color: #E3E7FD; }
+.DayTeamRemindCard:nth-child(5) { background-color: #FDE3FD; }
+.DayTeamRemindCard:nth-child(6) { background-color: #E3F1FD; }
+
+.DayTeamRemindCard:hover {
+    transform: scale(1.1); /* 카드 확대 */
+    height: auto; /* 높이를 자동으로 설정하여 전체 텍스트 표시 */
+    min-height:17vh;
+    max-height:19vh;
+    z-index: 10;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 그림자 추가 */
+}
+
+.reviewTitle {
+    display: flex;
+    flex-direction: columns;
+    margin-bottom: 5px;
+
+}
+
+.DayTeamRemindCard img {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.userName {
+    font-weight: bold;
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.reviewText {
+    font-size: 11px;
+    white-space: pre-wrap;
+    line-height: 1.6;
+    min-height: 13vh; 
+    max-height: 16vh; /* 텍스트가 넘칠 때를 대비해 최대 높이 설정 */
+    overflow-y: hidden; /* 기본 상태에서는 스크롤 숨김 */
+    transition: overflow-y 0.3s ease;
+}
+
+.DayTeamRemindCard:hover .reviewText {
+    overflow-y: auto; /* hover 시 스크롤 표시 */
+}
+
+.reviewText::-webkit-scrollbar {
+    display: none; 
+}

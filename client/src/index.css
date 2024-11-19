@@ -1,0 +1,46 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: 'NEXON Lv1 Gothic OTF', sans-serif;
+
+}
+
+button {
+  font-family: 'NEXON Lv1 Gothic OTF', sans-serif;
+
+}
+/* 
+@font-face {
+  font-family: 'GmarketSansMedium';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+} */
+
+@font-face {
+  font-family: 'NEXON Lv1 Gothic OTF';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.1/NEXON Lv1 Gothic OTF.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+::-webkit-scrollbar {
+  width: 8px; /* 세로 스크롤바 너비 */
+  height: 8px; /* 가로 스크롤바 높이 */
+}
+
+::-webkit-scrollbar-track {
+  background: #f0f0f0; /* 스크롤바 트랙(배경) 색상 */
+  border-radius: 5px; /* 둥근 모서리 */
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888; /* 슬라이더 색상 */
+  border-radius: 5px; /* 둥근 모서리 */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555; /* 슬라이더에 마우스 올렸을 때 색상 */
+}
+
+

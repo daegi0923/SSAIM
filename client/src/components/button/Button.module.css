@@ -1,0 +1,104 @@
+.button {
+    cursor: pointer;
+    font-weight: bold;
+    border: none;
+    outline: none; 
+    padding: 0px;
+}
+
+.button:focus {
+    outline: none; 
+}
+
+/* Size Variants */
+.xsmall {
+    width: 100px; 
+    height: 30px; 
+    font-size: 15px;
+    border-radius: 20px;
+}
+
+.small {
+    width: 140px; 
+    height: 55px; 
+    font-size: 20px;
+    border-radius: 20px;
+}
+
+.medium {
+    width: 500px; 
+    height: 38px; 
+    font-size: 18px;
+    border-radius: 10px;
+}
+
+.large {
+    width: 280px; 
+    height: 90px; 
+    font-size: 24px;
+    margin: 30px 0px;
+    border-radius: 20px;
+}
+.custom {
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+}
+
+/* Color Variants */
+.greenNormal {
+    background-color: #198861;
+    color: white;
+}
+
+.greenNormal:hover {
+    background-color: #156a4f; 
+}
+
+.redNormal {
+    background-color: #FA563B;
+    color: white;
+}
+
+.redNormal:hover {
+    background-color: #c94d35; 
+}
+
+.blueNormal {
+    background-color: #0997EE;
+    color: white;
+}
+
+.blueNormal:hover {
+    background-color: #0074b3; 
+}
+
+.navyNormal {
+    background-color: #1F2574;
+    color: white;
+}
+
+.navyNormal:hover {
+    background-color: #151e4e; 
+}
+
+.purpleNormal {
+    background-color: #913BF6;
+    color: white;
+}
+
+.purpleNormal:hover {
+    background-color: #7b31b4; 
+}
+
+.whiteNormal {
+    background-color: white;
+    color: black;
+    border: 1.5px solid black;
+}
+
+.whiteNormal:hover {
+    background-color: #f1f1f1; 
+    border: 1.5px solid black;
+
+}

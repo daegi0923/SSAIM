@@ -1,0 +1,71 @@
+/* DashboardLayout.module.css */
+.layout {
+  height: 100%;
+  overflow: hidden;
+  padding: 10px;
+}
+
+.dashboardBottom {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chartContainer {
+  width: 600px;
+  height: 400px;
+}
+
+.weeklyScheduleContainer {
+}
+.chartContainer {
+  width: 300px;
+  height: 300px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  margin : 20px;
+  border : 1px solid #ddd;
+}
+
+.buttonGrid {
+  display: grid;
+  width : 260px;
+  height: 260px;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 15px;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.gridButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #3c90e2;
+  color: #ffffff;
+  font-size: 1.5rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  flex-direction: column;
+}
+
+.gridButton img{
+  width: 2rem;
+}
+
+.gridButton:hover {
+  background-color: #0056b3;
+  box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+.gridButton:active {
+  background-color: #004085;
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}

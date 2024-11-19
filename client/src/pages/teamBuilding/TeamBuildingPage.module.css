@@ -1,0 +1,307 @@
+.page {
+    flex: 1;
+    box-sizing: border-box;
+    justify-self: center;
+    width: 90%;
+    margin-top: 70px;
+}
+
+.pageHeader {
+    display: flex;
+    justify-content: space-between;
+}
+
+.pageTitle {
+    font-size: 32px;
+    font-weight: bold;
+}
+
+.timeSection {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    gap: 30px;
+    font-size: 12px;
+    color:#949494
+}
+
+.detailContainer {
+    display: flex;
+    flex: 1;
+    width: 100%;
+    border-top: 1px solid #d9d9d9;
+}
+
+.postSection {
+    display: flex;
+    flex-direction: column;
+    margin: 20px;
+    margin-right: 5%;
+    width: 70%;
+    gap: 20px;
+}
+
+.postHeader {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+}
+
+.positionSection {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    margin-right: 10px;
+}
+
+.postContent {
+    border: 1px solid #d9d9d9;
+    box-sizing: border-box;
+    padding: 20px;
+    border-radius: 10px;
+    width: 100%;
+    min-height: 300px;
+    word-wrap: break-word;
+    white-space: normal;
+}
+
+.teamSection {
+    border-left: 1px solid #d9d9d9;
+    width: 25%;
+    box-sizing: border-box;
+    padding: 5px 20px;
+}
+
+.teamSectionHeader {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.memberItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+}
+
+.memberInfo {
+    display: flex;
+    position: relative;
+    align-items: center;
+    gap: 10px;
+    padding-left: 20px;
+}
+
+.deleteMemberButton {
+    position: absolute;
+    left: -5px;
+    cursor: pointer;
+}
+
+.profileImg {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #e0e0e0;
+}
+
+.commentList {
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid #d9d9d9;
+    margin-bottom: 100px;
+}
+
+.commentItem {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #d9d9d9;
+    padding: 20px 20px;
+}
+
+.commentAuthor {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.commentContent {
+    width: 60%;
+    word-wrap: break-word;
+    white-space: normal;
+}
+
+.moreButton {
+    cursor: pointer;
+    min-width: 20px;
+    min-height: 20px;
+}
+
+.moreButtonWrapper {
+    position: relative;
+}
+
+.modal {
+    position: absolute;
+    width: 40px;
+    top: 50%;
+    left: 100%;
+    transform: translate(0, -50%);
+    margin-left: 10px;
+    background-color: white;
+    border: 1px solid #d9d9d9;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+}
+
+.modalButton {
+    display: block;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    font-size: 14px;
+    text-align: left;
+}
+
+.editInput {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.commentForm {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 10px;
+    min-height: 70px;
+}
+
+.categorySection {
+    display: flex;
+    gap: 5px;
+}
+
+.commentInputWrapper {
+    position: relative;
+    min-height: 56px;
+    width: 70%;
+}
+
+.commentInput {
+    border: 1px solid #d9d9d9;
+    box-sizing: border-box;
+    border-radius: 4px;
+    width: 100%;
+}
+
+.commentCharacterCount {
+    position: absolute;
+    right: 0;
+    font-size: 12px;
+    color: #888;
+    margin-right: 10px;
+}
+
+.submitButton {
+    height: 56px;
+    min-width: 120px;
+    background-color: #2684FF;
+    color: white;
+}
+
+.applicationButton {
+    background: none; /* 배경색 제거 */
+    color: #007bff; /* 링크 색상 */
+    border: none; /* 테두리 제거 */
+    padding: 0; /* 내부 여백 제거 */
+    font: inherit; /* 부모 폰트 상속 */
+    text-decoration: underline; /* 밑줄 추가 */
+    cursor: pointer; /* 마우스 커서를 포인터로 변경 */
+}
+
+.applicationButton:hover {
+    text-decoration: none; /* 호버 시 밑줄 제거 */
+    color: #0056b3; /* 더 진한 파란색으로 변경 */
+}
+
+.applicationButton:focus {
+    outline: none; /* 포커스 시 테두리 제거 */
+}
+
+.buttonSection {
+    display: flex;
+    height: 50px;
+    flex-direction: row;
+    justify-content: flex-end;
+    gap: 20px;
+}
+
+.authorButton {
+    width: 120px;
+    height: 40px;
+    color: white;
+    border: none;
+    font-size: 14px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.startButton {
+    background-color: #2684FF;
+}
+
+.editButton {
+    background-color: #949494;
+}
+
+.deleteButton {
+    background-color: #F93E3E;
+}
+
+.editPostInput {
+    border: none;
+    outline: none;
+    width: 100%;
+    height: 100%;
+    font-size: 16px;
+    background-color: transparent;
+    resize: none;
+}
+
+.editMemberButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+.memberList {
+    margin-bottom: 30px;
+}
+
+.applicationText {
+    width: 100%;
+    justify-items: center;
+}
+
+.commentEditWrapper {
+    position: relative;
+    width: 100%;
+}
