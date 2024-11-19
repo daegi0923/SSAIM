@@ -35,3 +35,7 @@ out/
 
 ### VS Code ###
 .vscode/
+
+
+### ssl keystore ###
+/src/main/resources/ssl/

@@ -1,0 +1,19 @@
+version: "3"
+
+services:
+  jenkins:
+    container_name: jenkins
+    # image: jenkins/jenkins:lts # Jenkins LTS 버전 이미지
+    build:
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8080" # 호스트의 8081 포트를 컨테이너의 8080 포트에 매핑
+      - "50000:50000" # Jenkins 에이전트 연결 포트
+    volumes:
+      - jenkins_home:/var/jenkins_home:rw # Jenkins 데이터 지속성을 위한 볼륨
+      - /var/run/docker.sock:/var/run/docker.sock # Docker 소켓 마운트
+      - /home/ubuntu:/home/ubuntu # 호스트의 /home/ubuntu 디렉토리를 컨테이너의 /home/ubuntu 디렉토리에 마운트
+    environment:
+      JENKINS_OPTS: --httpPort=8080 # Jenkins HTTP 포트 옵션 (변경 필요 없음)
+volumes:
+  jenkins_home:

@@ -1,0 +1,19 @@
+version: "3"
+
+services:
+  spring-boot:
+    container_name: spring-boot
+    build: ../../server
+    environment:
+      JASYPT_ENCRYPTOR_PASSWORD: ${JASYPT_ENCRYPTOR_PASSWORD}
+    ports:
+      - "8080:8080"
+    networks:
+      - my_network
+    volumes:
+      - /etc/localtime:/etc/localtime:ro  # 로컬 시간대 설정
+      - /etc/timezone:/etc/timezone:ro      # 로컬 시간대 설정
+
+networks:
+  my_network:
+    external: true
