@@ -1,0 +1,199 @@
+.sectionTitle {
+    position: relative;
+    margin-bottom: 16px;
+    border-bottom: 2px solid #ccc;
+    padding-bottom: 8px;
+}
+
+.tableContainer {
+    width: 90%;
+    margin: auto;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 200px;
+    table-layout: fixed;
+}
+
+.table th {
+    background-color: #7e6ecc;
+    box-sizing: border-box;
+    border: 1px solid #ddd;
+    color: white;
+    padding: 10px;
+    text-align: center;
+}
+
+.table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+    cursor: pointer;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+}
+
+.actionButton {
+    position: absolute;
+    left: -30px; /* 버튼을 표 왼쪽으로 이동 */
+    top: 50%; /* 세로 중앙 정렬 */
+    transform: translateY(-50%);
+    color: black;
+}
+
+.table th:nth-child(1), .table td:nth-child(1) {
+    width: 0%;
+    padding: 0;
+    position: relative;
+}
+
+.table th:nth-child(2), .table td:nth-child(2) {
+    width: 10%;
+}
+
+.table th:nth-child(3), .table td:nth-child(3) {
+    width: 15%;
+}
+
+.table th:nth-child(4), .table td:nth-child(4) {
+    width: 15%;
+}
+
+.table th:nth-child(5), .table td:nth-child(5) {
+    width: 10%;
+    text-align: center;
+}
+
+.table th:nth-child(6), .table td:nth-child(6) {
+    width: 10%;
+    text-align: center;
+}
+
+.table th:nth-child(7), .table td:nth-child(7) {
+    width: 10%;
+    text-align: center;
+}
+
+.table th:nth-child(8), .table td:nth-child(8) {
+    width: 10%;
+    text-align: center;
+}
+
+.table th:nth-child(9), .table td:nth-child(9) {
+    width: 10%;
+    text-align: center;
+}
+
+.table th:nth-child(10), .table td:nth-child(10) {
+    width: 10%;
+    text-align: center;
+}
+
+.addRow {
+    text-align: center;
+}
+
+textarea {
+    border: none;
+    background: transparent;
+    color: inherit;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    outline: none;
+    resize: none;
+    overflow: hidden;
+    font-family: 'NEXON Lv1 Gothic OTF', sans-serif;
+    font-size: 16px;
+    font-weight: normal;
+    line-height: 1.5;
+}
+
+.modalTextarea {
+    width: 100%;
+    height: 220px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 16px;
+    box-sizing: border-box;
+    font-family: 'NEXON Lv1 Gothic OTF', sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    resize: none;
+}
+
+.aiButton {
+    position: absolute;
+    width: 100%;
+    bottom: 10px;
+    text-align: right;
+}
+
+.tableCell {
+    position: relative; /* 태그 옵션 위치 기준 */
+}
+
+.tagWrapper {
+    display: inline-block;
+}
+
+.tagOptions {
+    position: absolute;
+    top: 100%; /* <td> 아래로 배치 */
+    left: 0;
+    width: 100%; /* <td> 테두리에 맞춤 */
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    z-index: 10; /* 다른 요소 위에 표시 */
+    display: flex;
+    flex-direction: column; /* 세로 정렬 */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+}
+
+.tagOptionWrapper {
+    cursor: pointer;
+    padding: 8px 12px;
+    background-color: #f9f9f9;
+    transition: background-color 0.2s;
+}
+
+.tagOptionWrapper:hover {
+    background-color: #e0e0e0;
+}
+
+.addRowTd {
+    height: 50px;
+}
+
+.charCounter {
+    margin-top: 5px;
+    font-size: 12px;
+    color: gray;
+    text-align: right;
+}
+
+.actionColumn {
+    cursor: default;
+}
+
+.participantNames {
+    display: flex;
+    flex-direction: row;
+    position: absolute;
+    bottom: 100%;
+    right: -2px;
+    z-index: 10;
+}  
+
+.participantName {
+    padding: 5px;
+    border-radius: 4px 4px 0 0;
+    font-size: 12px;
+    color: #ffffff;
+    text-align: center;
+    background-color: #4a90e2;
+}

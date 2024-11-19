@@ -1,0 +1,31 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex: 1 ;
+    width: 100vw;
+    height: 100vh;
+}
+
+.content {
+    text-align: center;
+}
+
+.image {
+    max-height: 400px;
+}
+
+.buttonSection {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    gap: 20px;
+}
+
+.button {
+    background-color: #4b6fbf;
+    color: white;
+}

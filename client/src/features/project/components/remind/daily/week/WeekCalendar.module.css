@@ -1,0 +1,30 @@
+.calendarWrapper {
+    width: 280px;
+}
+
+.customCalendar {
+    border: none;
+}
+
+.customCalendar__navigation__label {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.customCalendar__month-view__weekdays__weekday abbr {
+    text-decoration: none;
+}
+
+.customCalendar__tile {
+    margin-bottom: 3px;
+}
+
+.weekdayTile {
+    background-color: #007bff;
+    color: white;
+}
+
+.activeTile {
+    background-color: #007bff !important; /* 선택된 월요일 스타일 */
+    color: white !important;
+}

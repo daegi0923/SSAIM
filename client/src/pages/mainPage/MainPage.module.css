@@ -1,0 +1,15 @@
+.layout {
+  height : 100%;
+  overflow: hidden;
+  padding : 20px;
+}
+
+.dashboardBottom{
+  display : flex;
+}
+
+.chartContainer{
+  width : 600px;
+  height : 300px;
+  margin :  0 auto;
+}

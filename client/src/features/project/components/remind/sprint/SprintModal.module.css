@@ -1,0 +1,92 @@
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* 모달이 다른 요소 위에 표시되도록 */
+  }
+  
+.modalContent {
+    width: auto;
+    height: auto;
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+
+.closeButton {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    border: none;
+    background: transparent;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.h2 {
+  margin: 0px;
+}
+
+.p {
+  margin: 5px 0px;
+  font-size: 14px;
+  color: gray
+}
+
+
+.selectBox {
+  width: auto;
+  height: auto;
+  padding: 10px;
+  margin: 20px 0px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+.checkbox {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px;
+}
+
+.checkbox input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  margin-top: 4px;
+}
+
+.sprintInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sprintLabel {
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.sprintPeriod {
+  font-size: 14px;
+  color: gray
+}
+
+.description {
+  color: #808080;
+  margin-top: 10px;
+  font-size: 14px;
+  line-height: 1.4;
+  white-space: pre-wrap;
+  text-align: center;
+}
+

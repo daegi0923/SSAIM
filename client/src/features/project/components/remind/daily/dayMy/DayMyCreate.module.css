@@ -1,0 +1,189 @@
+.container {
+    display: flex;
+    height: 84vh;
+}
+
+.left {
+    flex: 4; /* 왼쪽 섹션 크기 */
+    padding: 0px 20px;
+    border-right: 1px solid #ccc; /* 오른쪽 경계선 */
+}
+
+.right {
+    flex: 1; /* 오른쪽 섹션 크기 */
+    display: flex;
+    padding: 0px 20px;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+
+/* 회고 헤더 */
+.filterHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 50px;
+    padding: 10px 20px;
+    position: relative;
+}
+
+.dateTitle{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #007bff;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.headerButton {
+    display: flex;
+    gap: 20px;
+}
+
+.descriptionTitle {  
+    color: #808080;
+    font-size: 14px;
+    font-weight: lighter;
+    white-space: pre-wrap;
+    /* 애니메이션 추가 */
+    animation: blink 1.5s ease-in-out infinite;
+}
+
+@keyframes blink {
+    0%, 100% {
+        opacity: 1; /* 시작과 끝은 완전 불투명 */
+    }
+    50% {
+        opacity: 0; /* 중간에 투명하게 */
+    }
+}
+
+/* 회고 작성란 */
+.myReview {
+    display: flex;
+    gap: 20px;
+    height: 67vh;
+    padding: 0px 20px;
+}
+
+.keepSection {
+    flex: 1;
+    background-color: rgba(79, 157, 234, 0.1);
+    border-radius: 8px;
+}
+.problemSection {
+    flex: 1;
+    background-color: rgba(250, 102, 78, 0.1);
+    border-radius: 8px;
+}
+.trySection {
+    flex: 1;
+    background-color: rgba(254, 183, 29, 0.1);
+    border-radius: 8px;
+}
+
+
+.sectionTitle{
+    display: flex;
+    align-items: center;
+    height: 5vh;
+    gap:10px;
+    padding: 10px 20px;
+}
+
+.keepSection .sectionTitle{
+    background-color: rgba(79, 157, 234);
+}
+
+.problemSection .sectionTitle{
+    background-color: rgba(250, 102, 78);
+}
+
+.trySection .sectionTitle{
+    background-color: rgba(254, 183, 29);
+}
+
+
+.h3 {
+    margin: 0px;
+    font-weight: bold;
+    color: white;
+}
+
+
+.reviewContainer {
+    padding: 20px;
+
+}
+
+.textarea {
+    width: 93%;
+    height: 52vh; 
+    padding: 10px;
+    font-size: 16px;
+    background-color: transparent;
+    border: 0.5px solid rgba(0,0,0,0.26);
+    resize: none;
+    outline: none;
+    white-space: pre-wrap;
+    overflow-y: auto; 
+}
+
+.textarea::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Edge에서 스크롤바 숨기기 */
+}
+
+/* 오른쪽 섹션 */
+.description {  
+    color: #808080;
+    margin-top: 10px;
+    font-size: 14px;
+    line-height: 1.4;
+    white-space: pre-wrap;
+}
+
+.remindBox {
+    margin-top: 20px;
+    padding: 15px;
+    width: auto;
+    height: 35vh;
+    border: 1px solid rgba(79, 157, 234, 0.5);
+    border-radius: 10px;
+    font-size: 14px;
+}
+
+.dateSubTitle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    color: #007bff;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.remindText{
+    text-align: left;
+    height: 30vh;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    line-height: 1.6;
+}
+
+.remindText::-webkit-scrollbar {
+    display: none; /* 스크롤바 숨기기 (Chrome, Safari, Edge) */
+}
+
+
+
+.calendarContainer{
+    position: absolute;
+    left: 50px; 
+    top: 35px;
+    z-index: 10;
+    border: #b5b7b8 1px solid;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}

@@ -1,0 +1,36 @@
+.switchContainer {
+  display: flex;
+  border-radius: 20px;
+  overflow: hidden;
+  background-color: #f8f9fa; /* 기본 배경색 */
+}
+
+.switchButton {
+  flex: 1;
+  padding: 8px;
+  border: none;
+  background: none;
+  font-size: 12px; /* 폰트 크기 조정 */
+  color: #666;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.switchButton:not(.active):hover {
+  background-color: #e9ecef; /* 비활성 상태에서 hover 시 배경색 */
+}
+
+.active.todo {
+  background-color: #e0e0e0; /* 회색 계열 */
+  color: #424242; /* 어두운 회색 */
+}
+
+.active.inProgress {
+  background-color: #d0ebff; /* 파란색 계열 */
+  color: #1c7ed6; /* 진한 파란색 */
+}
+
+.active.done {
+  background-color: #d4f5d0; /* 초록색 계열 */
+  color: #2d6a4f; /* 진한 초록색 */
+}

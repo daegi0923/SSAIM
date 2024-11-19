@@ -1,0 +1,187 @@
+.projectInfoContainer {
+  display: flex;
+  width: calc(100% - 100px);
+  height: 70vh;
+  margin-left: 50px;
+  padding: 20px;
+}
+
+.leftSection {
+  flex: 4;
+  display: flex;
+  flex-direction: column;
+  padding-right: 20px;
+}
+
+.projectDetails {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #ddd; /* 연한 선 추가 */
+  padding-bottom: 30px;
+  position: relative;
+}
+
+.projectImage {
+  width: 200px;
+  height: 200px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  margin-right: 20px;
+}
+.projectText {
+}
+.projectText h2 {
+  margin: 0;
+  font-size: 24px;
+}
+
+.projectText p {
+  margin: 5px 0;
+}
+
+.dates {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  color: #666;
+}
+
+.rightSection {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding-left: 20px;
+  border-left: 1px solid #ddd; /* 연한 선 추가 */
+  height: 100%;
+}
+
+.teamMembers {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.teamMember {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.memberImage {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+  border: 1px solid #ddd;
+}
+
+.leftLowerSection {
+  display: flex;
+  margin: 50px 0px;
+  padding-bottom: 50px;
+  justify-content: center;
+  align-items: center;
+}
+
+.buttonGrid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 10px;
+  padding-right: 20px;
+  height: 300px;
+}
+
+.gridButton {
+  width: 100%;
+  height: 60px;
+  background-color: #eee;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.componentArea {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* 컴포넌트를 가져올 자리 */
+  background-color: #f9f9f9;
+  border-radius: 4px;
+  height: 300px;
+  width: 500px;
+  margin-left : 20px;
+}
+
+.modify {
+  padding: 8px 12px;
+  background-color: #f0f0f0; /* 살짝 밝은 배경 */
+  border-radius: 6px; /* 모서리 둥글게 */
+  border: 1px solid #ddd; /* 은은한 보더 */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s; /* 부드러운 전환 효과 */
+  margin : 5px;
+}
+
+.modify:hover {
+  background-color: #e0e0e0; /* 호버 시 약간 진한 배경 */
+  transform: scale(1.05); /* 약간 확대 */
+}
+.modifyButtons {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+
+}
+.leaderCrown {
+  position: absolute;
+  left: 5px;
+  top: -20px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.icons {
+  width: 20px; /* 아이콘 크기 */
+  height: 20px; /* 아이콘 크기 */
+  vertical-align: middle; /* 텍스트와 수직 정렬 */
+  display: inline-block; /* SVG와 동일하게 inline-block으로 처리 */
+  object-fit: contain; /* 이미지 비율 유지 */
+}
+
+.leaderBadge {
+  display: inline-block;
+  padding: 5px 12px;
+  margin-left: 20px;
+  background-color: #007bff;
+  color: #fff;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+.leaderBadge:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+}
+
+.leaderBadge:active {
+  background-color: #004494;
+  transform: translateY(0);
+}

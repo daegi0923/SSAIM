@@ -1,0 +1,123 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: calc(100%-50px);
+  padding: 20px;
+  max-width : 1200px
+}
+
+.topSection {
+  display: flex;
+  width: 90%;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.imageSection {
+  width: 150px;
+  height: 150px;
+  border: 2px dashed #ccc;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.imageSection img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.imagePlaceholder {
+  font-size: 14px;
+  color: #999;
+}
+
+.infoSection {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: calc(100% - 180px); /* 이미지 구역을 제외한 너비 */
+}
+
+.input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.teamMemberModal {
+  width: 90%;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  text-align: center;
+  color: #666;
+  margin-bottom: 20px;
+  background-color: #f9f9f9;
+}
+
+.dateSection {
+  display: flex;
+  justify-content: space-between;
+  width: 90%;
+}
+
+.dateSection > div {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #333;
+}
+
+.dateInput {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  width: 100%;
+  max-width: 200px;
+}
+
+.dateSeparator {
+  margin: 0 10px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  display: flex;
+  align-items: center;
+}
+
+hr {
+  width: 100%;
+  border: none;
+  border-top: 1px solid #ccc; /* 원하는 색상으로 변경 가능 */
+  margin: 20px 0; /* 위, 아래 여백 추가 */
+}
+
+.leaderButton {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 12px;
+  margin-right: 5px;
+}
+
+.leaderButton:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}

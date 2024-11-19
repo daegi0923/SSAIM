@@ -1,0 +1,48 @@
+.right {
+    flex: 1; /* 오른쪽 섹션 크기 */
+    display: flex;
+    padding: 0px 20px;
+    flex-direction: column;
+    text-align: center;
+  }
+  
+.description {  
+    color: #808080;
+    margin-top: 10px;
+    font-size: 14px;
+    line-height: 1.4;
+    white-space: pre-wrap;
+}
+
+.remindBox {
+    margin-top: 20px;
+    padding: 15px;
+    width: auto;
+    height: 35vh;
+    border: 1px solid rgba(79, 157, 234, 0.5);
+    border-radius: 10px;
+    font-size: 14px;
+}
+
+.dateSubTitle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    color: #007bff;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.remindText {
+    text-align: left;
+    height: 30vh;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    line-height: 1.6;
+}
+
+.remindText::-webkit-scrollbar {
+    display: none; /* 스크롤바 숨기기 (Chrome, Safari, Edge) */
+}
+  

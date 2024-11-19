@@ -1,0 +1,23 @@
+.tagContainer {
+    position: relative;
+    display: inline-block;
+}
+
+.badge {
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    background-color: red;
+    color: white;
+    font-size: 10px;
+    padding: 0 5px;
+    border-radius: 50%;
+}
+
+.tag {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.7rem;
+    color: white;
+}

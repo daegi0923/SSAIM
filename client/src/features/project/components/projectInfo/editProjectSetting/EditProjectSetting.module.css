@@ -1,0 +1,229 @@
+/* 모달 오버레이 */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+/* 모달 컨테이너 */
+.modalContainer {
+  background-color: white;
+  width: 600px;
+  max-width: 90%;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* 모달 헤더 */
+.modalHeader {
+  background-color: #1a2a45; /* 진한 네이비 */
+  color: white;
+  padding: 16px;
+  font-size: 18px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* 닫기 버튼 */
+.closeButton {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+/* 모달 바디 */
+.modalBody {
+  display: flex;
+  padding: 20px;
+}
+
+.bodyLeft {
+  background-color: #e1e8f0; /* 연한 네이비 */
+  color: black;
+  padding: 20px;
+  flex: 1;
+  border-top: 1px solid #ddd; /* 헤더와 바디 사이의 회색 선 */
+  border-bottom: 1px solid #ddd; /* 바디와 푸터 사이의 회색 선 */
+  text-align: center;
+  display : flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.bodyRight {
+  padding: 20px;
+  flex: 4;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-top: 1px solid #ddd; /* 헤더와 바디 사이의 회색 선 */
+  border-bottom: 1px solid #ddd; /* 바디와 푸터 사이의 회색 선 */
+}
+
+.input {
+  width: 90%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+/* 모달 푸터 */
+.modalFooter {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 16px;
+}
+
+/* 저장 버튼 */
+.saveButton {
+  background-color: #1a2a45; /* 진한 네이비 */
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+/* 취소 버튼 */
+.cancelButton {
+  background-color: #ddd;
+  color: black;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+/* 공통 입력 그룹 스타일 */
+.inputGroup {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 라벨 스타일 */
+.label {
+  font-size: 14px;
+  font-weight: bold;
+  color: #1a2a45; /* 진한 네이비 */
+  margin-bottom: 8px; /* 입력 필드와 간격 */
+}
+
+/* 입력 필드 스타일 */
+.input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* 입력 필드 포커스 상태 */
+.input:focus {
+  border-color: #1a2a45; /* 포커스 시 진한 네이비 */
+  outline: none;
+  box-shadow: 0 0 4px rgba(26, 42, 69, 0.3); /* 부드러운 강조 효과 */
+}
+
+/* API Key 컨테이너 */
+.apiKeyWrapper {
+  display: flex;
+  width : 105%;
+  justify-content: space-between;
+}
+
+/* API Key 입력 필드 */
+.apiKeyWrapper .input {
+  flex: 1;
+  margin-right: 10px;
+}
+
+/* 토글 버튼 스타일 */
+.toggleButton {
+  background-color: #1a2a45; /* 진한 네이비 */
+  color: white;
+  background-color: white;
+  color: #1a2a45; /* 진한 네이비 */
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 3px 12px;
+  font-size: 14px;
+  height : 40px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+
+/* 토글 버튼 클릭 상태 */
+.toggleButton:active {
+  background-color: #eee; /* 클릭 시 더 어두운 네이비 */
+  transform: scale(0.95); /* 살짝 축소 효과 */
+}
+
+.keyLabel{
+  display : flex;
+}
+
+.questionBox{
+  border : 1px solid #eee;
+  border-radius: 4px;
+  padding : 2px;
+  height : 10px;
+  margin-bottom : 10px;
+  font-size : 10px;
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  margin-left: 10px;
+  color: #1a2a45; /* 진한 네이비 */
+}
+/* 툴팁 스타일 */
+.tooltip {
+  visibility: hidden; /* 기본적으로 숨김 */
+  position: absolute;
+  background-color: #1a2a45; /* 배경색: 진한 네이비 */
+  color: #fff; /* 텍스트 색: 흰색 */
+  text-align: center;
+  padding: 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  top: -40px; /* 위치 조정 */
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  z-index: 10;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* 툴팁 화살표 */
+.tooltip::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 6px;
+  border-style: solid;
+  border-color: #1a2a45 transparent transparent transparent;
+}
+
+/* 마우스를 올렸을 때 툴팁 표시 */
+.questionBox:hover .tooltip {
+  visibility: visible;
+}

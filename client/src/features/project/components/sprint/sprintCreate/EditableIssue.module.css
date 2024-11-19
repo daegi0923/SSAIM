@@ -1,0 +1,148 @@
+.issueContainer {
+  width: 210px;
+  padding: 20px;
+  border-radius: 8px;
+  background-color: #f1f1f1;
+  margin: 5px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  position: relative;
+}
+.issueContainer:hover {
+  background-color: #ddd;
+}
+
+.input {
+  width: 90%;
+  max-width: 210px;
+  padding: 5px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.textarea {
+  resize: none;
+  height: 60px;
+}
+.inputNumber {
+  height: 12px;
+}
+.issueHeader {
+  justify-content: space-between;
+  align-items: center;
+}
+.issueDetails {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 14px;
+}
+.editIcon {
+  cursor: pointer;
+  color: #888;
+  position: absolute;
+  right: 15px;
+}
+
+.collapsed {
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* 최대 3줄 */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 5px;
+}
+
+.saveButton,
+.cancelButton {
+  padding: 4px 8px;
+  border: none;
+  border-radius: 4px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.saveButton {
+  background-color: #0997ee;
+  color: white;
+}
+
+.cancelButton {
+  background-color: #f44336;
+  color: white;
+}
+
+.issueName {
+  font-weight: bold;
+  font-size: 0.9em;
+  white-space: nowrap; /* 한 줄로 유지 */
+  overflow: hidden; /* 넘치는 내용 숨김 */
+  text-overflow: ellipsis; /* 넘치는 부분 ...으로 표시 */
+  width: 80%;
+}
+.issueDetails {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 14px;
+}
+
+.issueDetails.editMode {
+  display: block; /* flex를 제거 */
+}
+.storyPointGroup {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+  padding-left: 5px;
+}
+.inputNumber {
+  width: 30px;
+  padding: 5px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  display: flex;
+  align-items: center; /* 숫자 입력 필드의 텍스트 정렬 */
+  justify-content: center;
+  height: 30px; /* 높이를 고정해 비율 유지 */
+}
+.storyPoint {
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center; /* 좌우 가운데 정렬 */
+  width: 20px;
+  align-items: center; /* 상하 가운데 정렬 */
+  /* border: 1px solid #000; 확인용 테두리 */
+}
+.epicName {
+  color: white;
+  max-width: 60px; /* 적절한 최대 너비 설정 */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* 최대 두 줄 표시 */
+  -webkit-box-orient: vertical;
+  word-break: break-word; /* 단어 단위로 줄바꿈 */
+  padding: 5px;
+  border-radius: 4px;
+  font-size: 12px;
+}
+.editLabel{
+  cursor: pointer;
+  margin-right: 5px;
+  font-size: 14px;
+}

@@ -1,0 +1,95 @@
+.weekReview {
+    display: flex;
+    height: 67vh;
+    padding: 0px 20px;
+    margin-top: 20px;
+}
+
+.MonSection {
+    flex: 1;
+    background-color: rgba(250, 102, 78, 0.1);
+    border-radius: 8px;
+}
+.TusSection {
+    flex: 1;
+    background-color: rgba(254, 183, 29, 0.1);
+    border-radius: 8px;
+}
+.WedSection {
+    flex: 1;
+    background-color: rgba(61, 201, 48, 0.1);
+    border-radius: 8px;
+}
+.ThuSection {
+    flex: 1;
+    background-color: rgba(79, 157, 234, 0.1);
+    border-radius: 8px;
+}
+.FriSection {
+    flex: 1;
+    background-color: rgba(145, 59, 246, 0.1);
+    border-radius: 8px;
+}
+
+
+.sectionTitle{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 3vh;
+    gap:10px;
+    padding: 10px 20px;
+}
+
+.MonSection .sectionTitle{
+    background-color: rgba(250, 102, 78);
+}
+
+.TusSection .sectionTitle{
+    background-color: rgba(254, 183, 29);
+}
+
+.WedSection .sectionTitle{
+    background-color: rgba(61, 201, 48);
+}
+
+.ThuSection .sectionTitle{
+    background-color: rgba(79, 157, 234);
+}
+
+.FriSection .sectionTitle{
+    background-color: rgba(145, 59, 246);
+}
+
+
+.h3 {
+    margin: 0px;
+    font-weight: bold;
+    color: white;
+}
+
+
+.reviewContainer {
+    padding: 20px;
+
+}
+
+.reviewText {
+    margin: 0px;
+    font-size: 14px;
+    width: 10.5vw;
+    height: 57vh;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    line-height: 1.6;
+    overflow-wrap: break-word;
+}
+
+.reviewText::-webkit-scrollbar {
+    display: none; /* 스크롤바 숨기기 (Chrome, Safari, Edge) */
+}
+
+.p {
+    margin: 0px;
+    font-size: 14px;
+}

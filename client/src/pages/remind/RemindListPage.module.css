@@ -1,0 +1,42 @@
+.bookList {
+    position: fixed; /* 고정 위치 */
+    top: 0; /* 화면 상단에 맞춤 */
+    left: 60px; /* 화면 좌측에 맞춤 */
+    width: 97%; /* 화면 전체 너비 */
+    height: 100vh; /* 화면 전체 높이 */
+    object-fit: cover; /* 비율을 유지하면서 꽉 채움 */
+    z-index: -1; /* 다른 요소들 뒤에 배치 */
+    opacity: 0.9;
+}
+
+.container {
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 40px;
+    gap: 70px;
+}
+
+
+
+.Row {
+    width: 80vw;
+    height: 28vh;
+    display: flex;
+    /* justify-content: space-evenly; */
+    align-items:last baseline;
+    text-align: center;
+    gap: 130px;
+}
+
+
+.book {
+    width: 9vw;
+    height: 21vh;
+    cursor: pointer;
+}
+
+.projectName {
+    margin-bottom: 10px;
+}

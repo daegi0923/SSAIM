@@ -1,0 +1,41 @@
+.filterHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 50px;
+    padding: 10px 20px;
+}
+
+.dateTitle{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #913BF6;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.filter {
+    display: flex;
+    gap: 50px;
+}
+
+.myTeam {
+    display: flex;
+    gap: 20px;
+}
+
+.active {
+    display: flex;
+    align-items: center;
+    color: #913BF6;
+    font-weight: bold;
+    gap: 5px;
+}
+
+.disactive {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+

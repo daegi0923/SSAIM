@@ -1,0 +1,38 @@
+.container {
+    display: flex;
+    height: 84vh;
+}
+
+.left {
+    flex: 4; /* 왼쪽 섹션 크기 */
+    padding: 0px 20px;
+    border-right: 1px solid #ccc; /* 오른쪽 경계선 */
+}
+
+.right {
+    flex: 1; /* 오른쪽 섹션 크기 */
+    display: flex;
+    padding: 0px 20px;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+.noMeetings {
+    padding: 100px 0px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.allMeeting {
+    margin-top: 10px;
+    padding: 10px;
+    text-align: end;
+    font-size: 14px;
+}
+
+.allMeeting:hover {
+    cursor: pointer;
+}

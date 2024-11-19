@@ -1,0 +1,97 @@
+.myReviewContainer {
+    padding: 0px 20px;
+}
+
+.myReview {
+    display: flex;
+    gap: 20px;
+    height: 67vh;
+}
+
+.editbox {
+    margin: 10px 0px;
+    display: flex;
+    justify-content: end;
+    gap: 30px;
+}
+
+.editButton {
+    display: flex;
+    gap: 5px;
+    cursor: pointer;
+}
+
+.deleteButton {
+    display: flex;
+    gap: 5px;
+    cursor: pointer;
+}
+
+.Text {
+    margin: 0px;
+}
+
+.keepSection {
+    flex: 1;
+    background-color: rgba(79, 157, 234, 0.1);
+    border-radius: 8px;
+}
+.problemSection {
+    flex: 1;
+    background-color: rgba(250, 102, 78, 0.1);
+    border-radius: 8px;
+}
+.trySection {
+    flex: 1;
+    background-color: rgba(254, 183, 29, 0.1);
+    border-radius: 8px;
+}
+
+
+.sectionTitle{
+    display: flex;
+    align-items: center;
+    height: 5vh;
+    gap:10px;
+    padding: 10px 20px;
+}
+
+.keepSection .sectionTitle{
+    background-color: rgba(79, 157, 234);
+}
+
+.problemSection .sectionTitle{
+    background-color: rgba(250, 102, 78);
+}
+
+.trySection .sectionTitle{
+    background-color: rgba(254, 183, 29);
+}
+
+
+.h3 {
+    margin: 0px;
+    font-weight: bold;
+    color: white;
+}
+
+
+.reviewContainer {
+    padding: 20px;
+
+}
+
+.p {
+    margin: 0px;
+    font-size: 15px;
+    line-height: 1.6;
+    width: 18vw;
+    height: 54vh;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+}
+
+.p::-webkit-scrollbar {
+    display: none; /* 스크롤바 숨기기 (Chrome, Safari, Edge) */
+}

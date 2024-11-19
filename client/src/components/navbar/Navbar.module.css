@@ -1,0 +1,115 @@
+/* Sidebar 전체 컨테이너 */
+.sidebarContainer {
+  padding-top: 3%;
+  background-color: #3c90e2;
+  position: fixed;
+  color: #ddd;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 60px;
+  height: 100vh;
+  transition: width 0.3s ease;
+  z-index: 1000;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+}
+
+.sidebarContainer:hover {
+  width: 300px; /* 호버 시 너비 확장 */
+}
+
+/* Nav 리스트 스타일 */
+.navList {
+  padding: 0;
+}
+
+/* Nav 아이템 */
+.navItem {
+  display: flex;
+  background-color: #3c90e2;
+  align-items: center;
+  padding: 0;
+  padding: 20px 0px;
+  padding-left: 15px;
+  cursor: pointer;
+}
+.title {
+  display: flex;
+  background-color: #3c90e2;
+  align-items: center;
+  padding: 0;
+  padding-left: 12.5px;
+  font-weight : bold;
+  font-size : 1.2em;
+  margin-bottom : 20px;
+}
+
+.navItem:hover {
+  filter: brightness(1.1); /* 밝기를 1.2배로 증가 */
+  color: white; /* hover 시 text color */
+  transition: filter 0.3s ease; /* 부드러운 전환 추가 */
+}
+
+/* Nav 아이콘 이미지 */
+.icon {
+  width: 30px; /* 고정된 너비 */
+  height: 30px; /* 고정된 높이 */
+}
+
+.profileImage {
+  width: 30px; /* 고정된 너비 */
+  height: 30px; /* 고정된 높이 */
+  background-color: white;
+  border-radius: 50%;
+}
+.logo {
+  width: 35px; /* 고정된 너비 */
+  height: 35px; /* 고정된 높이 */
+  border-radius: 50%;
+  background-color: #eee;
+}
+
+/* Nav 텍스트 (기본적으로 숨기기) */
+.navText {
+  width: 0px;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: width 0.3s ease, opacity 0.3s ease;
+  line-height: 1.5;
+  text-align: left;
+  margin-left: 15px;
+}
+.titleText {
+  width: 0px;
+  white-space: nowrap;
+  color : white;
+  opacity: 0;
+  visibility: hidden;
+  transition: width 0.3s ease, opacity 0.3s ease;
+  line-height: 1.5;
+  text-align: left;
+  margin-left: 15px;
+}
+
+.sidebarContainer:hover .navText {
+  width: 120px;
+  visibility: visible;
+  opacity: 1;
+}
+.sidebarContainer:hover .titleText {
+  width: 120px;
+  visibility: visible;
+  opacity: 1;
+}
+
+.header {
+  padding: 10px;
+  background-color: #222261;
+  color: white;
+}
+.footer {
+  margin-bottom: 70px;
+}

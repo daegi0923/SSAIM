@@ -1,0 +1,72 @@
+/* DashboardHeader.module.css */
+.dashboardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100px;
+  position: relative;
+  position : sticky;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 0 20px;
+}
+
+.dateRange {
+  display : flex;
+  width : 100%;
+  /* border : 1px solid black; */
+  justify-content: space-between;
+  font-size: 16px;
+  align-items: center;
+}
+
+.arrowButton {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 0 10px;
+}
+
+.arrowButton:hover {
+  color: #555;
+}
+.projectSelect {
+  padding: 8px 12px;
+  font-size: 16px;
+  /* border: 1px solid #ccc; */
+  border-radius: 5px 5px 0px 0px;
+  background-color: #f9f9f9;
+  color: #333;
+  cursor: pointer;
+  appearance: none;
+  outline: none;
+  transition: all 0.3s ease;
+  font-weight: bold;
+  /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); */
+  width : 200px;
+  border-bottom: none;
+
+}
+
+.projectSelect:hover {
+  background-color: #e6e6e6;
+
+}
+
+.projectSelect:focus {
+  border-color: #3498db;
+  /* box-shadow: 0 0 0 3px rgba(106, 103, 206, 0.3); */
+}
+
+.projectSelect option {
+  font-size: 16px;
+  padding: 10px;
+  color: #333;
+  background-color: #ffffff;
+  border-radius: 10px;
+
+}

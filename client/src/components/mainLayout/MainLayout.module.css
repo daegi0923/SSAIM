@@ -1,0 +1,11 @@
+/* 레이아웃 전체 구조 */
+.mainLayout {
+  width : calc(100%-60px);
+  min-height : 100vh;
+}
+
+
+/* 콘텐츠 영역 */
+.content {
+  padding-left :60px;
+}

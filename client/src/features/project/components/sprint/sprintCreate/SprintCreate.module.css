@@ -1,0 +1,99 @@
+/* 전체 컨테이너 */
+.container {
+  max-width: 90%;
+  margin: 0 auto;
+}
+
+/* 제목 스타일 */
+.title {
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+}
+
+/* 주간 계획표 컨테이너 */
+.weeklyPlan {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); /* 평일 5일 */
+  gap: 10px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.weekday {
+  background-color: #f5f5f5;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.weekday strong {
+  display: block;
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+.weeklyProgressContainer {
+  padding: 20px;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 10px;
+  overflow-x: scroll;
+}
+.contentheader {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  text-align: center;
+  font-weight: bold;
+  font-size: 18px;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+  color: #555;
+
+}
+.issueGrid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+  justify-content: center;
+  /* 가로 세로 중앙 정렬 */
+  min-height: 200px;
+}
+.dayColumn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 250px;
+  max-width: 300px;
+}
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.buttonContainer {
+  display: flex;
+  justify-content: center;
+}
+.genButton {
+  margin: 10px;
+}
+.dayHeader {
+  padding: 10px 0;
+  display: flex;
+  justify-content: center;
+  gap: 90px;
+}
+.noData {
+  text-align: center;
+  color: #888;
+  font-style: italic;
+  margin-top: 20px;
+}
+
+.tempIssueGrid{
+
+}

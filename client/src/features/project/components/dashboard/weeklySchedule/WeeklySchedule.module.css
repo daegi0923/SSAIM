@@ -1,0 +1,14 @@
+.container {
+  overflow-x : scroll;
+  border-left: 0.1px solid #ddd;
+  background-color: #fff;
+  border : 1px solid #ddd;
+}
+
+.header {
+  
+}
+
+.content {
+  display : flex;
+}

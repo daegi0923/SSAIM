@@ -1,0 +1,152 @@
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* 모달이 다른 요소 위에 표시되도록 */
+  }
+  
+.modalContent {
+    width: auto;
+    height: auto;
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+
+.closeButton {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    border: none;
+    background: transparent;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.h2 {
+  margin: 0px;
+  text-align: center;
+}
+
+.p {
+  margin: 5px 0px;
+  font-size: 14px;
+  color: gray
+}
+
+
+.inputContainer {
+  width: auto;
+  height: auto;
+  padding: 50px 30px;
+  margin: 20px 0px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+}
+
+.inputContainer label {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 0px;
+}
+
+.inputTitleInput {
+    width: 20vw;
+    padding-right: 40px;
+}
+
+.inputTitle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.inputParticipants {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.labelParticipants {
+    display: flex;
+    justify-content: space-between;
+}
+
+
+.selectParticipants {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.participantItem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 60px; /* 전체 item 크기 조정 */
+}
+
+.participantCheckbox {
+    position: absolute;
+    opacity: 0;
+    width: auto;
+    height: auto;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.participantLabel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    text-align: center;
+    width: 60px; /* 이미지와 이름을 포함한 전체 너비 */
+}
+
+.participantImage {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%; /* 이미지만 원형으로 */
+    object-fit: cover;
+    border: 1px solid rgb(195, 190, 190);
+}
+
+.participantName {
+    margin-top: 5px;
+    font-size: 12px;
+    color: #333;
+}
+
+.participantCheckbox:checked + .participantLabel .participantImage {
+    border: 3px solid #198861; /* 선택 시 이미지에만 테두리 */
+}
+
+
+.inputWithCounter {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+  
+.charCount {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    font-size: 12px;
+    color: #888;
+}
