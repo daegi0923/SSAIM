@@ -126,7 +126,7 @@ SSAFY 11기 자율 프로젝트 E203 행운삼조룡 2024-10-14 ~ 2024-11-18
         <td align="center"><a href="https://github.com/kimjaegyeong">김재경</a></td>
         <td align="center"><a href="https://github.com/daegi0923">여대기</a></td>
         <td align="center"><a href="https://github.com/qwert0175">조성인</a></td>
-        <td align="center"><a href="https://github.com/kangtea9">강수연</a></td>
+        <td align="center"><a href="https://github.com/Kangsooyeon">강수연</a></td>
     </tr>
     <tr>
         <td align="center"><a href="https://github.com/mango152"><img src="https://avatars.githubusercontent.com/u/156670982?v=4" width="100px;" alt=""/><sub></sub></a></td>
