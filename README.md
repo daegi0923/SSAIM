@@ -60,11 +60,17 @@ SSAFY 11기 자율 프로젝트 E203 행운삼조룡 2024-10-14 ~ 2024-11-18
 2. **Frontend**
     
     Node.js - 20.15.0
+
     VS Code - 1.90.2
+
     React - 18.3.1
+
     Typescript - ~5.6.3
+
     Vite - 5.4.11
+
     React Query - 5.60.2
+
     zustand - 5.0.1
     
 3. **Backend**
@@ -82,11 +88,13 @@ SSAFY 11기 자율 프로젝트 E203 행운삼조룡 2024-10-14 ~ 2024-11-18
     Nignx - 1.18.0
     
     Docker - 27.2.0
+
     Jenkins - 2.462.2
     
 5. **DB**
     
     MySQL - 8.0.40
+
     MongoDB - 8.0.3
     
 
@@ -126,7 +134,7 @@ SSAFY 11기 자율 프로젝트 E203 행운삼조룡 2024-10-14 ~ 2024-11-18
         <td align="center"><a href="https://github.com/kimjaegyeong"><img src="https://avatars.githubusercontent.com/u/50646904?v=4" width="100px;" alt=""/><sub></sub></a></td>
         <td align="center"><a href="https://github.com/daegi0923"><img src="https://avatars.githubusercontent.com/u/156268579?v=4" width="100px;" alt=""/><sub></sub></a></td>
         <td align="center"><a href="https://github.com/qwert0175"><img src="https://avatars.githubusercontent.com/u/145173921?v=4" width="100px;" alt=""/><sub></sub></a></td>
-        <td align="center"><a href="https://github.com/kangtea9"><img src="https://avatars.githubusercontent.com/u/156268473?v=4" width="100px;" alt=""/><sub></sub></a></td>
+        <td align="center"><a href="https://github.com/Kangsooyeon"><img src="https://avatars.githubusercontent.com/u/64363148?v=4" width="100px;" alt=""/><sub></sub></a></td>
     </tr>
     <tr>
         <td align="center"><b>팀장, Backend</b></td>
