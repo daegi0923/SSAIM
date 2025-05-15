@@ -15,11 +15,9 @@ import { toast } from 'react-toastify';
 import GitLabIcon from '@/assets/gitlab.svg';
 import FigmaIcon from '@/assets/figma.svg';
 import NotionIcon from '@/assets/notion.svg';
-import WhiteJiraIcon from '@/assets/navbar_icon_jira_white.svg'
+import WhiteJiraIcon from '@/assets/navbar_icon_jira_white.svg';
 
-
-
-const ICONS = [WhiteJiraIcon, GitLabIcon, FigmaIcon, NotionIcon]
+const ICONS = [WhiteJiraIcon, GitLabIcon, FigmaIcon, NotionIcon];
 
 export const DashboardButtonGrid: React.FC<{ linkMap: Record<string, string | null> }> = ({ linkMap }) => {
   const handleClickLink = (label: string) => {
@@ -53,7 +51,7 @@ const DashboardLayout = () => {
   const { data: projectListData } = useProjectListData(userId);
   const projectInfo = projectListData?.find((p) => p.id === projectId);
   console.log(projectInfo);
-  const linkMap: Record<string, string|null> = {
+  const linkMap: Record<string, string | null> = {
     Jira: projectInfo?.jiraUrl || null,
     Gitlab: projectInfo?.gitlabUrl || null,
     Figma: projectInfo?.figmaUrl || null,
@@ -66,7 +64,7 @@ const DashboardLayout = () => {
       <WeeklySchedule weeklyStartDate={new Date('2024-10-30')} />
       <div className={styles.dashboardBottom}>
         <div className={styles.chartContainer}>
-        <DashboardButtonGrid linkMap={linkMap} />
+          <DashboardButtonGrid linkMap={linkMap} />
         </div>
         <TodoList />
       </div>

@@ -8,13 +8,12 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 interface ChartData {
   label: string;
   progress: number;
-  
 }
 interface ChartDataProps {
-  chartsData : ChartData[]
+  chartsData: ChartData[];
 }
 
-const ProgressChart: React.FC<ChartDataProps> = ({chartsData}) => {
+const ProgressChart: React.FC<ChartDataProps> = ({ chartsData }) => {
   // const chartsData: ChartDataProps[] = [
   //   { label: 'Backend', progress: 70 },
   //   { label: 'Frontend', progress: 45 },
